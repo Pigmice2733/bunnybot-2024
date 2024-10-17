@@ -17,5 +17,8 @@ public final class Constants {
 
   public static class CANConfig {
     public static final int INTAKE_PORT = 0;
+    public static final int GRABBER_MOTOR_PORT = 1;
+    public static final int GRABBER_FORWARD_PORT = 2;
+    public static final int GRABBER_BACKWARD_PORT = 3;
   }
 }

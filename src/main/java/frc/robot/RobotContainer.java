@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Grabber;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -16,13 +16,13 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private final Intake intake;
+  private final Grabber intake;
 
   private final CommandXboxController driver;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    intake = new Intake();
+    intake = new Grabber();
     driver = new CommandXboxController(0);
 
     // Configure the trigger bindings
