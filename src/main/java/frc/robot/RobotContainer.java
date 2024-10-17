@@ -16,10 +16,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems and commands are defined here...
   private final Intake intake;
 
-  // Replace with CommandPS4Controller or CommandJoystick if needed
   private final CommandXboxController driver;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */

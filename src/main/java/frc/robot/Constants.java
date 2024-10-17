@@ -14,4 +14,8 @@ package frc.robot;
  */
 public final class Constants {
   public static final double AXIS_THRESHOLD = 0.1;
+
+  public static class CANConfig {
+    public static final int INTAKE_PORT = 0;
+  }
 }
