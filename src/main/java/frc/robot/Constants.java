@@ -35,4 +35,8 @@ public final class Constants {
     public static final int GRABBER_FORWARD_PORT = 2;
     public static final int GRABBER_BACKWARD_PORT = 3;
   }
+
+  public static class SystemsConfig {
+    public static final double INDEXER_MOTOR_SPEED = 1;
+  }
 }
