@@ -41,4 +41,9 @@ public final class Constants {
     public static final int INTAKE_FORWARD_PORT = 5;
     public static final int INTAKE_BACKWARD_PORT = 6;
   }
+
+  public static class IntakeConfig {
+    public static final double OVER_SPEED = 0.5;
+    public static final double THROUGH_SPEED = 0.5;
+  }
 }
