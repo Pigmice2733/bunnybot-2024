@@ -26,14 +26,25 @@ public final class Constants {
   public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
 
   public static class CANConfig {
-    public static final int INTAKE_PORT = 0;
-    public static final int INDEXER_MOTOR_PORT = 0;
-    public static final int INDEXER_PISTON_FORWARD_PORT = 0;
-    public static final int INDEXER_PISTON_REVERSE_PORT = 0;
-    public static final int COLOR_SENSOR_PORT = 0;
+    public static final int INDEXER_MOTOR_PORT = 7;
+    public static final int INDEXER_PISTON_FORWARD_PORT = 8;
+    public static final int INDEXER_PISTON_REVERSE_PORT = 9;
+
+    public static final int COLOR_SENSOR_PORT = 10;
+
     public static final int GRABBER_MOTOR_PORT = 1;
     public static final int GRABBER_FORWARD_PORT = 2;
     public static final int GRABBER_BACKWARD_PORT = 3;
+    
+    public static final int INTAKE_OVER_PORT = 0;
+    public static final int INTAKE_THROUGH_PORT = 4;
+    public static final int INTAKE_FORWARD_PORT = 5;
+    public static final int INTAKE_BACKWARD_PORT = 6;
+  }
+
+  public static class IntakeConfig {
+    public static final double OVER_SPEED = 0.5;
+    public static final double THROUGH_SPEED = 0.5;
   }
 
   public static class SystemsConfig {
