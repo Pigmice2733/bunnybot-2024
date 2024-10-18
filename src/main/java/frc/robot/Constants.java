@@ -25,11 +25,14 @@ public final class Constants {
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
   public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
 
-  public static class PDHConfig {
+  public static class CANConfig {
     public static final int INTAKE_PORT = 0;
     public static final int INDEXER_MOTOR_PORT = 0;
     public static final int INDEXER_PISTON_FORWARD_PORT = 0;
     public static final int INDEXER_PISTON_REVERSE_PORT = 0;
     public static final int COLOR_SENSOR_PORT = 0;
+    public static final int GRABBER_MOTOR_PORT = 1;
+    public static final int GRABBER_FORWARD_PORT = 2;
+    public static final int GRABBER_BACKWARD_PORT = 3;
   }
 }

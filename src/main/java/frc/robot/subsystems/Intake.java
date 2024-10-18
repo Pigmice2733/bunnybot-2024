@@ -8,14 +8,14 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.PDHConfig;
+import frc.robot.Constants.CANConfig;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax motor;
 
   /** Creates a new Intake. */
   public Intake() {
-    motor = new CANSparkMax(PDHConfig.INTAKE_PORT, MotorType.kBrushless);
+    motor = new CANSparkMax(CANConfig.INTAKE_PORT, MotorType.kBrushless);
   }
 
   @Override
