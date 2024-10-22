@@ -7,13 +7,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IndexerConfig;
-import frc.robot.Constants.IndexerConfig.BalloonColor;
 import frc.robot.subsystems.Indexer;
 
 public class IndexBalloon extends Command {
     private final Indexer indexer;
     private Alliance color;
     private Optional<Alliance> alliance;
+    private boolean correctColor;
 
     public IndexBalloon(Indexer indexer) {
         this.indexer = indexer;
@@ -28,16 +28,24 @@ public class IndexBalloon extends Command {
             color = Alliance.Blue;
         }
 
-        switch (color) {
-            case Red:
-                indexer.setPistonPosition(Value.kForward);
-                break;
-            case Blue:
-                indexer.setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
-                break;
-            default:
-                break;
+        if (alliance.isPresent()) {
+            if ((alliance.get() == Alliance.Red && color == Alliance.Red)
+                    || (alliance.get() == Alliance.Blue && color == Alliance.Blue)) {
+                correctColor = true;
+            }
+            if ((alliance.get() == Alliance.Red && color == Alliance.Blue)
+                    || (alliance.get() == Alliance.Blue && color == Alliance.Red)) {
+                correctColor = false;
+            }
         }
+
+        if (correctColor) {
+            indexer.setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
+        }
+        if (correctColor = false) {
+            indexer.setPistonPosition(Value.kForward);
+        }
+
     }
 
     @Override

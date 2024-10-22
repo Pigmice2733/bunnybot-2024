@@ -36,7 +36,7 @@ public final class Constants {
     public static final int GRABBER_MOTOR_PORT = 1;
     public static final int GRABBER_FORWARD_PORT = 2;
     public static final int GRABBER_BACKWARD_PORT = 3;
-    
+
     public static final int INTAKE_OVER_PORT = 0;
     public static final int INTAKE_THROUGH_PORT = 4;
     public static final int INTAKE_FORWARD_PORT = 5;
@@ -53,6 +53,8 @@ public final class Constants {
     public static final Color BALLOON_RED_COLOR = new Color(255, 0, 0);
     public static final Color BALLOON_BLUE_COLOR = new Color(0, 0, 255);
 
-    public enum BalloonColor {RED, BLUE}
+    public enum BalloonColor {
+      RED, BLUE
+    }
   }
 }
