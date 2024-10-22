@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.util.Color;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -47,7 +48,11 @@ public final class Constants {
     public static final double THROUGH_SPEED = 0.5;
   }
 
-  public static class SystemsConfig {
+  public static class IndexerConfig {
     public static final double INDEXER_MOTOR_SPEED = 1;
+    public static final Color BALLOON_RED_COLOR = new Color(255, 0, 0);
+    public static final Color BALLOON_BLUE_COLOR = new Color(0, 0, 255);
+
+    public enum BalloonColor {RED, BLUE}
   }
 }

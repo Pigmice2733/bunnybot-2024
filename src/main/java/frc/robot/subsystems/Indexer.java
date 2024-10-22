@@ -2,7 +2,7 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
-import frc.robot.Constants.SystemsConfig;
+import frc.robot.Constants.IndexerConfig;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ColorSensorV3;
@@ -95,7 +95,7 @@ public class Indexer extends SubsystemBase {
 
     public Command cycleBalloons() {
         return new InstantCommand(() -> {
-            setMotorSpeed(SystemsConfig.INDEXER_MOTOR_SPEED);
+            setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
         }, this);
     }
 }

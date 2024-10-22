@@ -4,12 +4,13 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.RetractIntake;
+import frc.robot.subsystems.Grabber;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -58,6 +59,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    operator.a().onTrue(new RetractIntake(intake));
   }
 
   /**
