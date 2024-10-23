@@ -42,7 +42,7 @@ public class IndexBalloon extends Command {
         if (correctColor) {
             indexer.setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
         }
-        if (correctColor = false) {
+        if (correctColor == false) {
             indexer.setPistonPosition(Value.kForward);
         }
 
@@ -50,21 +50,19 @@ public class IndexBalloon extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        switch (color) {
-            case Red:
+        if (isFinished()) {
+            if (correctColor) {
                 indexer.setPistonPosition(Value.kReverse);
-                break;
-            case Blue:
+            }
+            if (correctColor == false) {
                 indexer.setMotorSpeed(0);
-                break;
-            default:
-                break;
+            }
         }
     }
 
     @Override
     public boolean isFinished() {
         return (indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR)
-                && indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR));
+                || indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR));
     }
 }
