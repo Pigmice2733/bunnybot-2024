@@ -10,8 +10,11 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConfig;
+import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax motorOver;
@@ -22,7 +25,10 @@ public class Intake extends SubsystemBase {
   public Intake() {
     motorOver = new CANSparkMax(CANConfig.INTAKE_OVER_PORT, MotorType.kBrushless);
     motorThrough = new CANSparkMax(CANConfig.INTAKE_THROUGH_PORT, MotorType.kBrushless);
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT, CANConfig.INTAKE_BACKWARD_PORT);
+
+    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
+        CANConfig.INTAKE_REVERSE_PORT);
+    piston.set(Value.kOff);
   }
 
   @Override
@@ -42,7 +48,7 @@ public class Intake extends SubsystemBase {
     motorThrough.set(speed);
   }
 
-  public void stopThroughOver() {
+  public void stopMotorThrough() {
     motorThrough.set(0);
   }
 
@@ -52,5 +58,17 @@ public class Intake extends SubsystemBase {
 
   public void retract() {
     piston.set(Value.kReverse);
+  }
+
+  public Command runIntakeOver() {
+    return new InstantCommand(() -> {
+      setMotorOverSpeed(IntakeConfig.OVER_SPEED);
+    }, this);
+  }
+
+  public Command runIntakeThrough() {
+    return new InstantCommand(() -> {
+      setMotorThroughSpeed(IntakeConfig.THROUGH_SPEED);
+    }, this);
   }
 }

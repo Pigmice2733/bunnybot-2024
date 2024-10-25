@@ -24,23 +24,23 @@ public final class Constants {
   public static final double AXIS_THRESHOLD = 0.1;
 
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
-  public static final ShuffleboardTab SYSTEMS_TAB = Shuffleboard.getTab("Subsystems");
+  public static final ShuffleboardTab INDEXER_TAB = Shuffleboard.getTab("Indexer");
 
   public static class CANConfig {
     public static final int INDEXER_MOTOR_PORT = 7;
-    public static final int INDEXER_PISTON_FORWARD_PORT = 8;
-    public static final int INDEXER_PISTON_REVERSE_PORT = 9;
+    public static final int INDEXER_FORWARD_PORT = 8;
+    public static final int INDEXER_REVERSE_PORT = 9;
 
     public static final int COLOR_SENSOR_PORT = 10;
 
     public static final int GRABBER_MOTOR_PORT = 1;
     public static final int GRABBER_FORWARD_PORT = 2;
-    public static final int GRABBER_BACKWARD_PORT = 3;
+    public static final int GRABBER_REVERSE_PORT = 3;
 
     public static final int INTAKE_OVER_PORT = 0;
     public static final int INTAKE_THROUGH_PORT = 4;
     public static final int INTAKE_FORWARD_PORT = 5;
-    public static final int INTAKE_BACKWARD_PORT = 6;
+    public static final int INTAKE_REVERSE_PORT = 6;
   }
 
   public static class IntakeConfig {
@@ -52,9 +52,5 @@ public final class Constants {
     public static final double INDEXER_MOTOR_SPEED = 1;
     public static final Color BALLOON_RED_COLOR = new Color(255, 0, 0);
     public static final Color BALLOON_BLUE_COLOR = new Color(0, 0, 255);
-
-    public enum BalloonColor {
-      RED, BLUE
-    }
   }
 }

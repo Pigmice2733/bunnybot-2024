@@ -3,7 +3,6 @@ package frc.robot.commands;
 import java.util.Optional;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IndexerConfig;
@@ -11,7 +10,6 @@ import frc.robot.subsystems.Indexer;
 
 public class IndexBalloon extends Command {
     private final Indexer indexer;
-    private Alliance color;
     private Optional<Alliance> alliance;
     private boolean correctColor;
 
@@ -22,47 +20,32 @@ public class IndexBalloon extends Command {
 
     @Override
     public void initialize() {
-        if (indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR)) {
-            color = Alliance.Red;
-        } else if (indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR)) {
-            color = Alliance.Blue;
-        }
-
         if (alliance.isPresent()) {
-            if ((alliance.get() == Alliance.Red && color == Alliance.Red)
-                    || (alliance.get() == Alliance.Blue && color == Alliance.Blue)) {
+            if ((alliance.get() == Alliance.Red && indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR))
+                    || (alliance.get() == Alliance.Blue
+                            && indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR))) {
                 correctColor = true;
-            }
-            if ((alliance.get() == Alliance.Red && color == Alliance.Blue)
-                    || (alliance.get() == Alliance.Blue && color == Alliance.Red)) {
+            } else {
                 correctColor = false;
             }
         }
 
         if (correctColor) {
-            indexer.setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
-        }
-        if (correctColor == false) {
-            indexer.setPistonPosition(Value.kForward);
+            indexer.spinWheel();
+        } else {
+            indexer.extend();
         }
 
     }
 
     @Override
     public void end(boolean interrupted) {
-        if (isFinished()) {
-            if (correctColor) {
-                indexer.setPistonPosition(Value.kReverse);
-            }
-            if (correctColor == false) {
-                indexer.setMotorSpeed(0);
-            }
-        }
+        indexer.hold();
     }
 
     @Override
     public boolean isFinished() {
-        return (indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR)
+        return !(indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR)
                 || indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR));
     }
 }

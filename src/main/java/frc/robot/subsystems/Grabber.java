@@ -20,7 +20,10 @@ public class Grabber extends SubsystemBase {
   /** Creates a new Grabber. */
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT, CANConfig.GRABBER_BACKWARD_PORT);
+
+    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT,
+        CANConfig.GRABBER_REVERSE_PORT);
+    piston.set(Value.kOff);
   }
 
   @Override
@@ -43,5 +46,4 @@ public class Grabber extends SubsystemBase {
   public void openFinger() {
     piston.set(Value.kReverse);
   }
-
 }
