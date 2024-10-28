@@ -37,15 +37,13 @@ public final class Constants {
     public static final int GRABBER_FORWARD_PORT = 2;
     public static final int GRABBER_REVERSE_PORT = 3;
 
-    public static final int INTAKE_OVER_PORT = 0;
-    public static final int INTAKE_THROUGH_PORT = 4;
+    public static final int INTAKE_MOTOR_PORT = 0;
     public static final int INTAKE_FORWARD_PORT = 5;
     public static final int INTAKE_REVERSE_PORT = 6;
   }
 
   public static class IntakeConfig {
-    public static final double OVER_SPEED = 0.5;
-    public static final double THROUGH_SPEED = 0.5;
+    public static final double MOTOR_SPEED = 0.5;
   }
 
   public static class IndexerConfig {

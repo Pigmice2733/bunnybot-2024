@@ -13,8 +13,7 @@ public class ExtendIntake extends SequentialCommandGroup {
   public ExtendIntake(Intake intake) {
     addCommands(
         new InstantCommand(intake::extend, intake),
-        intake.runIntakeOver(),
-        intake.runIntakeThrough());
+        intake.runIntake());
     addRequirements(intake);
   }
 }
