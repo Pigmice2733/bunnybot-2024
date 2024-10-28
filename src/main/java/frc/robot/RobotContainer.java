@@ -7,7 +7,10 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DropTote;
 import frc.robot.commands.ExtendIntake;
+import frc.robot.commands.IndexBalloon;
+import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -27,6 +30,7 @@ public class RobotContainer {
   private Intake intake;
   private Indexer indexer;
 
+  private Controls controls;
   private final CommandXboxController driver;
   private final CommandXboxController operator;
 
@@ -40,9 +44,19 @@ public class RobotContainer {
 
     driver = new CommandXboxController(0);
     operator = new CommandXboxController(1);
+    controls = new Controls(driver, operator);
 
     // Configure the trigger bindings
     configureBindings();
+
+    setDefaultCommands();
+  }
+
+  /**
+   * Declares default commands for any subsystems that have them.
+   */
+  private void setDefaultCommands() {
+    indexer.setDefaultCommand(new IndexBalloon(indexer));
   }
 
   /**
@@ -62,7 +76,8 @@ public class RobotContainer {
   private void configureBindings() {
     operator.a().onTrue(new ExtendIntake(intake));
     operator.b().onTrue(new RetractIntake(intake));
-
+    operator.rightTrigger().onTrue(new DropTote(grabber));
+    operator.leftTrigger().onTrue(new PickUpTote(grabber));
   }
 
   /**

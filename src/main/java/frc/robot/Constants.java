@@ -52,5 +52,10 @@ public final class Constants {
     public static final double INDEXER_MOTOR_SPEED = 1;
     public static final Color BALLOON_RED_COLOR = new Color(255, 0, 0);
     public static final Color BALLOON_BLUE_COLOR = new Color(0, 0, 255);
+    public static final Color NULL_COLOR = new Color(0, 0, 0);
+  }
+
+  public static class GrabberConfig {
+    public static final double GRABBER_MOTOR_SPEED = 0.5;
   }
 }

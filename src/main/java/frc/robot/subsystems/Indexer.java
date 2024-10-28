@@ -27,7 +27,7 @@ public class Indexer extends SubsystemBase {
   private ColorSensorV3 sensor;
 
   private GenericEntry motorEntry, redEntry, greenEntry, blueEntry;
-  private ShuffleboardLayout indexerEntries, sensorEntries;
+  private ShuffleboardLayout sensorEntries;
 
   public Indexer() {
     motor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
@@ -79,14 +79,29 @@ public class Indexer extends SubsystemBase {
     return new Color(sensor.getRed(), sensor.getGreen(), sensor.getBlue());
   }
 
-  public Command hold() {
+  /**
+   * Checks if the color sensor's output matches the given color.
+   * 
+   * @param color color to check against
+   * @return whether the colors match
+   */
+  public boolean checkColor(Color color) {
+    return this.getSensorOutputs().equals(color);
+  }
+
+  /**
+   * Stops the motor and closes the piston.
+   * 
+   * @return command that executes the code
+   */
+  public Command stop() {
     return new InstantCommand(() -> {
       setMotorSpeed(0);
       retract();
     }, this);
   }
 
-  public Command spinWheel() {
+  public Command runIndexer() {
     return new InstantCommand(() -> {
       setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
     }, this);

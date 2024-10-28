@@ -10,6 +10,8 @@ import com.revrobotics.CANSparkLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CANConfig;
 
@@ -39,11 +41,11 @@ public class Grabber extends SubsystemBase {
     motor.set(0);
   }
 
-  public void closeFinger() {
-    piston.set(Value.kForward);
+  public Command closeFinger() {
+    return new InstantCommand(() -> piston.set(Value.kForward), this);
   }
 
-  public void openFinger() {
-    piston.set(Value.kReverse);
+  public Command openFinger() {
+    return new InstantCommand(() -> piston.set(Value.kReverse), this);
   }
 }
