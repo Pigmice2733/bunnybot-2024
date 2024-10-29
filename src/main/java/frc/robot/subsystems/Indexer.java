@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -26,8 +27,8 @@ public class Indexer extends SubsystemBase {
   private DoubleSolenoid piston;
   private ColorSensorV3 sensor;
 
-  private GenericEntry motorEntry, redEntry, greenEntry, blueEntry;
-  private ShuffleboardLayout sensorEntries;
+  private GenericEntry motorEntry, redEntry, greenEntry, blueEntry, pistonEntry;
+  private ShuffleboardLayout indexerEntries, sensorEntries;
 
   public Indexer() {
     motor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
@@ -39,7 +40,11 @@ public class Indexer extends SubsystemBase {
 
     sensor = new ColorSensorV3(Port.kOnboard);
 
-    sensorEntries = Constants.INDEXER_TAB.getLayout("Color Sensor", BuiltInLayouts.kList);
+    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList);
+    motorEntry = indexerEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    pistonEntry = indexerEntries.add("Piston Value", "In").getEntry();
+
+    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList);
     redEntry = sensorEntries.add("Red", 0).getEntry();
     greenEntry = sensorEntries.add("Green", 0).getEntry();
     blueEntry = sensorEntries.add("Blue", 0).getEntry();
@@ -51,7 +56,7 @@ public class Indexer extends SubsystemBase {
     updateEntries();
   }
 
-  public void updateEntries() {
+  private void updateEntries() {
     redEntry.setDouble(sensor.getRed());
     greenEntry.setDouble(sensor.getGreen());
     blueEntry.setDouble(sensor.getBlue());
@@ -69,10 +74,12 @@ public class Indexer extends SubsystemBase {
 
   public void extend() {
     piston.set(Value.kForward);
+    pistonEntry.setString("Out");
   }
 
   public void retract() {
     piston.set(Value.kReverse);
+    pistonEntry.setString("In");
   }
 
   public Color getSensorOutputs() {

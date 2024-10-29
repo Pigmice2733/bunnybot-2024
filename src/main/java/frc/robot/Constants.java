@@ -24,7 +24,7 @@ public final class Constants {
   public static final double AXIS_THRESHOLD = 0.1;
 
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
-  public static final ShuffleboardTab INDEXER_TAB = Shuffleboard.getTab("Indexer");
+  public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
 
   public static class CANConfig {
     public static final int INDEXER_MOTOR_PORT = 7;
