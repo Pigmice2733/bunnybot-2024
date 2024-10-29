@@ -25,6 +25,7 @@ public final class Constants {
 
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
+  public static final ShuffleboardTab VISION_TAB = Shuffleboard.getTab("Vision");
 
   public static class CANConfig {
     public static final int INDEXER_MOTOR_PORT = 7;
@@ -55,5 +56,9 @@ public final class Constants {
 
   public static class GrabberConfig {
     public static final double GRABBER_MOTOR_SPEED = 0.5;
+  }
+
+  public static class VisionConfig {
+    public static final String CAM_NAME = "";
   }
 }

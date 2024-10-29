@@ -30,7 +30,6 @@ public class RobotContainer {
   private Intake intake;
   private Indexer indexer;
 
-  private Controls controls;
   private final CommandXboxController driver;
   private final CommandXboxController operator;
 
@@ -44,7 +43,6 @@ public class RobotContainer {
 
     driver = new CommandXboxController(0);
     operator = new CommandXboxController(1);
-    controls = new Controls(driver, operator);
 
     // Configure the trigger bindings
     configureBindings();
