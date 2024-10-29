@@ -9,43 +9,43 @@ import frc.robot.Constants.IndexerConfig;
 import frc.robot.subsystems.Indexer;
 
 public class IndexBalloon extends Command {
-    private final Indexer indexer;
-    private Optional<Alliance> alliance;
-    private boolean correctColor;
+  private final Indexer indexer;
+  private Optional<Alliance> alliance;
+  private boolean correctColor;
 
-    public IndexBalloon(Indexer indexer) {
-        this.indexer = indexer;
-        alliance = DriverStation.getAlliance();
-    }
+  /**
+   * Continuously checks if a balloon is in the indexer and sorts it according to
+   * our alliance color.
+   * Default command for the indexer subsystem.
+   * 
+   * @param indexer
+   */
+  public IndexBalloon(Indexer indexer) {
+    this.indexer = indexer;
+    alliance = DriverStation.getAlliance();
+    addRequirements(indexer);
+  }
 
-    @Override
-    public void initialize() {
-        if (alliance.isPresent()) {
-            if ((alliance.get() == Alliance.Red && indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR))
-                    || (alliance.get() == Alliance.Blue
-                            && indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR))) {
-                correctColor = true;
-            } else {
-                correctColor = false;
-            }
-        }
-
-        if (correctColor) {
-            indexer.spinWheel();
+  @Override
+  public void execute() {
+    if (indexer.checkColor(IndexerConfig.NULL_COLOR)) {
+      indexer.stop();
+      correctColor = false;
+    } else {
+      if (alliance.isPresent()) {
+        if ((alliance.get() == Alliance.Red && indexer.checkColor(IndexerConfig.BALLOON_RED_COLOR))
+            || (alliance.get() == Alliance.Blue
+                && indexer.checkColor(IndexerConfig.BALLOON_BLUE_COLOR))) {
+          correctColor = true;
         } else {
-            indexer.extend();
+          correctColor = false;
         }
-
+      }
+      if (correctColor) {
+        indexer.runIndexer();
+      } else {
+        indexer.extend();
+      }
     }
-
-    @Override
-    public void end(boolean interrupted) {
-        indexer.hold();
-    }
-
-    @Override
-    public boolean isFinished() {
-        return !(indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_RED_COLOR)
-                || indexer.getSensorOutputs().equals(IndexerConfig.BALLOON_BLUE_COLOR));
-    }
+  }
 }

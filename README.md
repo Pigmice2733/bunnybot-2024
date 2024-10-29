@@ -8,4 +8,10 @@ Robot to play in the BunnyBots 2024 game Balloonapalooza. All motors are Neos wi
 - Grabber: One motor and one piston. Motor lifts totes off the ground, piston catches overtop.
 
 ## Automation
-fill in commands later
+- Pick up and set down totes.
+- Extend and retract the intake system.
+- Continuously separate balloons based on color.
+
+## Controls
+Driver: left joystick for moving & strafing, right joystick X for turning.
+Operator: A to extend intake; B to retract intake; left trigger to pick up tote; right trigger to drop tote.

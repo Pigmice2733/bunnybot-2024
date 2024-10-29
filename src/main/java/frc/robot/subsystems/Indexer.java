@@ -13,6 +13,7 @@ import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -26,7 +27,7 @@ public class Indexer extends SubsystemBase {
   private DoubleSolenoid piston;
   private ColorSensorV3 sensor;
 
-  private GenericEntry motorEntry, redEntry, greenEntry, blueEntry;
+  private GenericEntry motorEntry, redEntry, greenEntry, blueEntry, pistonEntry;
   private ShuffleboardLayout indexerEntries, sensorEntries;
 
   public Indexer() {
@@ -39,7 +40,11 @@ public class Indexer extends SubsystemBase {
 
     sensor = new ColorSensorV3(Port.kOnboard);
 
-    sensorEntries = Constants.INDEXER_TAB.getLayout("Color Sensor", BuiltInLayouts.kList);
+    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList);
+    motorEntry = indexerEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    pistonEntry = indexerEntries.add("Piston Value", "In").getEntry();
+
+    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList);
     redEntry = sensorEntries.add("Red", 0).getEntry();
     greenEntry = sensorEntries.add("Green", 0).getEntry();
     blueEntry = sensorEntries.add("Blue", 0).getEntry();
@@ -51,7 +56,7 @@ public class Indexer extends SubsystemBase {
     updateEntries();
   }
 
-  public void updateEntries() {
+  private void updateEntries() {
     redEntry.setDouble(sensor.getRed());
     greenEntry.setDouble(sensor.getGreen());
     blueEntry.setDouble(sensor.getBlue());
@@ -69,24 +74,41 @@ public class Indexer extends SubsystemBase {
 
   public void extend() {
     piston.set(Value.kForward);
+    pistonEntry.setString("Out");
   }
 
   public void retract() {
     piston.set(Value.kReverse);
+    pistonEntry.setString("In");
   }
 
   public Color getSensorOutputs() {
     return new Color(sensor.getRed(), sensor.getGreen(), sensor.getBlue());
   }
 
-  public Command hold() {
+  /**
+   * Checks if the color sensor's output matches the given color.
+   * 
+   * @param color color to check against
+   * @return whether the colors match
+   */
+  public boolean checkColor(Color color) {
+    return this.getSensorOutputs().equals(color);
+  }
+
+  /**
+   * Stops the motor and closes the piston.
+   * 
+   * @return command that executes the code
+   */
+  public Command stop() {
     return new InstantCommand(() -> {
       setMotorSpeed(0);
       retract();
     }, this);
   }
 
-  public Command spinWheel() {
+  public Command runIndexer() {
     return new InstantCommand(() -> {
       setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
     }, this);
