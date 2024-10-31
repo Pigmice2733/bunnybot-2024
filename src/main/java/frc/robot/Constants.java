@@ -90,13 +90,15 @@ public final class Constants {
   public static class DrivetrainConfig {
     public static final double ROBOT_X_METERS = Units.inchesToMeters(30);
     public static final double ROBOT_Y_METERS = Units.inchesToMeters(30);
-    public static final PIDFConfig SWERVE_DRIVE_PID = new PIDFConfig(0.0020645, 0, 0);
-    public static final PIDFConfig SWERVE_ANGLE_PID = new PIDFConfig(0.0040645, 0, 0.001);
+    public static final PIDFConfig SWERVE_DRIVE_PID = new PIDFConfig(0.01, 0, 0);
+    public static final PIDFConfig SWERVE_ANGLE_PID = new PIDFConfig(0.01, 0, 0);
     public static final MotorConfigDouble SWERVE_CONVERSION_FACTORS = new MotorConfigDouble(16.8, 0.0472867872);
+    // TODO: check wheel mu
     public static final SwerveModulePhysicalCharacteristics SWERVE_CHARACTERISTICS = new SwerveModulePhysicalCharacteristics(
         SWERVE_CONVERSION_FACTORS, 1.19, 12, 25, 20, 0.25, 0.25);
     public static final SimpleMotorFeedforward SWERVE_FEEDFORWARD = new SimpleMotorFeedforward(1, 1, 1);
 
+    // TODO: test settings once robot is built
     public static final SwerveModuleConfiguration FRONT_LEFT_MODULE = new SwerveModuleConfiguration(
         new SparkMaxSwerve(CANConfig.FRONT_LEFT_DRIVE_PORT, true),
         new SparkMaxSwerve(CANConfig.FRONT_LEFT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
@@ -104,6 +106,7 @@ public final class Constants {
         143.52, ROBOT_X_METERS / 2, ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
         false, true, true,
         "front left", false);
+
     public static final SwerveModuleConfiguration FRONT_RIGHT_MODULE = new SwerveModuleConfiguration(
         new SparkMaxSwerve(CANConfig.FRONT_RIGHT_DRIVE_PORT, true),
         new SparkMaxSwerve(CANConfig.FRONT_RIGHT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
@@ -111,6 +114,7 @@ public final class Constants {
         107.7, -ROBOT_X_METERS / 2, ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
         false, true, true,
         "front right", false);
+
     public static final SwerveModuleConfiguration BACK_LEFT_MODULE = new SwerveModuleConfiguration(
         new SparkMaxSwerve(CANConfig.BACK_LEFT_DRIVE_PORT, true),
         new SparkMaxSwerve(CANConfig.BACK_LEFT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
@@ -118,6 +122,7 @@ public final class Constants {
         42.4, ROBOT_X_METERS / 2, -ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
         false, true, true,
         "back left", false);
+
     public static final SwerveModuleConfiguration BACK_RIGHT_MODULE = new SwerveModuleConfiguration(
         new SparkMaxSwerve(CANConfig.BACK_RIGHT_DRIVE_PORT, true),
         new SparkMaxSwerve(CANConfig.BACK_RIGHT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
@@ -125,15 +130,14 @@ public final class Constants {
         165.93, -ROBOT_X_METERS / 2, -ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
         false, true, true,
         "front left", false);
+
     public static final SwerveModuleConfiguration[] MODULE_ARRAY = { FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
         BACK_LEFT_MODULE, BACK_RIGHT_MODULE };
-
     public static final SwerveDriveConfiguration SWERVE_CONFIG = new SwerveDriveConfiguration(MODULE_ARRAY,
         new NavXSwerve(Port.kMXP), false, SWERVE_FEEDFORWARD, SWERVE_CHARACTERISTICS);
 
     public static final PIDFConfig SWERVE_HEADING_PID = new PIDFConfig(0.4, 0, 0.01);
     public static final double MAX_DRIVE_SPEED = 0.7;
-
     public static final SwerveControllerConfiguration SWERVE_CONTROLLER_CONFIG = new SwerveControllerConfiguration(
         SWERVE_CONFIG, SWERVE_HEADING_PID, 0.3, MAX_DRIVE_SPEED);
   }
