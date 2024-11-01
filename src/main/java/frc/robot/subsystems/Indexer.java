@@ -40,11 +40,13 @@ public class Indexer extends SubsystemBase {
 
     sensor = new ColorSensorV3(Port.kOnboard);
 
-    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList);
+    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList).withSize(1, 2).withPosition(1,
+        0);
     motorEntry = indexerEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     pistonEntry = indexerEntries.add("Piston Value", "In").getEntry();
 
-    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList);
+    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList).withSize(1, 2)
+        .withPosition(3, 0);
     redEntry = sensorEntries.add("Red", 0).getEntry();
     greenEntry = sensorEntries.add("Green", 0).getEntry();
     blueEntry = sensorEntries.add("Blue", 0).getEntry();

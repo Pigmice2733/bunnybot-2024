@@ -36,7 +36,7 @@ public class Intake extends SubsystemBase {
     piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
         CANConfig.INTAKE_REVERSE_PORT);
 
-    intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList);
+    intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 2).withPosition(0, 0);
     motorEntry = intakeEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     pistonEntry = intakeEntries.add("Piston Value", "In").getEntry();
   }

@@ -12,9 +12,11 @@ import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RetractIntake;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,6 +31,8 @@ public class RobotContainer {
   private Grabber grabber;
   private Intake intake;
   private Indexer indexer;
+  private Vision vision;
+  private Drivetrain drivetrain;
 
   private final CommandXboxController driver;
   private final CommandXboxController operator;
@@ -40,6 +44,8 @@ public class RobotContainer {
     grabber = new Grabber();
     intake = new Intake();
     indexer = new Indexer();
+    vision = new Vision();
+    drivetrain = new Drivetrain();
 
     driver = new CommandXboxController(0);
     operator = new CommandXboxController(1);

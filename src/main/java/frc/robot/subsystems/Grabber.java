@@ -36,7 +36,8 @@ public class Grabber extends SubsystemBase {
         CANConfig.GRABBER_REVERSE_PORT);
     piston.set(Value.kOff);
 
-    grabberEntries = Constants.SUBSYSTEM_TAB.getLayout("Grabber", BuiltInLayouts.kList);
+    grabberEntries = Constants.SUBSYSTEM_TAB.getLayout("Grabber", BuiltInLayouts.kList).withSize(1, 2).withPosition(2,
+        0);
     motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     pistonEntry = grabberEntries.add("Piston Value", "In").getEntry();
   }

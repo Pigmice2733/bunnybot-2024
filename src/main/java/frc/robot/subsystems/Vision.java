@@ -24,9 +24,7 @@ public class Vision extends SubsystemBase {
   /** Finds and uses AprilTags and other vision targets. */
   public Vision() {
     camName = VisionConfig.CAM_NAME;
-    fieldWidget = new Field2d();
 
-    Constants.VISION_TAB.add(fieldWidget).withPosition(2, 0).withSize(7, 4);
     targetX = Constants.VISION_TAB.add("Target X", 0).withPosition(0, 0).getEntry();
     targetY = Constants.VISION_TAB.add("Target Y", 0).withPosition(1, 0).getEntry();
     robotX = Constants.VISION_TAB.add("Robot Pose X", 0).withPosition(0, 1).getEntry();
