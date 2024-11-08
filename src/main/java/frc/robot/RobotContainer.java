@@ -50,7 +50,7 @@ public class RobotContainer {
     intake = new Intake();
     indexer = new Indexer();
     vision = new Vision();
-    drivetrain = new Drivetrain(controls);
+    drivetrain = new Drivetrain();
 
     // Configure the trigger bindings
     configureBindings();

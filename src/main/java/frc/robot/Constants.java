@@ -96,7 +96,7 @@ public final class Constants {
     // TODO: check wheel mu
     public static final SwerveModulePhysicalCharacteristics SWERVE_CHARACTERISTICS = new SwerveModulePhysicalCharacteristics(
         SWERVE_CONVERSION_FACTORS, 1.19, 12, 25, 20, 0.25, 0.25);
-    public static final SimpleMotorFeedforward SWERVE_FEEDFORWARD = new SimpleMotorFeedforward(1, 1, 1);
+    public static final SimpleMotorFeedforward SWERVE_FEEDFORWARD = new SimpleMotorFeedforward(0, 0.2, 0);
     public static final NavXSwerve SWERVE_GYRO = new NavXSwerve(Port.kMXP);
 
     // TODO: test settings once robot is built
@@ -139,6 +139,7 @@ public final class Constants {
 
     public static final PIDFConfig SWERVE_HEADING_PID = new PIDFConfig(0.4, 0, 0.01);
     public static final double MAX_DRIVE_SPEED = 0.7;
+    public static final double MAX_TURN_SPEED = 0.5;
     public static final SwerveControllerConfiguration SWERVE_CONTROLLER_CONFIG = new SwerveControllerConfiguration(
         SWERVE_CONFIG, SWERVE_HEADING_PID, 0.3, MAX_DRIVE_SPEED);
   }
