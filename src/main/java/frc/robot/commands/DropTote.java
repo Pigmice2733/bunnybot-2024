@@ -14,7 +14,7 @@ public class DropTote extends SequentialCommandGroup {
    */
   public DropTote(Grabber grabber) {
     addCommands(
-        new InstantCommand(() -> grabber.setMotorSpeed(-1 * GrabberConfig.GRABBER_MOTOR_SPEED), grabber),
+        new InstantCommand(() -> grabber.setMotorSpeed(-GrabberConfig.GRABBER_MOTOR_SPEED), grabber),
         new WaitCommand(2),
         grabber.openFinger(),
         new InstantCommand(() -> grabber.stopMotor(), grabber));
