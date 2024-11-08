@@ -10,11 +10,11 @@ import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConfig;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
-import swervelib.imu.SwerveIMU;
+import swervelib.imu.NavXSwerve;
 
 public class Drivetrain extends SubsystemBase {
   private final SwerveDrive swerve;
-  private final SwerveIMU gyro = DrivetrainConfig.SWERVE_CONFIG.imu;
+  private final NavXSwerve gyro;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDriveOdometry odometry;
 
@@ -26,21 +26,22 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG, DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
         DrivetrainConfig.MAX_DRIVE_SPEED);
-    modules[0] = new SwerveModule(0, DrivetrainConfig.FRONT_LEFT_MODULE, null);
-    modules[1] = new SwerveModule(0, DrivetrainConfig.FRONT_RIGHT_MODULE, null);
-    modules[2] = new SwerveModule(0, DrivetrainConfig.BACK_LEFT_MODULE, null);
-    modules[3] = new SwerveModule(0, DrivetrainConfig.BACK_RIGHT_MODULE, null);
+    modules[0] = new SwerveModule(0, DrivetrainConfig.FRONT_LEFT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
+    modules[1] = new SwerveModule(1, DrivetrainConfig.FRONT_RIGHT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
+    modules[2] = new SwerveModule(2, DrivetrainConfig.BACK_LEFT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
+    modules[3] = new SwerveModule(3, DrivetrainConfig.BACK_RIGHT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
 
     kinematics = new SwerveDriveKinematics(
         new Translation2d(DrivetrainConfig.ROBOT_X_METERS, DrivetrainConfig.ROBOT_Y_METERS),
-        new Translation2d(-1 * DrivetrainConfig.ROBOT_X_METERS, DrivetrainConfig.ROBOT_Y_METERS),
-        new Translation2d(DrivetrainConfig.ROBOT_X_METERS, -1 * DrivetrainConfig.ROBOT_Y_METERS),
-        new Translation2d(-1 * DrivetrainConfig.ROBOT_X_METERS, -1 * DrivetrainConfig.ROBOT_Y_METERS));
+        new Translation2d(-DrivetrainConfig.ROBOT_X_METERS, DrivetrainConfig.ROBOT_Y_METERS),
+        new Translation2d(DrivetrainConfig.ROBOT_X_METERS, -DrivetrainConfig.ROBOT_Y_METERS),
+        new Translation2d(-DrivetrainConfig.ROBOT_X_METERS, -DrivetrainConfig.ROBOT_Y_METERS));
+    gyro = DrivetrainConfig.SWERVE_GYRO;
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation3d().toRotation2d(), modulePositions);
 
     robotX = Constants.DRIVETRAIN_TAB.add("Robot X", 0).withPosition(0, 0).getEntry();
     robotY = Constants.DRIVETRAIN_TAB.add("Robot Y", 0).withPosition(1, 0).getEntry();
-    rotation = Constants.DRIVETRAIN_TAB.add("Robot Angle", 0).withPosition(0, 2).getEntry();
+    rotation = Constants.DRIVETRAIN_TAB.add("Robot Angle", 0).withPosition(2, 0).getEntry();
   }
 
   @Override

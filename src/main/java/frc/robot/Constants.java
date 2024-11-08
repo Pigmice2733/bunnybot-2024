@@ -97,6 +97,7 @@ public final class Constants {
     public static final SwerveModulePhysicalCharacteristics SWERVE_CHARACTERISTICS = new SwerveModulePhysicalCharacteristics(
         SWERVE_CONVERSION_FACTORS, 1.19, 12, 25, 20, 0.25, 0.25);
     public static final SimpleMotorFeedforward SWERVE_FEEDFORWARD = new SimpleMotorFeedforward(1, 1, 1);
+    public static final NavXSwerve SWERVE_GYRO = new NavXSwerve(Port.kMXP);
 
     // TODO: test settings once robot is built
     public static final SwerveModuleConfiguration FRONT_LEFT_MODULE = new SwerveModuleConfiguration(
@@ -134,7 +135,7 @@ public final class Constants {
     public static final SwerveModuleConfiguration[] MODULE_ARRAY = { FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
         BACK_LEFT_MODULE, BACK_RIGHT_MODULE };
     public static final SwerveDriveConfiguration SWERVE_CONFIG = new SwerveDriveConfiguration(MODULE_ARRAY,
-        new NavXSwerve(Port.kMXP), false, SWERVE_FEEDFORWARD, SWERVE_CHARACTERISTICS);
+        SWERVE_GYRO, false, SWERVE_FEEDFORWARD, SWERVE_CHARACTERISTICS);
 
     public static final PIDFConfig SWERVE_HEADING_PID = new PIDFConfig(0.4, 0, 0.01);
     public static final double MAX_DRIVE_SPEED = 0.7;

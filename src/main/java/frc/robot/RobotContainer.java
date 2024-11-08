@@ -5,13 +5,12 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.DropTote;
-import frc.robot.commands.ExtendIntake;
 import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
-import frc.robot.commands.RetractIntake;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -29,7 +28,7 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
   private Grabber grabber;
-  private Intake intake;
+  public Intake intake;
   private Indexer indexer;
   private Vision vision;
   private Drivetrain drivetrain;
@@ -78,10 +77,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    operator.a().onTrue(new ExtendIntake(intake));
-    operator.b().onTrue(new RetractIntake(intake));
-    operator.rightTrigger().onTrue(new DropTote(grabber));
-    operator.leftTrigger().onTrue(new PickUpTote(grabber));
+    operator.a().onTrue(intake.runIntake()).onFalse(new InstantCommand(intake::stopMotor, intake));
+    operator.rightBumper().onTrue(new DropTote(grabber));
+    operator.leftBumper().onTrue(new PickUpTote(grabber));
   }
 
   /**
