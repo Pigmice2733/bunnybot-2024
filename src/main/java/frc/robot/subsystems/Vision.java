@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
@@ -11,7 +10,6 @@ import frc.robot.LimelightHelpers.*;
 
 public class Vision extends SubsystemBase {
   private String camName;
-  private Field2d fieldWidget;
 
   private LimelightResults targetingResults;
   private LimelightTarget_Fiducial[] allTargets;
@@ -48,10 +46,6 @@ public class Vision extends SubsystemBase {
       hasTarget = true;
       bestTarget = allTargets[0];
     }
-
-    // Update the field widget
-    if (getEstimatedRobotPose() != null)
-      fieldWidget.setRobotPose(getEstimatedRobotPose());
 
     updateEntries();
   }

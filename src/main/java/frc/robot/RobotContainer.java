@@ -42,15 +42,15 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+    driver = new CommandXboxController(0);
+    operator = new CommandXboxController(1);
+    controls = new Controls(driver, operator);
+
     grabber = new Grabber();
     intake = new Intake();
     indexer = new Indexer();
     vision = new Vision();
-    drivetrain = new Drivetrain();
-
-    driver = new CommandXboxController(0);
-    operator = new CommandXboxController(1);
-    controls = new Controls(driver, operator);
+    drivetrain = new Drivetrain(controls);
 
     // Configure the trigger bindings
     configureBindings();
