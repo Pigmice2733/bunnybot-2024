@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
@@ -35,6 +36,7 @@ public class RobotContainer {
 
   private final CommandXboxController driver;
   private final CommandXboxController operator;
+  private final Controls controls;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,6 +50,7 @@ public class RobotContainer {
 
     driver = new CommandXboxController(0);
     operator = new CommandXboxController(1);
+    controls = new Controls(driver, operator);
 
     // Configure the trigger bindings
     configureBindings();
@@ -60,6 +63,8 @@ public class RobotContainer {
    */
   private void setDefaultCommands() {
     indexer.setDefaultCommand(new IndexBalloon(indexer));
+    drivetrain.setDefaultCommand(
+        new DriveJoysticks(drivetrain, controls::getDriveSpeedX, controls::getDriveSpeedY, controls::getTurnSpeed));
   }
 
   /**

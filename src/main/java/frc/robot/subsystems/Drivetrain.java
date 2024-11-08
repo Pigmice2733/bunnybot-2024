@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -61,5 +62,9 @@ public class Drivetrain extends SubsystemBase {
     modulePositions[1] = modules[1].getPosition();
     modulePositions[2] = modules[2].getPosition();
     modulePositions[3] = modules[3].getPosition();
+  }
+
+  public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
+    swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
   }
 }

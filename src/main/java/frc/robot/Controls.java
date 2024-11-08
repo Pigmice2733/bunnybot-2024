@@ -16,38 +16,29 @@ public class Controls {
   }
 
   /**
-   * @return the left joystick y-axis multiplied by the drive speed. When the Y
-   *         button is held, the result is multiplied by the slowmode multiplier
-   *         before
-   *         returning.
+   * Returns the left joystick's Y-axis value.
    */
   public double getDriveSpeedY() {
-    double joystickY = MathUtil.applyDeadband(-driver.getLeftY(), threshold);
+    double joystickY = MathUtil.applyDeadband(driver.getLeftY(), threshold);
 
     return joystickY;
   }
 
   /**
-   * @return the left joystick x-axis multiplied by the drive speed. When the Y
-   *         button is held, the result is multiplied by the slowmode multiplier
-   *         before
-   *         returning.
+   * Returns the left joystick's X-axis value.
    */
   public double getDriveSpeedX() {
-    double joystickX = MathUtil.applyDeadband(-driver.getLeftX(), threshold);
+    double joystickX = MathUtil.applyDeadband(driver.getLeftX(), threshold);
 
     return joystickX;
   }
 
   /**
-   * @return the right joystick x-axis multiplied by the drive speed. When the Y
-   *         button is held, the result is multiplied by the slowmode multiplier
-   *         before
-   *         returning.
+   * Returns the right joystick's X-axis value.
    */
   public double getTurnSpeed() {
     double joystickTurn = MathUtil.applyDeadband(driver.getRightX(), threshold);
 
-    return -joystickTurn;
+    return joystickTurn;
   }
 }
