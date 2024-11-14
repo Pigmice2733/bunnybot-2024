@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI.Port;
@@ -142,5 +143,7 @@ public final class Constants {
     public static final double MAX_TURN_SPEED = 0.5;
     public static final SwerveControllerConfiguration SWERVE_CONTROLLER_CONFIG = new SwerveControllerConfiguration(
         SWERVE_CONFIG, SWERVE_HEADING_PID, 0.3, MAX_DRIVE_SPEED);
+
+    public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
   }
 }

@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
-import frc.robot.Controls;
 import frc.robot.Constants.DrivetrainConfig;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
