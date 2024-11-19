@@ -146,4 +146,10 @@ public final class Constants {
 
     public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
   }
+
+  public static class AutoConfig {
+    public static enum AutoRoutine {
+      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR
+    }
+  }
 }

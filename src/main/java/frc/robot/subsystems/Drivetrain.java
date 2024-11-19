@@ -75,4 +75,8 @@ public class Drivetrain extends SubsystemBase {
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
     swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
   }
+
+  public SwerveDrive getSwerve() {
+    return swerve;
+  }
 }

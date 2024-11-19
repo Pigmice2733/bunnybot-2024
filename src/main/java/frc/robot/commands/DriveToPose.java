@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.subsystems.Drivetrain;
 
-public class MoveToPose extends Command {
+public class DriveToPose extends Command {
   private final Drivetrain drivetrain;
-  private Pose2d currentPose, endPose;
+  private Pose2d endPose;
 
-  private PIDController xPID, yPID, rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;;
+  private PIDController xPID, yPID, rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
 
-  public MoveToPose(Drivetrain drivetrain, Pose2d destination) {
+  public DriveToPose(Drivetrain drivetrain, Pose2d destination) {
     this.drivetrain = drivetrain;
     endPose = destination;
   }
@@ -26,7 +26,7 @@ public class MoveToPose extends Command {
 
   @Override
   public void execute() {
-    currentPose = drivetrain.getPose();
+    Pose2d currentPose = drivetrain.getPose();
     drivetrain.drive(
         xPID.calculate(currentPose.getX()),
         yPID.calculate(currentPose.getY()),
