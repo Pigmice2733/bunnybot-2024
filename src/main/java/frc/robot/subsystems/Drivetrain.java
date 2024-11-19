@@ -1,5 +1,9 @@
 package frc.robot.subsystems;
 
+import java.util.Optional;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -7,6 +11,8 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConfig;
@@ -25,6 +31,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModule[] modules = new SwerveModule[4];
 
   private GenericEntry robotX, robotY, rotation;
+
+  private Optional<Alliance> alliance;
 
   public Drivetrain() {
     swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG, DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
@@ -46,6 +54,17 @@ public class Drivetrain extends SubsystemBase {
     robotX = Constants.DRIVETRAIN_TAB.add("Robot X", 0).withPosition(0, 0).getEntry();
     robotY = Constants.DRIVETRAIN_TAB.add("Robot Y", 0).withPosition(1, 0).getEntry();
     rotation = Constants.DRIVETRAIN_TAB.add("Robot Angle", 0).withPosition(2, 0).getEntry();
+
+    alliance = DriverStation.getAlliance();
+
+    AutoBuilder.configureHolonomic(
+        swerve::getPose,
+        (pose) -> swerve.resetOdometry(pose),
+        swerve::getRobotVelocity,
+        (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond),
+        DrivetrainConfig.PATH_FOLLOWER_CONFIG,
+        () -> alliance.isPresent() ? alliance.get() == Alliance.Red : false,
+        this);
   }
 
   @Override
@@ -61,6 +80,10 @@ public class Drivetrain extends SubsystemBase {
     odometry.update(gyro.getRotation3d().toRotation2d(), modulePositions);
   }
 
+  /**
+   * Updates the stored values for module positions to the current positions of
+   * the modules.
+   */
   public void updateModulePositions() {
     modulePositions[0] = modules[0].getPosition();
     modulePositions[1] = modules[1].getPosition();
@@ -68,15 +91,25 @@ public class Drivetrain extends SubsystemBase {
     modulePositions[3] = modules[3].getPosition();
   }
 
+  /** Returns the drivetrain as a SwerveDrive object. */
+  public SwerveDrive getSwerve() {
+    return swerve;
+  }
+
+  /** Returns the current pose of the robot. */
   public Pose2d getPose() {
     return swerve.getPose();
   }
 
-  public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
-    swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
+  /** Sets the robot odometry to the given pose. */
+  public void resetPose(Pose2d pose) {
+    swerve.resetOdometry(pose);
   }
 
-  public SwerveDrive getSwerve() {
-    return swerve;
+  /**
+   * Drives the robot in field-oriented mode by creating a ChassisSpeeds object.
+   */
+  public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
+    swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
   }
 }

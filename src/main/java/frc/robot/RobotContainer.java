@@ -69,12 +69,12 @@ public class RobotContainer {
 
   private void buildAutoChooser() {
     autoChooser.setDefaultOption("NONE", Commands.none());
-    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.RIGHT_CLOSE));
-    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.RIGHT_MID));
-    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.RIGHT_FAR));
-    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.LEFT_CLOSE));
-    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.LEFT_MID));
-    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, indexer, AutoRoutine.LEFT_FAR));
+    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_CLOSE));
+    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_MID));
+    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_FAR));
+    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_CLOSE));
+    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_MID));
+    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_FAR));
   }
 
   /**

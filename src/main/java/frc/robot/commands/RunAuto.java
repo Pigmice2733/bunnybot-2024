@@ -5,13 +5,16 @@ import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Constants.AutoConfig;
 import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Vision;
 
 public class RunAuto extends SequentialCommandGroup {
-  public RunAuto(Drivetrain drivetrain, Grabber grabber, Indexer indexer, AutoRoutine auto) {
+  public RunAuto(Drivetrain drivetrain, Grabber grabber, Indexer indexer, Vision vision, AutoRoutine auto) {
     switch (auto) {
       case LEFT_CLOSE:
         addCommands(
@@ -52,5 +55,12 @@ public class RunAuto extends SequentialCommandGroup {
       default:
         break;
     }
+
+    addCommands(
+        new DriveToPose(drivetrain, vision.getTranslationToBestTarget().plus(AutoConfig.TAG_TO_TOTE_TRANSFORM)),
+        indexer.runIndexer(),
+        new WaitCommand(1.5),
+        indexer.stop(),
+        new PickUpTote(grabber));
   }
 }
