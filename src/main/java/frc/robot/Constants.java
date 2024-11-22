@@ -57,8 +57,10 @@ public final class Constants {
     public static final int GRABBER_REVERSE_PORT = 3;
 
     public static final int INTAKE_MOTOR_PORT = 0;
-    public static final int INTAKE_FORWARD_PORT = 5;
-    public static final int INTAKE_REVERSE_PORT = 6;
+    public static final int INTAKE_LEFT_FORWARD_PORT = 5;
+    public static final int INTAKE_LEFT_REVERSE_PORT = 6;
+    public static final int INTAKE_RIGHT_FORWARD_PORT = 6;
+    public static final int INTAKE_RIGHT_REVERSE_PORT = 6;
 
     public static final int FRONT_LEFT_DRIVE_PORT = 11;
     public static final int FRONT_LEFT_ANGLE_PORT = 12;

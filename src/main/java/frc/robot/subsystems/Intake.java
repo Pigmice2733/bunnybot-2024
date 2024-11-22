@@ -23,7 +23,7 @@ import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax motor;
-  private final DoubleSolenoid piston;
+  private final DoubleSolenoid leftPiston, rightPiston;
 
   private ShuffleboardLayout intakeEntries;
   private GenericEntry motorEntry, pistonEntry;
@@ -33,8 +33,10 @@ public class Intake extends SubsystemBase {
     motor = new CANSparkMax(CANConfig.INTAKE_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
 
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
-        CANConfig.INTAKE_REVERSE_PORT);
+    leftPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_LEFT_FORWARD_PORT,
+        CANConfig.INTAKE_LEFT_REVERSE_PORT);
+    rightPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_RIGHT_FORWARD_PORT,
+        CANConfig.INTAKE_RIGHT_REVERSE_PORT);
 
     intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 2).withPosition(0, 0);
     motorEntry = intakeEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
@@ -59,12 +61,14 @@ public class Intake extends SubsystemBase {
   }
 
   public void extend() {
-    piston.set(Value.kForward);
+    leftPiston.set(Value.kForward);
+    rightPiston.set(Value.kForward);
     pistonEntry.setString("Out");
   }
 
   public void retract() {
-    piston.set(Value.kReverse);
+    leftPiston.set(Value.kReverse);
+    rightPiston.set(Value.kReverse);
     pistonEntry.setString("In");
   }
 
