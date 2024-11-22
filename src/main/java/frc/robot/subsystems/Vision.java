@@ -11,7 +11,7 @@ import frc.robot.LimelightHelpers.*;
 public class Vision extends SubsystemBase {
   private String camName;
 
-  private LimelightResults targetingResults;
+  private LimelightResults results;
   private LimelightTarget_Fiducial[] allTargets;
 
   private boolean hasTarget;
@@ -33,10 +33,10 @@ public class Vision extends SubsystemBase {
 
   @Override
   public void periodic() {
-    targetingResults = LimelightHelpers
+    results = LimelightHelpers
         .getLatestResults(camName);
 
-    allTargets = targetingResults.targets_Fiducials;
+    allTargets = results.targets_Fiducials;
 
     if (allTargets.length == 0) {
       bestTarget = null;
@@ -76,7 +76,7 @@ public class Vision extends SubsystemBase {
     if (!hasTarget)
       return null;
 
-    return targetingResults.getBotPose2d_wpiBlue();
+    return results.getBotPose2d();
 
     // Rotate 180
     // estimatedPose = new Pose2d(estimatedPose.getX(),
