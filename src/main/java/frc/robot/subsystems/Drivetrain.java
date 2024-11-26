@@ -13,6 +13,8 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConfig;
@@ -30,6 +32,7 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModule[] modules = new SwerveModule[4];
 
+  private ShuffleboardLayout drivetrainEntries;
   private GenericEntry robotX, robotY, rotation;
 
   private Optional<Alliance> alliance;
@@ -50,10 +53,14 @@ public class Drivetrain extends SubsystemBase {
     gyro = DrivetrainConfig.SWERVE_GYRO;
     odometry = new SwerveDriveOdometry(kinematics, gyro.getRotation3d().toRotation2d(), modulePositions);
     robotPose = new Pose2d();
+    resetPose(robotPose);
 
-    robotX = Constants.DRIVETRAIN_TAB.add("Robot X", 0).withPosition(0, 0).getEntry();
-    robotY = Constants.DRIVETRAIN_TAB.add("Robot Y", 0).withPosition(1, 0).getEntry();
-    rotation = Constants.DRIVETRAIN_TAB.add("Robot Angle", 0).withPosition(2, 0).getEntry();
+    drivetrainEntries = Constants.DRIVETRAIN_TAB.getLayout("Drivetrain", BuiltInLayouts.kList).withSize(1, 3)
+        .withPosition(0,
+            0);
+    robotX = drivetrainEntries.add("Robot X", 0).withPosition(0, 0).getEntry();
+    robotY = drivetrainEntries.add("Robot Y", 0).withPosition(1, 0).getEntry();
+    rotation = drivetrainEntries.add("Robot Angle", 0).withPosition(2, 0).getEntry();
 
     alliance = DriverStation.getAlliance();
 

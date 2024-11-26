@@ -41,9 +41,8 @@ import swervelib.parser.json.MotorConfigDouble;
 public final class Constants {
   public static final double AXIS_THRESHOLD = 0.1;
 
-  public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain");
+  public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain & Vision");
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
-  public static final ShuffleboardTab VISION_TAB = Shuffleboard.getTab("Vision");
 
   public static class CANConfig {
     public static final int INDEXER_MOTOR_PORT = 7;
@@ -93,6 +92,25 @@ public final class Constants {
 
   public static class VisionConfig {
     public static final String CAM_NAME = "";
+
+    public static class Target {
+      // degrees away from face-on horizontally, turning counterclockwise increases
+      // number
+      public double tx;
+
+      // degrees away from face-on vertically, target relatively higher increases
+      // number
+      public double ty;
+
+      // percent of FoV that target takes up, getting closer increases number
+      public double ta;
+
+      public Target(double x, double y, double a) {
+        tx = x;
+        ty = y;
+        ta = a;
+      }
+    }
   }
 
   public static class DrivetrainConfig {

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.AutoConfig;
 import frc.robot.Constants.AutoConfig.AutoRoutine;
+import frc.robot.commands.targeting.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -57,7 +58,8 @@ public class RunAuto extends SequentialCommandGroup {
     }
 
     addCommands(
-        new DriveToPose(drivetrain, vision.getTranslationToBestTarget().plus(AutoConfig.TAG_TO_TOTE_TRANSFORM)),
+        new DriveToTarget(drivetrain,
+            vision /* .getTranslationToBestTarget().plus(AutoConfig.TAG_TO_TOTE_TRANSFORM) */),
         indexer.runIndexer(),
         new WaitCommand(1.5),
         indexer.stop(),
