@@ -8,6 +8,13 @@ public class CenterOnTarget extends Command {
   private Drivetrain drivetrain;
   private Vision vision;
 
+  /**
+   * Move laterally until vision's TX is 0, that is, the robot is directly in
+   * front of the target.
+   * 
+   * @param drt Drivetrain subsystem
+   * @param vsn Vision subystem
+   */
   public CenterOnTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;

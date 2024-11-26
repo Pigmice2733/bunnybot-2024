@@ -8,6 +8,12 @@ public class FindTarget extends Command {
   private Drivetrain drivetrain;
   private Vision vision;
 
+  /**
+   * Turn until the Limelight camera sees a target.
+   * 
+   * @param drt Drivetrain subsystem
+   * @param vsn Vision subsystem
+   */
   public FindTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;

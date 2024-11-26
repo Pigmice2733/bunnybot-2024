@@ -8,6 +8,12 @@ public class TurnToTarget extends Command {
   private Drivetrain drivetrain;
   private Vision vision;
 
+  /**
+   * Turn until the Limelight camera is pointing perpendicularly to the target.
+   * 
+   * @param drt Drivetrain subsystem
+   * @param vsn Vision subsystem
+   */
   public TurnToTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;

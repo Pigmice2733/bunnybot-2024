@@ -8,6 +8,13 @@ public class GetToTarget extends Command {
   private Drivetrain drivetrain;
   private Vision vision;
 
+  /**
+   * Move forward until the target is out of view, which is a couple of feet in
+   * front of the target.
+   * 
+   * @param drt Drivetrain subsystem
+   * @param vsn Vision subsystem
+   */
   public GetToTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;
