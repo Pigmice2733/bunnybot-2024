@@ -76,7 +76,7 @@ public final class Constants {
   }
 
   public static class IntakeConfig {
-    public static final double MOTOR_SPEED = 0.5;
+    public static final double INTAKE_MOTOR_SPEED = 0.5;
   }
 
   public static class IndexerConfig {
@@ -102,13 +102,9 @@ public final class Constants {
       // number
       public double ty;
 
-      // percent of FoV that target takes up, getting closer increases number
-      public double ta;
-
-      public Target(double x, double y, double a) {
+      public Target(double x, double y) {
         tx = x;
         ty = y;
-        ta = a;
       }
     }
   }

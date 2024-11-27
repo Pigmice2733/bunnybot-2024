@@ -74,7 +74,7 @@ public class Intake extends SubsystemBase {
 
   public Command runIntake() {
     return new InstantCommand(() -> {
-      setMotorSpeed(IntakeConfig.MOTOR_SPEED);
+      setMotorSpeed(IntakeConfig.INTAKE_MOTOR_SPEED);
     }, this);
   }
 }

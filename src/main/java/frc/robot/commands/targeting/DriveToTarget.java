@@ -15,7 +15,7 @@ public class DriveToTarget extends SequentialCommandGroup {
   public DriveToTarget(Drivetrain drivetrain, Vision vision) {
     addCommands(
         new FindTarget(drivetrain, vision),
-        new TurnToTarget(drivetrain, vision),
+        new TurnToTarget(drivetrain),
         new CenterOnTarget(drivetrain, vision),
         new GetToTarget(drivetrain, vision));
     addRequirements(drivetrain, vision);

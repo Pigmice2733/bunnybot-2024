@@ -78,10 +78,7 @@ public class Drivetrain extends SubsystemBase {
   public void periodic() {
     robotPose = swerve.getPose();
 
-    // update Shuffleboard entries
-    robotX.setDouble(robotPose.getX());
-    robotY.setDouble(robotPose.getY());
-    rotation.setValue(robotPose.getRotation());
+    updateEntries();
 
     updateModulePositions();
     odometry.update(gyro.getRotation3d().toRotation2d(), modulePositions);
@@ -115,8 +112,16 @@ public class Drivetrain extends SubsystemBase {
 
   /**
    * Drives the robot in field-oriented mode by creating a ChassisSpeeds object.
+   * Positive X is away from the alliance wall; positive Y is to the left from the
+   * drivers' perspective.
    */
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
     swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
+  }
+
+  private void updateEntries() {
+    robotX.setDouble(robotPose.getX());
+    robotY.setDouble(robotPose.getY());
+    rotation.setValue(robotPose.getRotation());
   }
 }
