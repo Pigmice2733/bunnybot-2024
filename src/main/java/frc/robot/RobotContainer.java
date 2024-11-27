@@ -104,6 +104,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     driver.a().onTrue(drivetrain.reset());
+    driver.y().onTrue(controls.toggleSlowmode());
 
     operator.a().onTrue(intake.runIntake()).onFalse(intake.stopIntake());
     operator.b().onTrue(intake.retractIntake());
