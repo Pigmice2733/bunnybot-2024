@@ -20,11 +20,12 @@ public class GetToTarget extends Command {
   public GetToTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;
+    addRequirements(drivetrain, vision);
   }
 
   @Override
   public void initialize() {
-    startAngle = drivetrain.robotPose.getRotation().getDegrees();
+    startAngle = drivetrain.getPose().getRotation().getDegrees();
   }
 
   @Override

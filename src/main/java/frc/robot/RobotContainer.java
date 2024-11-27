@@ -7,7 +7,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.AutoConfig.AutoRoutine;
@@ -104,7 +103,11 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    operator.a().onTrue(intake.runIntake()).onFalse(new InstantCommand(intake::stopMotor, intake));
+    driver.a().onTrue(drivetrain.reset());
+
+    operator.a().onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+    operator.b().onTrue(intake.retractIntake());
+    operator.x().onTrue(intake.extendIntake());
     operator.rightBumper().onTrue(new DropTote(grabber));
     operator.leftBumper().onTrue(new PickUpTote(grabber));
   }
@@ -116,5 +119,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     return autoChooser.getSelected();
+  }
+
+  /**
+   * Runs at the beginning of teleop.
+   */
+  public void teleopInit() {
+    intake.extend();
+    indexer.start();
   }
 }

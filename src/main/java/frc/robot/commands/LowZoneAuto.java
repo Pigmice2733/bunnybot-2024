@@ -19,5 +19,7 @@ public class LowZoneAuto extends SequentialCommandGroup {
         indexer.runIndexer(),
         new WaitCommand(1.5),
         indexer.stop());
+
+    addRequirements(drivetrain, vision, indexer, grabber);
   }
 }

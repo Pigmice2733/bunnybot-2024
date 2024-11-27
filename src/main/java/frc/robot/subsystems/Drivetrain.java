@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConfig;
@@ -27,7 +29,7 @@ public class Drivetrain extends SubsystemBase {
   private final NavXSwerve gyro;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDriveOdometry odometry;
-  public Pose2d robotPose;
+  private Pose2d robotPose;
 
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModule[] modules = new SwerveModule[4];
@@ -76,7 +78,7 @@ public class Drivetrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    robotPose = swerve.getPose();
+    robotPose = getPose();
 
     updateEntries();
 
@@ -123,5 +125,9 @@ public class Drivetrain extends SubsystemBase {
     robotX.setDouble(robotPose.getX());
     robotY.setDouble(robotPose.getY());
     rotation.setValue(robotPose.getRotation());
+  }
+
+  public Command reset() {
+    return new InstantCommand(() -> resetPose(new Pose2d()), this);
   }
 }

@@ -19,11 +19,12 @@ public class FindTarget extends Command {
   public FindTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
     vision = vsn;
+    addRequirements(drivetrain, vision);
   }
 
   @Override
   public void initialize() {
-    startAngle = drivetrain.robotPose.getRotation().getDegrees();
+    startAngle = drivetrain.getPose().getRotation().getDegrees();
     if (startAngle > 90) {
       allPosAngles = true;
     } else if (startAngle < -90) {
@@ -37,7 +38,7 @@ public class FindTarget extends Command {
 
   @Override
   public void execute() {
-    curAngle = drivetrain.robotPose.getRotation().getDegrees();
+    curAngle = drivetrain.getPose().getRotation().getDegrees();
     if (allPosAngles && curAngle < 0) {
       curAngle += 360;
     }

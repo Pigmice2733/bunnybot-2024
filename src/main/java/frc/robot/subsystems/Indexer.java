@@ -87,6 +87,10 @@ public class Indexer extends SubsystemBase {
     return new Color(sensor.getRed(), sensor.getGreen(), sensor.getBlue());
   }
 
+  public void start() {
+    setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
+  }
+
   /**
    * Checks if the color sensor's output matches the given color.
    * 
@@ -110,8 +114,6 @@ public class Indexer extends SubsystemBase {
   }
 
   public Command runIndexer() {
-    return new InstantCommand(() -> {
-      setMotorSpeed(IndexerConfig.INDEXER_MOTOR_SPEED);
-    }, this);
+    return new InstantCommand(() -> start(), this);
   }
 }

@@ -17,6 +17,7 @@ public class DriveToPose extends Command {
   public DriveToPose(Drivetrain dtr, Transform2d path) {
     drivetrain = dtr;
     this.path = path;
+    addRequirements(drivetrain);
   }
 
   @Override

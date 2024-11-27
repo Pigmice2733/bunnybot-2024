@@ -11,7 +11,6 @@ import frc.robot.subsystems.Indexer;
 public class IndexBalloon extends Command {
   private final Indexer indexer;
   private Optional<Alliance> alliance;
-  private boolean correctColor;
 
   /**
    * Continuously checks if a balloon is in the indexer and sorts it according to
@@ -28,24 +27,16 @@ public class IndexBalloon extends Command {
 
   @Override
   public void execute() {
-    if (indexer.checkColor(IndexerConfig.NULL_COLOR)) {
-      indexer.stop();
-      correctColor = false;
-    } else {
-      if (alliance.isPresent()) {
-        if ((alliance.get() == Alliance.Red && indexer.checkColor(IndexerConfig.BALLOON_RED_COLOR))
-            || (alliance.get() == Alliance.Blue
-                && indexer.checkColor(IndexerConfig.BALLOON_BLUE_COLOR))) {
-          correctColor = true;
-        } else {
-          correctColor = false;
-        }
-      }
-      if (correctColor) {
-        indexer.runIndexer();
-      } else {
+    if (alliance.isPresent()) {
+      if ((alliance.get() == Alliance.Red && indexer.checkColor(IndexerConfig.BALLOON_BLUE_COLOR))
+          || (alliance.get() == Alliance.Blue
+              && indexer.checkColor(IndexerConfig.BALLOON_RED_COLOR))) {
         indexer.extend();
+      } else {
+        indexer.retract();
       }
+    } else {
+      indexer.retract();
     }
   }
 }

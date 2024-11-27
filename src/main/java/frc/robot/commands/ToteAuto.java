@@ -65,5 +65,7 @@ public class ToteAuto extends SequentialCommandGroup {
         new WaitCommand(1.5),
         indexer.stop(),
         new PickUpTote(grabber));
+
+    addRequirements(drivetrain, grabber, indexer, vision);
   }
 }

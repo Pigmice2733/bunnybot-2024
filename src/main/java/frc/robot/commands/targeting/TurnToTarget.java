@@ -15,16 +15,17 @@ public class TurnToTarget extends Command {
    */
   public TurnToTarget(Drivetrain drt) {
     drivetrain = drt;
+    addRequirements(drivetrain);
   }
 
   @Override
   public void initialize() {
-    targetAngle = Math.round(drivetrain.robotPose.getRotation().getDegrees() / 90) * 90;
+    targetAngle = Math.round(drivetrain.getPose().getRotation().getDegrees() / 90) * 90;
   }
 
   @Override
   public void execute() {
-    curAngle = drivetrain.robotPose.getRotation().getDegrees();
+    curAngle = drivetrain.getPose().getRotation().getDegrees();
     drivetrain.drive(0, 0, (targetAngle - curAngle) / 100); // PID for this?
   }
 
