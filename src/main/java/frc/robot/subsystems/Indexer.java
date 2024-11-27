@@ -50,7 +50,6 @@ public class Indexer extends SubsystemBase {
     redEntry = sensorEntries.add("Red", 0).getEntry();
     greenEntry = sensorEntries.add("Green", 0).getEntry();
     blueEntry = sensorEntries.add("Blue", 0).getEntry();
-    // TODO fix Shuffleboard
   }
 
   @Override

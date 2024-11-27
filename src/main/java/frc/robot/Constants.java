@@ -177,7 +177,11 @@ public final class Constants {
       LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR
     }
 
-    public static final Transform2d TAG_TO_TOTE_TRANSFORM = new Transform2d(1.0, 0.5,
+    public static final Transform2d TAG_TO_TOTE = new Transform2d(1.0, 0.5,
         new Rotation2d(Units.degreesToRadians(90)));
+
+    public static final Transform2d CORRAL_TO_LOW_ZONE = new Transform2d(-10.0, 0.0, new Rotation2d(0));
+    public static final Transform2d TAG_TO_LOW_ZONE = new Transform2d(0.0, -1.0,
+        new Rotation2d(Units.degreesToRadians(-60)));
   }
 }

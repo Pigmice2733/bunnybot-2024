@@ -14,8 +14,8 @@ import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Vision;
 
-public class RunAuto extends SequentialCommandGroup {
-  public RunAuto(Drivetrain drivetrain, Grabber grabber, Indexer indexer, Vision vision, AutoRoutine auto) {
+public class ToteAuto extends SequentialCommandGroup {
+  public ToteAuto(Drivetrain drivetrain, Grabber grabber, Indexer indexer, Vision vision, AutoRoutine auto) {
     switch (auto) {
       case LEFT_CLOSE:
         addCommands(
@@ -59,7 +59,8 @@ public class RunAuto extends SequentialCommandGroup {
 
     addCommands(
         new DriveToTarget(drivetrain,
-            vision /* .getTranslationToBestTarget().plus(AutoConfig.TAG_TO_TOTE_TRANSFORM) */),
+            vision),
+        new DriveToPose(drivetrain, AutoConfig.TAG_TO_TOTE),
         indexer.runIndexer(),
         new WaitCommand(1.5),
         indexer.stop(),
