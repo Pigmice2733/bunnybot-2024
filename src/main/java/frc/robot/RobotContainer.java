@@ -14,8 +14,7 @@ import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
-import frc.robot.commands.ToteAuto;
-import frc.robot.commands.LowZoneAuto;
+import frc.robot.commands.RunAuto;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -69,14 +68,14 @@ public class RobotContainer {
 
   private void buildAutoChooser() {
     autoChooser.setDefaultOption("NONE", Commands.none());
-    autoChooser.addOption("Right Close",
-        new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_CLOSE));
-    autoChooser.addOption("Right Mid", new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_MID));
-    autoChooser.addOption("Right Far", new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_FAR));
-    autoChooser.addOption("Left Close", new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_CLOSE));
-    autoChooser.addOption("Left Mid", new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_MID));
-    autoChooser.addOption("Left Far", new ToteAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_FAR));
-    autoChooser.addOption("Low Zone", new LowZoneAuto(drivetrain, vision, intake, grabber));
+    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_CLOSE));
+    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_MID));
+    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_FAR));
+    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_CLOSE));
+    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_MID));
+    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_FAR));
+    autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_LOW));
+    autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_LOW));
   }
 
   /**

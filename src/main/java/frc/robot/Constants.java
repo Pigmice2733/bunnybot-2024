@@ -173,7 +173,7 @@ public final class Constants {
 
   public static class AutoConfig {
     public static enum AutoRoutine {
-      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR
+      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR, LEFT_LOW, RIGHT_LOW
     }
 
     public static final Transform2d TAG_TO_TOTE = new Transform2d(1.0, 0.5,

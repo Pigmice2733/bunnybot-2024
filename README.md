@@ -15,6 +15,7 @@ Robot to play in the BunnyBots 2024 game Balloonapalooza. All motors are Neos wi
 - Extend and retract the intake system.
 - Continuously separate balloons based on color.
 - Find a tote and move into place to pick it up using vision.
+- Drive from the Corral to the Low Zone.
 
 ## Controls
 
