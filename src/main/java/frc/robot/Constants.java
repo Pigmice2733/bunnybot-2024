@@ -45,34 +45,32 @@ public final class Constants {
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
 
   public static class CANConfig {
-    public static final int INDEXER_MOTOR_PORT = 7;
-    public static final int INDEXER_FORWARD_PORT = 8;
-    public static final int INDEXER_REVERSE_PORT = 9;
+    public static final int INDEXER_MOTOR_PORT = 5;
+    public static final int INDEXER_FORWARD_PORT = 0;
+    public static final int INDEXER_REVERSE_PORT = 0;
 
-    public static final int COLOR_SENSOR_PORT = 10;
+    public static final int GRABBER_MOTOR_PORT = 8;
+    public static final int GRABBER_FORWARD_PORT = 0;
+    public static final int GRABBER_REVERSE_PORT = 0;
 
-    public static final int GRABBER_MOTOR_PORT = 1;
-    public static final int GRABBER_FORWARD_PORT = 2;
-    public static final int GRABBER_REVERSE_PORT = 3;
+    public static final int INTAKE_MOTOR_PORT = 3;
+    public static final int INTAKE_LEFT_FORWARD_PORT = 0;
+    public static final int INTAKE_LEFT_REVERSE_PORT = 0;
+    public static final int INTAKE_RIGHT_FORWARD_PORT = 0;
+    public static final int INTAKE_RIGHT_REVERSE_PORT = 0;
 
-    public static final int INTAKE_MOTOR_PORT = 0;
-    public static final int INTAKE_LEFT_FORWARD_PORT = 5;
-    public static final int INTAKE_LEFT_REVERSE_PORT = 6;
-    public static final int INTAKE_RIGHT_FORWARD_PORT = 6;
-    public static final int INTAKE_RIGHT_REVERSE_PORT = 6;
-
-    public static final int FRONT_LEFT_DRIVE_PORT = 11;
-    public static final int FRONT_LEFT_ANGLE_PORT = 12;
-    public static final int FRONT_RIGHT_DRIVE_PORT = 13;
-    public static final int FRONT_RIGHT_ANGLE_PORT = 14;
-    public static final int BACK_LEFT_DRIVE_PORT = 15;
-    public static final int BACK_LEFT_ANGLE_PORT = 16;
-    public static final int BACK_RIGHT_DRIVE_PORT = 17;
-    public static final int BACK_RIGHT_ANGLE_PORT = 18;
-    public static final int FRONT_LEFT_ENCODER_PORT = 19;
-    public static final int FRONT_RIGHT_ENCODER_PORT = 20;
-    public static final int BACK_LEFT_ENCODER_PORT = 21;
-    public static final int BACK_RIGHT_ENCODER_PORT = 22;
+    public static final int FRONT_LEFT_DRIVE_PORT = 9;
+    public static final int FRONT_LEFT_ANGLE_PORT = 31;
+    public static final int FRONT_RIGHT_DRIVE_PORT = 30;
+    public static final int FRONT_RIGHT_ANGLE_PORT = 17;
+    public static final int BACK_LEFT_DRIVE_PORT = 34;
+    public static final int BACK_LEFT_ANGLE_PORT = 33;
+    public static final int BACK_RIGHT_DRIVE_PORT = 41;
+    public static final int BACK_RIGHT_ANGLE_PORT = 4;
+    public static final int FRONT_LEFT_ENCODER_PORT = 0;
+    public static final int FRONT_RIGHT_ENCODER_PORT = 0;
+    public static final int BACK_LEFT_ENCODER_PORT = 0;
+    public static final int BACK_RIGHT_ENCODER_PORT = 0;
   }
 
   public static class IntakeConfig {
