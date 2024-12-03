@@ -44,18 +44,16 @@ public final class Constants {
 
   public static class CANConfig {
     public static final int INDEXER_MOTOR_PORT = 5;
-    public static final int INDEXER_FORWARD_PORT = 0;
-    public static final int INDEXER_REVERSE_PORT = 0;
+    public static final int INDEXER_FORWARD_PORT = 15;
+    public static final int INDEXER_REVERSE_PORT = 14;
 
     public static final int GRABBER_MOTOR_PORT = 8;
-    public static final int GRABBER_FORWARD_PORT = 0;
-    public static final int GRABBER_REVERSE_PORT = 0;
+    public static final int GRABBER_FORWARD_PORT = 2;
+    public static final int GRABBER_REVERSE_PORT = 3;
 
     public static final int INTAKE_MOTOR_PORT = 3;
-    public static final int INTAKE_LEFT_FORWARD_PORT = 0;
-    public static final int INTAKE_LEFT_REVERSE_PORT = 0;
-    public static final int INTAKE_RIGHT_FORWARD_PORT = 0;
-    public static final int INTAKE_RIGHT_REVERSE_PORT = 0;
+    public static final int INTAKE_FORWARD_PORT = 0;
+    public static final int INTAKE_REVERSE_PORT = 1;
 
     public static final int FRONT_LEFT_DRIVE_PORT = 9;
     public static final int FRONT_LEFT_ANGLE_PORT = 31;
@@ -65,10 +63,10 @@ public final class Constants {
     public static final int BACK_LEFT_ANGLE_PORT = 33;
     public static final int BACK_RIGHT_DRIVE_PORT = 41;
     public static final int BACK_RIGHT_ANGLE_PORT = 4;
-    public static final int FRONT_LEFT_ENCODER_PORT = 0;
-    public static final int FRONT_RIGHT_ENCODER_PORT = 0;
-    public static final int BACK_LEFT_ENCODER_PORT = 0;
-    public static final int BACK_RIGHT_ENCODER_PORT = 0;
+    public static final int FRONT_LEFT_ENCODER_PORT = -1;
+    public static final int FRONT_RIGHT_ENCODER_PORT = -1;
+    public static final int BACK_LEFT_ENCODER_PORT = -1;
+    public static final int BACK_RIGHT_ENCODER_PORT = -1;
   }
 
   public static class IntakeConfig {

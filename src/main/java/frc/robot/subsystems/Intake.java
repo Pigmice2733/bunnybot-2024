@@ -36,10 +36,10 @@ public class Intake extends SubsystemBase {
     indexerMotor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
     indexerMotor.restoreFactoryDefaults();
 
-    leftPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_LEFT_FORWARD_PORT,
-        CANConfig.INTAKE_LEFT_REVERSE_PORT);
-    rightPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_RIGHT_FORWARD_PORT,
-        CANConfig.INTAKE_RIGHT_REVERSE_PORT);
+    leftPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
+        CANConfig.INTAKE_REVERSE_PORT);
+    rightPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
+        CANConfig.INTAKE_REVERSE_PORT);
 
     intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 3).withPosition(0, 0);
     intakeMotorEntry = intakeEntries.add("Intake Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
