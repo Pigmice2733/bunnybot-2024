@@ -9,8 +9,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -174,12 +172,6 @@ public final class Constants {
       LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR, LEFT_LOW, RIGHT_LOW
     }
 
-    public static final Transform2d TAG_TO_TOTE = new Transform2d(1.0, 0.5,
-        new Rotation2d(Units.degreesToRadians(90)));
-
-    public static final Transform2d CORRAL_TO_LOW_ZONE = new Transform2d(-10.0, 0.0, new Rotation2d(0));
-    public static final Transform2d TAG_TO_LOW_ZONE = new Transform2d(0.0, -1.0,
-        new Rotation2d(Units.degreesToRadians(-60)));
     public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
     public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
         DrivetrainConfig.MAX_DRIVE_SPEED,

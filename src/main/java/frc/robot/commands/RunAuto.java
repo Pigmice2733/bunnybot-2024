@@ -6,7 +6,6 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.AutoConfig;
 import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.commands.targeting.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
@@ -69,10 +68,14 @@ public class RunAuto extends SequentialCommandGroup {
         break;
     }
 
+    addCommands(new DriveToTarget(drivetrain, vision));
+
     if (auto != AutoRoutine.LEFT_LOW && auto != AutoRoutine.RIGHT_LOW) {
       addCommands(
-          new DriveToTarget(drivetrain, vision),
-          new DriveToPose(drivetrain, AutoConfig.TAG_TO_TOTE),
+          // TODO create tag-to-tote path
+          new InstantCommand(() -> drivetrain.getSwerve()
+              .resetOdometry(PathPlannerPath.fromPathFile("tagToTote").getPreviewStartingHolonomicPose())),
+          AutoBuilder.followPath(PathPlannerPath.fromPathFile("tagToTote")),
           new PickUpTote(grabber));
     }
 

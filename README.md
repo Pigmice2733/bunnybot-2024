@@ -6,7 +6,7 @@ Robot to play in the BunnyBots 2024 game Balloonapalooza. All motors are Neos wi
 
 - Drivetrain: Swerve (eight motors) with slowmode option.
 - Intake: Two motors and two pistons. Arm pushes out with pistons. One motor spins duct-tape brushes to pull balloons in, while the other spins brushes to push them through the system. The two pistons move together controlling the arm. The arm extends automatically at the beginning of teleop.
-- Indexer: One piston, plus a color sensor. Color sensor sorts out wrong-color balloons, and piston pushes them aside.
+- Indexer: One piston and a color sensor. Color sensor sorts out wrong-color balloons, and piston pushes them aside.
 - Grabber: One motor and one piston. Motor lifts totes off the ground, piston catches overtop.
 
 ## Automation
