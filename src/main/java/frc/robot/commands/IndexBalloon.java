@@ -28,7 +28,8 @@ public class IndexBalloon extends Command {
   @Override
   public void execute() {
     if (alliance.isPresent()) {
-      if ((alliance.get() == Alliance.Red && indexer.checkColor(IndexerConfig.BALLOON_BLUE_COLOR))
+      if ((alliance.get() == Alliance.Red
+          && indexer.checkColor(IndexerConfig.BALLOON_BLUE_COLOR))
           || (alliance.get() == Alliance.Blue
               && indexer.checkColor(IndexerConfig.BALLOON_RED_COLOR))) {
         indexer.extend();

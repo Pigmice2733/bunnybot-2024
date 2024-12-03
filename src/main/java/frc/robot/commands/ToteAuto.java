@@ -11,11 +11,11 @@ import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.commands.targeting.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
-import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Vision;
 
 public class ToteAuto extends SequentialCommandGroup {
-  public ToteAuto(Drivetrain drivetrain, Grabber grabber, Indexer indexer, Vision vision, AutoRoutine auto) {
+  public ToteAuto(Drivetrain drivetrain, Grabber grabber, Intake intake, Vision vision, AutoRoutine auto) {
     switch (auto) {
       case LEFT_CLOSE:
         addCommands(
@@ -61,11 +61,11 @@ public class ToteAuto extends SequentialCommandGroup {
         new DriveToTarget(drivetrain,
             vision),
         new DriveToPose(drivetrain, AutoConfig.TAG_TO_TOTE),
-        indexer.runIndexer(),
+        new PickUpTote(grabber),
+        intake.runIndexer(),
         new WaitCommand(1.5),
-        indexer.stop(),
-        new PickUpTote(grabber));
+        intake.stopIntake());
 
-    addRequirements(drivetrain, grabber, indexer, vision);
+    addRequirements(drivetrain, grabber, intake, vision);
   }
 }

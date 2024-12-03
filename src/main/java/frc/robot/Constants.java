@@ -77,10 +77,10 @@ public final class Constants {
 
   public static class IntakeConfig {
     public static final double INTAKE_MOTOR_SPEED = 0.5;
+    public static final double INDEXER_MOTOR_SPEED = 1;
   }
 
   public static class IndexerConfig {
-    public static final double INDEXER_MOTOR_SPEED = 1;
     public static final Color BALLOON_RED_COLOR = new Color(255, 0, 0);
     public static final Color BALLOON_BLUE_COLOR = new Color(0, 0, 255);
     public static final Color NULL_COLOR = new Color(0, 0, 0);
@@ -160,8 +160,8 @@ public final class Constants {
         SWERVE_GYRO, false, SWERVE_FEEDFORWARD, SWERVE_CHARACTERISTICS);
 
     public static final PIDFConfig SWERVE_HEADING_PID = new PIDFConfig(0.4, 0, 0.01);
-    public static final double MAX_DRIVE_SPEED = 0.7;
-    public static final double MAX_TURN_SPEED = 0.5;
+    public static final double MAX_DRIVE_SPEED = 4.0;
+    public static final double MAX_TURN_SPEED = 180;
     public static final SwerveControllerConfiguration SWERVE_CONTROLLER_CONFIG = new SwerveControllerConfiguration(
         SWERVE_CONFIG, SWERVE_HEADING_PID, 0.3, MAX_DRIVE_SPEED);
 
@@ -169,9 +169,6 @@ public final class Constants {
 
     public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
 
-    public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
-    public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-        MAX_DRIVE_SPEED, Math.sqrt(Math.pow(ROBOT_X_METERS, 2) + Math.pow(ROBOT_Y_METERS, 2)), REPLANNING_CONFIG);
   }
 
   public static class AutoConfig {
@@ -185,5 +182,10 @@ public final class Constants {
     public static final Transform2d CORRAL_TO_LOW_ZONE = new Transform2d(-10.0, 0.0, new Rotation2d(0));
     public static final Transform2d TAG_TO_LOW_ZONE = new Transform2d(0.0, -1.0,
         new Rotation2d(Units.degreesToRadians(-60)));
+    public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
+    public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
+        DrivetrainConfig.MAX_DRIVE_SPEED,
+        Math.sqrt(Math.pow(DrivetrainConfig.ROBOT_X_METERS, 2) + Math.pow(DrivetrainConfig.ROBOT_Y_METERS, 2)),
+        REPLANNING_CONFIG);
   }
 }

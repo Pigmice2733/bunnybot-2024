@@ -22,10 +22,8 @@ public class DriveToPose extends Command {
 
   @Override
   public void initialize() {
-    if (path != null) {
-      currentPose = drivetrain.getPose();
-      endPose = currentPose.transformBy(path);
-    }
+    currentPose = drivetrain.getPose();
+    endPose = currentPose.transformBy(path);
 
     xPID.setSetpoint(endPose.getX());
     yPID.setSetpoint(endPose.getY());
