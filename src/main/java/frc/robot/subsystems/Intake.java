@@ -22,24 +22,28 @@ import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
-  private final CANSparkMax motor;
+  private final CANSparkMax intakeMotor, indexerMotor;
   private final DoubleSolenoid leftPiston, rightPiston;
 
   private ShuffleboardLayout intakeEntries;
-  private GenericEntry motorEntry, pistonEntry;
+  private GenericEntry intakeMotorEntry, indexerMotorEntry, pistonEntry;
 
   /** Creates a new Intake. */
   public Intake() {
-    motor = new CANSparkMax(CANConfig.INTAKE_MOTOR_PORT, MotorType.kBrushless);
-    motor.restoreFactoryDefaults();
+    intakeMotor = new CANSparkMax(CANConfig.INTAKE_MOTOR_PORT, MotorType.kBrushless);
+    intakeMotor.restoreFactoryDefaults();
+
+    indexerMotor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
+    indexerMotor.restoreFactoryDefaults();
 
     leftPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_LEFT_FORWARD_PORT,
         CANConfig.INTAKE_LEFT_REVERSE_PORT);
     rightPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_RIGHT_FORWARD_PORT,
         CANConfig.INTAKE_RIGHT_REVERSE_PORT);
 
-    intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 2).withPosition(0, 0);
-    motorEntry = intakeEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 3).withPosition(0, 0);
+    intakeMotorEntry = intakeEntries.add("Intake Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    indexerMotorEntry = intakeEntries.add("Indexer Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     pistonEntry = intakeEntries.add("Piston Value", "In").getEntry();
   }
 
@@ -49,43 +53,53 @@ public class Intake extends SubsystemBase {
   }
 
   private void updateEntries() {
-    motorEntry.setDouble(motor.get());
+    intakeMotorEntry.setDouble(intakeMotor.get());
+    indexerMotorEntry.setDouble(indexerMotor.get());
   }
 
-  public void setMotorSpeed(double speed) {
-    motor.set(speed);
+  private void setMotorSpeeds(double intake, double indexer) {
+    intakeMotor.set(intake);
+    indexerMotor.set(indexer);
   }
 
-  public void stopMotor() {
-    motor.set(0);
-  }
-
-  public void extend() {
+  private void extend() {
     leftPiston.set(Value.kForward);
     rightPiston.set(Value.kForward);
     pistonEntry.setString("Out");
   }
 
-  public void retract() {
+  private void retract() {
     leftPiston.set(Value.kReverse);
     rightPiston.set(Value.kReverse);
     pistonEntry.setString("In");
   }
 
+  /** Run the intake and indexer motors simultaneously. */
+  public Command runMotors() {
+    return new InstantCommand(() -> setMotorSpeeds(IntakeConfig.INTAKE_MOTOR_SPEED, IntakeConfig.INDEXER_MOTOR_SPEED));
+  }
+
+  /** Run only the intake motor. */
   public Command runIntake() {
-    return new InstantCommand(() -> {
-      setMotorSpeed(IntakeConfig.INTAKE_MOTOR_SPEED);
-    }, this);
+    return new InstantCommand(() -> setMotorSpeeds(IntakeConfig.INTAKE_MOTOR_SPEED, 0));
   }
 
+  /** Run only the indexer motor. */
+  public Command runIndexer() {
+    return new InstantCommand(() -> setMotorSpeeds(0, IntakeConfig.INDEXER_MOTOR_SPEED));
+  }
+
+  /** Stop running both motors. */
   public Command stopIntake() {
-    return new InstantCommand(() -> stopMotor(), this);
+    return new InstantCommand(() -> setMotorSpeeds(0, 0));
   }
 
+  /** Deploy the intake. */
   public Command extendIntake() {
     return new InstantCommand(() -> extend(), this);
   }
 
+  /** Reset the intake to its un-deployed position. */
   public Command retractIntake() {
     return new InstantCommand(() -> retract(), this);
   }

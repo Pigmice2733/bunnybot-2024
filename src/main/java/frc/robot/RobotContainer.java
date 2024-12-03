@@ -14,8 +14,7 @@ import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
-import frc.robot.commands.ToteAuto;
-import frc.robot.commands.LowZoneAuto;
+import frc.robot.commands.RunAuto;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -69,14 +68,14 @@ public class RobotContainer {
 
   private void buildAutoChooser() {
     autoChooser.setDefaultOption("NONE", Commands.none());
-    autoChooser.addOption("Right Close",
-        new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_CLOSE));
-    autoChooser.addOption("Right Mid", new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_MID));
-    autoChooser.addOption("Right Far", new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.RIGHT_FAR));
-    autoChooser.addOption("Left Close", new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_CLOSE));
-    autoChooser.addOption("Left Mid", new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_MID));
-    autoChooser.addOption("Left Far", new ToteAuto(drivetrain, grabber, indexer, vision, AutoRoutine.LEFT_FAR));
-    autoChooser.addOption("Low Zone", new LowZoneAuto(drivetrain, vision, indexer, grabber));
+    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_CLOSE));
+    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_MID));
+    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_FAR));
+    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_CLOSE));
+    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_MID));
+    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_FAR));
+    autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_LOW));
+    autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_LOW));
   }
 
   /**
@@ -85,7 +84,8 @@ public class RobotContainer {
   private void setDefaultCommands() {
     indexer.setDefaultCommand(new IndexBalloon(indexer));
     drivetrain.setDefaultCommand(
-        new DriveJoysticks(drivetrain, controls::getDriveSpeedX, controls::getDriveSpeedY, controls::getTurnSpeed));
+        new DriveJoysticks(drivetrain, () -> -1 * controls.getDriveSpeedY(), controls::getDriveSpeedX,
+            controls::getTurnSpeed));
   }
 
   /**
@@ -106,7 +106,8 @@ public class RobotContainer {
     driver.a().onTrue(drivetrain.reset());
     driver.y().onTrue(controls.toggleSlowmode());
 
-    operator.a().onTrue(intake.runIntake()).onFalse(intake.stopIntake());
+    // TODO confirm with Xinyi
+    operator.a().toggleOnTrue(intake.runMotors());
     operator.b().onTrue(intake.retractIntake());
     operator.x().onTrue(intake.extendIntake());
     operator.rightBumper().onTrue(new DropTote(grabber));
@@ -126,7 +127,6 @@ public class RobotContainer {
    * Runs at the beginning of teleop.
    */
   public void teleopInit() {
-    intake.extend();
-    indexer.start();
+    intake.extendIntake();
   }
 }
