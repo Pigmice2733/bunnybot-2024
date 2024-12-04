@@ -24,6 +24,7 @@ import frc.robot.Constants.IntakeConfig;
 public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor, indexerMotor;
   private final DoubleSolenoid piston;
+  private boolean stopped = true;
 
   private ShuffleboardLayout intakeEntries;
   private GenericEntry intakeMotorEntry, indexerMotorEntry, pistonEntry;
@@ -56,6 +57,7 @@ public class Intake extends SubsystemBase {
   }
 
   private void setMotorSpeeds(double intake, double indexer) {
+    stopped = intake == 0 && indexer == 0;
     intakeMotor.set(intake);
     indexerMotor.set(indexer);
   }
@@ -70,9 +72,17 @@ public class Intake extends SubsystemBase {
     pistonEntry.setString("In");
   }
 
+  public boolean isStopped() {
+    return stopped;
+  }
+
   /** Run the intake and indexer motors simultaneously. */
   public Command runMotors() {
-    return new InstantCommand(() -> setMotorSpeeds(IntakeConfig.INTAKE_MOTOR_SPEED, IntakeConfig.INDEXER_MOTOR_SPEED));
+    return new InstantCommand(() -> setMotorSpeeds(-IntakeConfig.INTAKE_MOTOR_SPEED, IntakeConfig.INDEXER_MOTOR_SPEED));
+  }
+
+  public Command stopMotors() {
+    return new InstantCommand(() -> setMotorSpeeds(0, 0));
   }
 
   /** Run only the intake motor. */

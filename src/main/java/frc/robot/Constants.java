@@ -72,8 +72,8 @@ public final class Constants {
   }
 
   public static class IntakeConfig {
-    public static final double INTAKE_MOTOR_SPEED = 0.5;
-    public static final double INDEXER_MOTOR_SPEED = 0.5;
+    public static final double INTAKE_MOTOR_SPEED = 0.4;
+    public static final double INDEXER_MOTOR_SPEED = 0.4;
   }
 
   public static class IndexerConfig {

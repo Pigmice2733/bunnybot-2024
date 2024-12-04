@@ -66,7 +66,7 @@ public class RobotContainer {
     compressor.enableAnalog(90, 120);
 
     // Configure the trigger bindings
-    // configureBindings();
+    configureBindings();
 
     setDefaultCommands();
     buildAutoChooser();
