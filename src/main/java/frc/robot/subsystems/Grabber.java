@@ -31,7 +31,7 @@ public class Grabber extends SubsystemBase {
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
-
+    // motor.setCurr
     piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT,
         CANConfig.GRABBER_REVERSE_PORT);
     piston.set(Value.kOff);
