@@ -79,7 +79,7 @@ public class RunAuto extends SequentialCommandGroup {
           new PickUpTote(grabber));
     }
 
-    addCommands(intake.runIndexer(), new WaitCommand(1.5), intake.stopIntake());
+    addCommands(intake.toggleForwards(), new WaitCommand(1.5), intake.stopIntake());
 
     addRequirements(drivetrain, grabber, intake, vision);
   }

@@ -41,8 +41,10 @@ public class Intake extends SubsystemBase {
         CANConfig.INTAKE_REVERSE_PORT);
 
     intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 3).withPosition(0, 0);
-    intakeMotorEntry = intakeEntries.add("Intake Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    indexerMotorEntry = intakeEntries.add("Indexer Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    intakeMotorEntry = intakeEntries.add("Intake Motor Speed", Constants.IntakeConfig.INTAKE_MOTOR_SPEED)
+        .withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    indexerMotorEntry = intakeEntries.add("Indexer Motor Speed", Constants.IntakeConfig.INDEXER_MOTOR_SPEED)
+        .withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     pistonEntry = intakeEntries.add("Piston Value", "In").getEntry();
   }
 
@@ -52,14 +54,24 @@ public class Intake extends SubsystemBase {
   }
 
   private void updateEntries() {
-    intakeMotorEntry.setDouble(intakeMotor.get());
-    indexerMotorEntry.setDouble(indexerMotor.get());
+    // intakeMotorEntry.setDouble(intakeMotor.get());
+    // indexerMotorEntry.setDouble(indexerMotor.get());
   }
 
-  private void setMotorSpeeds(double intake, double indexer) {
-    stopped = intake == 0 && indexer == 0;
-    intakeMotor.set(intake);
-    indexerMotor.set(indexer);
+  private void toggleMotors(boolean forwards) {
+    if (!stopped) {
+      stopMotors();
+    } else {
+      intakeMotor.set(-intakeMotorEntry.getDouble(Constants.IntakeConfig.INTAKE_MOTOR_SPEED));
+      indexerMotor.set(indexerMotorEntry.getDouble(Constants.IntakeConfig.INDEXER_MOTOR_SPEED));
+      stopped = false;
+    }
+  }
+
+  private void stopMotors() {
+    intakeMotor.set(0);
+    indexerMotor.set(0);
+    stopped = true;
   }
 
   private void extend() {
@@ -77,27 +89,13 @@ public class Intake extends SubsystemBase {
   }
 
   /** Run the intake and indexer motors simultaneously. */
-  public Command runMotors() {
-    return new InstantCommand(() -> setMotorSpeeds(-IntakeConfig.INTAKE_MOTOR_SPEED, IntakeConfig.INDEXER_MOTOR_SPEED));
-  }
-
-  public Command stopMotors() {
-    return new InstantCommand(() -> setMotorSpeeds(0, 0));
-  }
-
-  /** Run only the intake motor. */
-  public Command runIntake() {
-    return new InstantCommand(() -> setMotorSpeeds(IntakeConfig.INTAKE_MOTOR_SPEED, 0));
-  }
-
-  /** Run only the indexer motor. */
-  public Command runIndexer() {
-    return new InstantCommand(() -> setMotorSpeeds(0, IntakeConfig.INDEXER_MOTOR_SPEED));
+  public Command toggleForwards() {
+    return new InstantCommand(() -> toggleMotors(true));
   }
 
   /** Stop running both motors. */
   public Command stopIntake() {
-    return new InstantCommand(() -> setMotorSpeeds(0, 0));
+    return new InstantCommand(() -> stopMotors());
   }
 
   /** Deploy the intake. */

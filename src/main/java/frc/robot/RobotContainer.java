@@ -125,7 +125,7 @@ public class RobotContainer {
     driver.y().onTrue(controls.toggleSlowmode());
 
     // TODO confirm with Xinyi
-    operator.a().toggleOnTrue(intake.runMotors());
+    operator.a().toggleOnTrue(intake.toggleForwards());
     operator.b().onTrue(intake.retractIntake());
     operator.x().onTrue(intake.extendIntake());
     operator.rightBumper().onTrue(new DropTote(grabber));
