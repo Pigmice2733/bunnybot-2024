@@ -43,7 +43,7 @@ public final class Constants {
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
 
   public static class CANConfig {
-    public static final int INDEXER_MOTOR_PORT = 5;
+    public static final int INDEXER_MOTOR_PORT = 4;
     public static final int INDEXER_FORWARD_PORT = 15;
     public static final int INDEXER_REVERSE_PORT = 14;
 
@@ -71,7 +71,7 @@ public final class Constants {
 
   public static class IntakeConfig {
     public static final double INTAKE_MOTOR_SPEED = 0.5;
-    public static final double INDEXER_MOTOR_SPEED = 1;
+    public static final double INDEXER_MOTOR_SPEED = 0.5;
   }
 
   public static class IndexerConfig {

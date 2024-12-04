@@ -23,7 +23,7 @@ import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor, indexerMotor;
-  private final DoubleSolenoid leftPiston, rightPiston;
+  private final DoubleSolenoid piston;
 
   private ShuffleboardLayout intakeEntries;
   private GenericEntry intakeMotorEntry, indexerMotorEntry, pistonEntry;
@@ -36,9 +36,7 @@ public class Intake extends SubsystemBase {
     indexerMotor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
     indexerMotor.restoreFactoryDefaults();
 
-    leftPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
-        CANConfig.INTAKE_REVERSE_PORT);
-    rightPiston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
+    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INTAKE_FORWARD_PORT,
         CANConfig.INTAKE_REVERSE_PORT);
 
     intakeEntries = Constants.SUBSYSTEM_TAB.getLayout("Intake", BuiltInLayouts.kList).withSize(1, 3).withPosition(0, 0);
@@ -63,14 +61,12 @@ public class Intake extends SubsystemBase {
   }
 
   private void extend() {
-    leftPiston.set(Value.kForward);
-    rightPiston.set(Value.kForward);
+    piston.set(Value.kForward);
     pistonEntry.setString("Out");
   }
 
   private void retract() {
-    leftPiston.set(Value.kReverse);
-    rightPiston.set(Value.kReverse);
+    piston.set(Value.kReverse);
     pistonEntry.setString("In");
   }
 
