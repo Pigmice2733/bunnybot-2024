@@ -39,7 +39,7 @@ public class RobotContainer {
   private Vision vision;
   private Drivetrain drivetrain;
 
-  private Compressor compressor;
+  private Compressor compressor = new Compressor(Constants.CANConfig.PNEUMATICS_HUB_PORT, PneumaticsModuleType.REVPH);
 
   private final CommandXboxController driver;
   private final CommandXboxController operator;
@@ -58,16 +58,15 @@ public class RobotContainer {
     grabber = new Grabber();
     intake = new Intake();
     indexer = new Indexer();
-    vision = new Vision();
-    drivetrain = new Drivetrain();
+    // vision = new Vision();
+    // drivetrain = new Drivetrain();
 
     autoChooser = new SendableChooser<Command>();
 
-    compressor = new Compressor(PneumaticsModuleType.REVPH);
     compressor.enableAnalog(90, 120);
 
     // Configure the trigger bindings
-    configureBindings();
+    // configureBindings();
 
     setDefaultCommands();
     buildAutoChooser();
@@ -75,14 +74,22 @@ public class RobotContainer {
 
   private void buildAutoChooser() {
     autoChooser.setDefaultOption("NONE", Commands.none());
-    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_CLOSE));
-    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_MID));
-    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_FAR));
-    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_CLOSE));
-    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_MID));
-    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_FAR));
-    autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.LEFT_LOW));
-    autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.RIGHT_LOW));
+    // autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.RIGHT_CLOSE));
+    // autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.RIGHT_MID));
+    // autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.RIGHT_FAR));
+    // autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.LEFT_CLOSE));
+    // autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.LEFT_MID));
+    // autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake,
+    // vision, AutoRoutine.LEFT_FAR));
+    // autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber,
+    // intake, vision, AutoRoutine.LEFT_LOW));
+    // autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber,
+    // intake, vision, AutoRoutine.RIGHT_LOW));
   }
 
   /**
@@ -90,9 +97,11 @@ public class RobotContainer {
    */
   private void setDefaultCommands() {
     indexer.setDefaultCommand(new IndexBalloon(indexer));
-    drivetrain.setDefaultCommand(
-        new DriveJoysticks(drivetrain, () -> -1 * controls.getDriveSpeedY(), controls::getDriveSpeedX,
-            controls::getTurnSpeed));
+    if (drivetrain != null) {
+      drivetrain.setDefaultCommand(
+          new DriveJoysticks(drivetrain, () -> -1 * controls.getDriveSpeedY(), controls::getDriveSpeedX,
+              controls::getTurnSpeed));
+    }
   }
 
   /**
@@ -110,7 +119,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    driver.a().onTrue(drivetrain.reset());
+    if (drivetrain != null) {
+      driver.a().onTrue(drivetrain.reset());
+    }
     driver.y().onTrue(controls.toggleSlowmode());
 
     // TODO confirm with Xinyi
