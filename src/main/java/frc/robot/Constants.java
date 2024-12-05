@@ -52,6 +52,7 @@ public final class Constants {
     public static final int GRABBER_MOTOR_PORT = 8;
     public static final int GRABBER_FORWARD_PORT = 2;
     public static final int GRABBER_REVERSE_PORT = 3;
+    public static final int LIMIT_SWITCH_PORT = 0;
 
     public static final int INTAKE_MOTOR_PORT = 3;
     public static final int INTAKE_FORWARD_PORT = 0;
@@ -84,6 +85,9 @@ public final class Constants {
 
   public static class GrabberConfig {
     public static final double GRABBER_MOTOR_SPEED = 0.5;
+    public static final double GEAR_RATIO = 1 / 500;
+    public static final PIDController GRABBER_PID = new PIDController(0.1, 0, 0);
+    public static final double PID_TOLERANCE = 0.1; // degrees
   }
 
   public static class VisionConfig {

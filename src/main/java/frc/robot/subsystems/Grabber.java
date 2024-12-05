@@ -7,7 +7,9 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -19,44 +21,88 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
+import frc.robot.Constants.GrabberConfig;
 
 public class Grabber extends SubsystemBase {
   private final CANSparkMax motor;
   private final DoubleSolenoid piston;
+  private final DigitalInput limitSwitch;
+
+  private double angle, lastEncoderPosition, curEncoderPosition;
+  private PIDController motorController;
 
   private ShuffleboardLayout grabberEntries;
-  private GenericEntry motorEntry, pistonEntry;
+  private GenericEntry motorEntry, pistonEntry, switchEntry, angleEntry;
 
   /** Creates a new Grabber. */
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
-    // motor.setCurr
+
     piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT,
         CANConfig.GRABBER_REVERSE_PORT);
     piston.set(Value.kOff);
 
-    grabberEntries = Constants.SUBSYSTEM_TAB.getLayout("Grabber", BuiltInLayouts.kList).withSize(1, 2).withPosition(2,
-        0);
+    limitSwitch = new DigitalInput(CANConfig.LIMIT_SWITCH_PORT);
+
+    angle = lastEncoderPosition = curEncoderPosition = 0;
+
+    motorController = GrabberConfig.GRABBER_PID;
+    motorController.setTolerance(GrabberConfig.PID_TOLERANCE);
+
+    grabberEntries = Constants.SUBSYSTEM_TAB
+        .getLayout("Grabber", BuiltInLayouts.kList)
+        .withSize(1, 2)
+        .withPosition(2, 0);
     motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
+    angleEntry = grabberEntries.add("Grabber Angle", 0).getEntry();
     pistonEntry = grabberEntries.add("Piston Value", "In").getEntry();
+    switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
   }
 
   @Override
   public void periodic() {
+    if (getSwitch()) {
+      setMotorSpeed(0);
+      angle = 0;
+    } else {
+      curEncoderPosition = motor.getEncoder().getPosition();
+      angle += (curEncoderPosition - lastEncoderPosition) * 360 * GrabberConfig.GEAR_RATIO;
+      lastEncoderPosition = curEncoderPosition;
+    }
+
     updateEntries();
   }
 
   private void updateEntries() {
     motorEntry.setDouble(motor.get());
+    switchEntry.setBoolean(getSwitch());
+    angleEntry.setDouble(angle);
   }
 
   public void setMotorSpeed(double speed) {
-    motor.set(speed);
+    if (getSwitch() && speed > 0) {
+      motor.set(0);
+      angle = 0;
+    } else {
+      motor.set(speed);
+    }
   }
 
   public void stopMotor() {
     motor.set(0);
+  }
+
+  public boolean getSwitch() {
+    return limitSwitch.get();
+  }
+
+  public double getAngle() {
+    return angle;
+  }
+
+  public PIDController getMotorController() {
+    return motorController;
   }
 
   public Command closeFinger() {
