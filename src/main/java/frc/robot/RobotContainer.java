@@ -127,12 +127,12 @@ public class RobotContainer {
     }
     driver.y().onTrue(controls.toggleSlowmode());
 
-    operator.a().toggleOnTrue(intake.toggleForwards());
-    operator.x().toggleOnTrue(intake.toggleBackwards());
+    operator.a().onTrue(intake.toggleForwards());
+    operator.x().onTrue(intake.toggleBackwards());
     operator.b().onTrue(intake.retractIntake());
     operator.y().onTrue(intake.extendIntake());
-    operator.rightBumper().onTrue(grabber.raiseGrabber());
-    operator.leftBumper().onTrue(grabber.lowerGrabber());
+    operator.rightBumper().onTrue(grabber.raiseGrabber()).onFalse(grabber.stop());
+    operator.leftBumper().onTrue(grabber.lowerGrabber()).onFalse(grabber.stop());
     operator.rightTrigger().onTrue(grabber.closeFinger());
     operator.leftTrigger().onTrue(grabber.openFinger());
     operator.povUp().onTrue(new PickUpTote(grabber));
