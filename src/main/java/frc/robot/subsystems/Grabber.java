@@ -91,7 +91,7 @@ public class Grabber extends SubsystemBase {
   }
 
   public boolean getSwitch() {
-    return limitSwitch.get();
+    return !limitSwitch.get();
   }
 
   public double getAngle() {

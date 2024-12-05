@@ -37,9 +37,9 @@ public class Indexer extends SubsystemBase {
 
     sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList).withSize(1, 2)
         .withPosition(3, 0);
-    redEntry = sensorEntries.add("Red", 0).getEntry();
-    greenEntry = sensorEntries.add("Green", 0).getEntry();
-    blueEntry = sensorEntries.add("Blue", 0).getEntry();
+    redEntry = sensorEntries.add("Red", 0).withPosition(0, 0).getEntry();
+    greenEntry = sensorEntries.add("Green", 0).withPosition(0, 1).getEntry();
+    blueEntry = sensorEntries.add("Blue", 0).withPosition(0, 2).getEntry();
   }
 
   @Override
@@ -75,5 +75,9 @@ public class Indexer extends SubsystemBase {
    */
   public boolean checkColor(Color color) {
     return this.getSensorOutputs().equals(color);
+  }
+
+  public boolean isExtended() {
+    return piston.get() == Value.kForward;
   }
 }

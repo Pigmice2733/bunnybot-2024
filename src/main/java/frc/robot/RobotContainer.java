@@ -135,7 +135,7 @@ public class RobotContainer {
     operator.leftBumper().onTrue(grabber.lowerGrabber()).onFalse(grabber.stop());
     operator.rightTrigger().onTrue(grabber.closeFinger());
     operator.leftTrigger().onTrue(grabber.openFinger());
-    operator.povUp().onTrue(new PickUpTote(grabber));
+    operator.povUp().onTrue(new PickUpTote(grabber)); // TODO DOESN'T WORK
     operator.povDown().onTrue(new DropTote(grabber));
   }
 
