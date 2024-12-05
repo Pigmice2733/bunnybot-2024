@@ -38,8 +38,10 @@ public class Grabber extends SubsystemBase {
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
-
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT,
+    piston = new DoubleSolenoid(
+        CANConfig.PNEUMATICS_HUB_PORT,
+        PneumaticsModuleType.REVPH,
+        CANConfig.GRABBER_FORWARD_PORT,
         CANConfig.GRABBER_REVERSE_PORT);
     piston.set(Value.kOff);
 
@@ -81,12 +83,7 @@ public class Grabber extends SubsystemBase {
   }
 
   public void setMotorSpeed(double speed) {
-    if (getSwitch() && speed > 0) {
-      motor.set(0);
-      angle = 0;
-    } else {
-      motor.set(speed);
-    }
+    motor.set(speed);
   }
 
   public void stopMotor() {
@@ -113,5 +110,17 @@ public class Grabber extends SubsystemBase {
   public Command openFinger() {
     pistonEntry.setString("Out");
     return new InstantCommand(() -> piston.set(Value.kReverse), this);
+  }
+
+  public Command raiseGrabber() {
+    return new InstantCommand(() -> setMotorSpeed(GrabberConfig.GRABBER_MOTOR_SPEED));
+  }
+
+  public Command lowerGrabber() {
+    return new InstantCommand(() -> setMotorSpeed(-GrabberConfig.GRABBER_MOTOR_SPEED));
+  }
+
+  public Command stop() {
+    return new InstantCommand(() -> setMotorSpeed(0));
   }
 }

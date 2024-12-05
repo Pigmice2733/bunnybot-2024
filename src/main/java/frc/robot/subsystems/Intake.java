@@ -19,11 +19,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
-import frc.robot.Constants.IntakeConfig;
 
 public class Intake extends SubsystemBase {
   private final CANSparkMax intakeMotor, indexerMotor;
-  private final DoubleSolenoid piston = new DoubleSolenoid(Constants.CANConfig.PNEUMATICS_HUB_PORT,
+  private final DoubleSolenoid piston = new DoubleSolenoid(
+      Constants.CANConfig.PNEUMATICS_HUB_PORT,
       PneumaticsModuleType.REVPH,
       CANConfig.INTAKE_FORWARD_PORT,
       CANConfig.INTAKE_REVERSE_PORT);;
@@ -36,6 +36,7 @@ public class Intake extends SubsystemBase {
   public Intake() {
     intakeMotor = new CANSparkMax(CANConfig.INTAKE_MOTOR_PORT, MotorType.kBrushless);
     intakeMotor.restoreFactoryDefaults();
+    intakeMotor.setInverted(true);
 
     indexerMotor = new CANSparkMax(CANConfig.INDEXER_MOTOR_PORT, MotorType.kBrushless);
     indexerMotor.restoreFactoryDefaults();
@@ -59,12 +60,12 @@ public class Intake extends SubsystemBase {
   }
 
   private void toggleMotors(boolean forwards) {
-    if (!stopped) {
-      stopMotors();
-    } else {
-      intakeMotor.set(-intakeMotorEntry.getDouble(Constants.IntakeConfig.INTAKE_MOTOR_SPEED));
-      indexerMotor.set(indexerMotorEntry.getDouble(Constants.IntakeConfig.INDEXER_MOTOR_SPEED));
+    if (stopped) {
+      intakeMotor.set((forwards ? 1 : -1) * intakeMotorEntry.getDouble(Constants.IntakeConfig.INTAKE_MOTOR_SPEED));
+      indexerMotor.set((forwards ? 1 : -1) * indexerMotorEntry.getDouble(Constants.IntakeConfig.INDEXER_MOTOR_SPEED));
       stopped = false;
+    } else {
+      stopMotors();
     }
   }
 
@@ -88,9 +89,14 @@ public class Intake extends SubsystemBase {
     return stopped;
   }
 
-  /** Run the intake and indexer motors simultaneously. */
+  /** Run the intake and indexer motors forwards. */
   public Command toggleForwards() {
     return new InstantCommand(() -> toggleMotors(true));
+  }
+
+  /** Run the intake and indexer motors backwards. */
+  public Command toggleBackwards() {
+    return new InstantCommand(() -> toggleMotors(false));
   }
 
   /** Stop running both motors. */
