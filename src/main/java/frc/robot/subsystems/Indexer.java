@@ -22,7 +22,10 @@ public class Indexer extends SubsystemBase {
   private ShuffleboardLayout indexerEntries, sensorEntries;
 
   public Indexer() {
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.INDEXER_FORWARD_PORT,
+    piston = new DoubleSolenoid(
+        CANConfig.PNEUMATICS_HUB_PORT,
+        PneumaticsModuleType.REVPH,
+        CANConfig.INDEXER_FORWARD_PORT,
         CANConfig.INDEXER_REVERSE_PORT);
     piston.set(Value.kOff);
 

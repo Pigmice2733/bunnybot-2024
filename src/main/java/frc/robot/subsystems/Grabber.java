@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.CANConfig;
+import frc.robot.Constants.GrabberConfig;
 
 public class Grabber extends SubsystemBase {
   private final CANSparkMax motor;
@@ -31,8 +32,10 @@ public class Grabber extends SubsystemBase {
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
-    // motor.setCurr
-    piston = new DoubleSolenoid(PneumaticsModuleType.REVPH, CANConfig.GRABBER_FORWARD_PORT,
+    piston = new DoubleSolenoid(
+        CANConfig.PNEUMATICS_HUB_PORT,
+        PneumaticsModuleType.REVPH,
+        CANConfig.GRABBER_FORWARD_PORT,
         CANConfig.GRABBER_REVERSE_PORT);
     piston.set(Value.kOff);
 
@@ -51,12 +54,8 @@ public class Grabber extends SubsystemBase {
     motorEntry.setDouble(motor.get());
   }
 
-  public void setMotorSpeed(double speed) {
+  private void setMotorSpeed(double speed) {
     motor.set(speed);
-  }
-
-  public void stopMotor() {
-    motor.set(0);
   }
 
   public Command closeFinger() {
@@ -67,5 +66,17 @@ public class Grabber extends SubsystemBase {
   public Command openFinger() {
     pistonEntry.setString("Out");
     return new InstantCommand(() -> piston.set(Value.kReverse), this);
+  }
+
+  public Command raiseGrabber() {
+    return new InstantCommand(() -> setMotorSpeed(GrabberConfig.GRABBER_MOTOR_SPEED));
+  }
+
+  public Command lowerGrabber() {
+    return new InstantCommand(() -> setMotorSpeed(-GrabberConfig.GRABBER_MOTOR_SPEED));
+  }
+
+  public Command stop() {
+    return new InstantCommand(() -> setMotorSpeed(0));
   }
 }

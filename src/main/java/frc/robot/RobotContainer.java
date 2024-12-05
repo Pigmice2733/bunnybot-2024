@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.CANConfig;
 import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
@@ -39,7 +40,7 @@ public class RobotContainer {
   private Vision vision;
   private Drivetrain drivetrain;
 
-  private Compressor compressor = new Compressor(Constants.CANConfig.PNEUMATICS_HUB_PORT, PneumaticsModuleType.REVPH);
+  private Compressor compressor = new Compressor(CANConfig.PNEUMATICS_HUB_PORT, PneumaticsModuleType.REVPH);
 
   private final CommandXboxController driver;
   private final CommandXboxController operator;
@@ -98,9 +99,11 @@ public class RobotContainer {
   private void setDefaultCommands() {
     indexer.setDefaultCommand(new IndexBalloon(indexer));
     if (drivetrain != null) {
-      drivetrain.setDefaultCommand(
-          new DriveJoysticks(drivetrain, () -> -1 * controls.getDriveSpeedY(), controls::getDriveSpeedX,
-              controls::getTurnSpeed));
+      drivetrain.setDefaultCommand(new DriveJoysticks(
+          drivetrain,
+          () -> -1 * controls.getDriveSpeedY(),
+          controls::getDriveSpeedX,
+          controls::getTurnSpeed));
     }
   }
 
@@ -124,12 +127,16 @@ public class RobotContainer {
     }
     driver.y().onTrue(controls.toggleSlowmode());
 
-    // TODO confirm with Xinyi
     operator.a().toggleOnTrue(intake.toggleForwards());
+    operator.x().toggleOnTrue(intake.toggleBackwards());
     operator.b().onTrue(intake.retractIntake());
-    operator.x().onTrue(intake.extendIntake());
-    operator.rightBumper().onTrue(new DropTote(grabber));
-    operator.leftBumper().onTrue(new PickUpTote(grabber));
+    operator.y().onTrue(intake.extendIntake());
+    operator.rightBumper().onTrue(grabber.raiseGrabber());
+    operator.leftBumper().onTrue(grabber.lowerGrabber());
+    operator.rightTrigger().onTrue(grabber.closeFinger());
+    operator.leftTrigger().onTrue(grabber.openFinger());
+    operator.povUp().onTrue(new PickUpTote(grabber));
+    operator.povDown().onTrue(new DropTote(grabber));
   }
 
   /**

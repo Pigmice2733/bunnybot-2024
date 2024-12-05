@@ -19,5 +19,24 @@ Robot to play in the BunnyBots 2024 game Balloonapalooza. All motors are Neos wi
 
 ## Controls
 
-Driver: left joystick for moving & strafing, right joystick X for turning, A to reset odometry, Y to toggle slowmode
-Operator: A to toggle intake, X to extend intake, B to retract intake, left bumper to pick up tote, right bumper to drop tote
+Driver:
+
+- left joystick for moving & strafing
+- right joystick X for turning
+- A to reset odometry
+- Y to toggle slowmode
+
+Operator:
+
+- intake:
+- - A to run forward (toggle)
+- - X to run reverse (toggle)
+- - Y to deploy
+- - B to retract
+- grabber:
+- - right bumper to raise
+- - left bumper to lower
+- - right trigger to close finger
+- - left trigger to open finger
+- - D-pad up to pick up tote
+- - D-pad down to drop tote

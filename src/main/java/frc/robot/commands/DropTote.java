@@ -1,9 +1,7 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.GrabberConfig;
 import frc.robot.subsystems.Grabber;
 
 public class DropTote extends SequentialCommandGroup {
@@ -14,10 +12,10 @@ public class DropTote extends SequentialCommandGroup {
    */
   public DropTote(Grabber grabber) {
     addCommands(
-        new InstantCommand(() -> grabber.setMotorSpeed(-GrabberConfig.GRABBER_MOTOR_SPEED), grabber),
+        grabber.lowerGrabber(),
         new WaitCommand(2),
         grabber.openFinger(),
-        new InstantCommand(() -> grabber.stopMotor(), grabber));
+        grabber.stop());
     addRequirements(grabber);
   }
 }
