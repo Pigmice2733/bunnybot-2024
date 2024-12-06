@@ -27,6 +27,7 @@ public class Grabber extends SubsystemBase {
   private final CANSparkMax motor;
   private final DoubleSolenoid piston;
   private final DigitalInput limitSwitch;
+  private boolean zeroed = false, zeroing = false;
 
   private double angle, lastEncoderPosition, curEncoderPosition;
   private PIDController motorController;
@@ -62,9 +63,16 @@ public class Grabber extends SubsystemBase {
     switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
   }
 
+  public void setZeroing(boolean zeroing) {
+    this.zeroing = zeroing;
+  }
+
   @Override
   public void periodic() {
-    if (getSwitch()) {
+    if (!zeroed && !zeroing) {
+
+    }
+    if (isLimitSwitchPressed()) {
       setMotorSpeed(0);
       angle = 0;
     } else {
@@ -76,9 +84,15 @@ public class Grabber extends SubsystemBase {
     updateEntries();
   }
 
+  public void zero() {
+    angle = 0;
+    zeroed = true;
+    zeroing = false;
+  }
+
   private void updateEntries() {
     motorEntry.setDouble(motor.get());
-    switchEntry.setBoolean(getSwitch());
+    switchEntry.setBoolean(isLimitSwitchPressed());
     angleEntry.setDouble(angle);
   }
 
@@ -90,7 +104,7 @@ public class Grabber extends SubsystemBase {
     motor.set(0);
   }
 
-  public boolean getSwitch() {
+  public boolean isLimitSwitchPressed() {
     return !limitSwitch.get();
   }
 
