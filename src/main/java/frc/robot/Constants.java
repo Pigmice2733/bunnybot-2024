@@ -88,6 +88,8 @@ public final class Constants {
     public static final double GEAR_RATIO = 1 / 500;
     public static final PIDController GRABBER_PID = new PIDController(0.1, 0, 0);
     public static final double PID_TOLERANCE = 0.1; // degrees
+    public static final double MAX_ANGLE = 108.0; // degrees
+    public static final double GRABBED_TOTE_ANGLE = 45.0; // degrees
   }
 
   public static class VisionConfig {

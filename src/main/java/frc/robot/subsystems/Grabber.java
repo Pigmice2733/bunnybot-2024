@@ -38,6 +38,8 @@ public class Grabber extends SubsystemBase {
   public Grabber() {
     motor = new CANSparkMax(CANConfig.GRABBER_MOTOR_PORT, MotorType.kBrushless);
     motor.restoreFactoryDefaults();
+    motor.getEncoder().setPositionConversionFactor(GrabberConfig.GEAR_RATIO);
+
     piston = new DoubleSolenoid(
         CANConfig.PNEUMATICS_HUB_PORT,
         PneumaticsModuleType.REVPH,
@@ -65,12 +67,12 @@ public class Grabber extends SubsystemBase {
   @Override
   public void periodic() {
     if (getSwitch()) {
-      setMotorSpeed(0);
+      stopMotor();
       angle = 0;
+      motor.getEncoder().setPosition(0);
     } else {
-      curEncoderPosition = motor.getEncoder().getPosition();
-      angle += (curEncoderPosition - lastEncoderPosition) * 360 * GrabberConfig.GEAR_RATIO;
-      lastEncoderPosition = curEncoderPosition;
+      angle = motor.getEncoder().getPosition();
+      System.out.println(angle);
     }
 
     updateEntries();
@@ -83,7 +85,11 @@ public class Grabber extends SubsystemBase {
   }
 
   public void setMotorSpeed(double speed) {
-    motor.set(speed);
+    if ((angle >= GrabberConfig.MAX_ANGLE && speed > 0) || (getSwitch() && speed < 0)) {
+      stopMotor();
+    } else {
+      motor.set(speed);
+    }
   }
 
   public void stopMotor() {

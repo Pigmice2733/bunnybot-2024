@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.GrabberConfig;
 import frc.robot.subsystems.Grabber;
 
 public class PickUpTote extends Command {
@@ -22,7 +23,7 @@ public class PickUpTote extends Command {
 
   @Override
   public void initialize() {
-    motorController.setSetpoint(40);
+    motorController.setSetpoint(GrabberConfig.GRABBED_TOTE_ANGLE);
   }
 
   @Override

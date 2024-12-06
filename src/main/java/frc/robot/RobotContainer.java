@@ -97,7 +97,7 @@ public class RobotContainer {
    * Declares default commands for any subsystems that have them.
    */
   private void setDefaultCommands() {
-    indexer.setDefaultCommand(new IndexBalloon(indexer));
+    // indexer.setDefaultCommand(new IndexBalloon(indexer));
     if (drivetrain != null) {
       drivetrain.setDefaultCommand(new DriveJoysticks(
           drivetrain,
@@ -135,7 +135,7 @@ public class RobotContainer {
     operator.leftBumper().onTrue(grabber.lowerGrabber()).onFalse(grabber.stop());
     operator.rightTrigger().onTrue(grabber.closeFinger());
     operator.leftTrigger().onTrue(grabber.openFinger());
-    operator.povUp().onTrue(new PickUpTote(grabber)); // TODO DOESN'T WORK
+    operator.povUp().onTrue(new PickUpTote(grabber)); // TODO doesn't work yet
     operator.povDown().onTrue(new DropTote(grabber));
   }
 

@@ -68,7 +68,7 @@ public class RunAuto extends SequentialCommandGroup {
         break;
     }
 
-    addCommands(new DriveToTarget(drivetrain, vision));
+    addCommands(new DriveToTarget(drivetrain, vision), new ResetGrabber(grabber));
 
     if (auto != AutoRoutine.LEFT_LOW && auto != AutoRoutine.RIGHT_LOW) {
       addCommands(
