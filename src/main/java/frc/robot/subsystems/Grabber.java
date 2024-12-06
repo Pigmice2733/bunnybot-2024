@@ -29,7 +29,7 @@ public class Grabber extends SubsystemBase {
   private final DigitalInput limitSwitch;
   private boolean zeroed = false, zeroing = false;
 
-  private double angle, lastEncoderPosition, curEncoderPosition;
+  private double angle;
   private PIDController motorController;
 
   private ShuffleboardLayout grabberEntries;
@@ -50,7 +50,7 @@ public class Grabber extends SubsystemBase {
 
     limitSwitch = new DigitalInput(CANConfig.LIMIT_SWITCH_PORT);
 
-    angle = lastEncoderPosition = curEncoderPosition = 0;
+    angle = 0;
 
     motorController = GrabberConfig.GRABBER_PID;
     motorController.setTolerance(GrabberConfig.PID_TOLERANCE);
@@ -77,7 +77,6 @@ public class Grabber extends SubsystemBase {
       motor.getEncoder().setPosition(0);
     } else {
       angle = motor.getEncoder().getPosition();
-      System.out.println(angle);
     }
 
     updateEntries();

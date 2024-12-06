@@ -12,10 +12,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CANConfig;
-import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
-import frc.robot.commands.IndexBalloon;
 import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RunAuto;
 import frc.robot.subsystems.Drivetrain;
@@ -97,7 +95,6 @@ public class RobotContainer {
    * Declares default commands for any subsystems that have them.
    */
   private void setDefaultCommands() {
-    // indexer.setDefaultCommand(new IndexBalloon(indexer));
     if (drivetrain != null) {
       drivetrain.setDefaultCommand(new DriveJoysticks(
           drivetrain,

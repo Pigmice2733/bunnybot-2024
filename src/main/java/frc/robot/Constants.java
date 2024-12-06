@@ -81,6 +81,9 @@ public final class Constants {
     public static final Color BALLOON_RED_COLOR = new Color(400, 500, 300);
     public static final Color BALLOON_BLUE_COLOR = new Color(700, 1700, 1400);
     public static final Color NULL_COLOR = new Color(300, 500, 300);
+    public static final int IRBalloonPresentThreshold = 5;
+    public static final int MinRedThreshold = 300;
+    public static final int MinRedBlueDifferential = 50;
   }
 
   public static class GrabberConfig {
