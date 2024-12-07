@@ -19,7 +19,7 @@ public class ZeroGrabberArm extends Command {
 
   @Override
   public void initialize() {
-    grabber.setZeroing(true);
+    // grabber.setZeroing(true);
     grabber.setMotorSpeed(-GrabberConfig.GRABBER_MOTOR_SPEED);
   }
 
