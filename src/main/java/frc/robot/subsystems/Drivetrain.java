@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -13,6 +15,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,9 +27,10 @@ import frc.robot.Constants.DrivetrainConfig;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
 import swervelib.imu.NavXSwerve;
+import swervelib.parser.SwerveParser;
 
 public class Drivetrain extends SubsystemBase {
-  private final SwerveDrive swerve;
+  private /* final */ SwerveDrive swerve;
   private final NavXSwerve gyro;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDriveOdometry odometry;
@@ -41,12 +45,26 @@ public class Drivetrain extends SubsystemBase {
   private Optional<Alliance> alliance;
 
   public Drivetrain() {
-    swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG, DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
-        DrivetrainConfig.MAX_DRIVE_SPEED);
-    modules[0] = new SwerveModule(0, DrivetrainConfig.FRONT_LEFT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
-    modules[1] = new SwerveModule(1, DrivetrainConfig.FRONT_RIGHT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
-    modules[2] = new SwerveModule(2, DrivetrainConfig.BACK_LEFT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
-    modules[3] = new SwerveModule(3, DrivetrainConfig.BACK_RIGHT_MODULE, DrivetrainConfig.SWERVE_FEEDFORWARD);
+    try {
+      swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
+          .createSwerveDrive(DrivetrainConfig.MAX_DRIVE_SPEED);
+    } catch (IOException e) {
+      e.printStackTrace();
+      swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG, DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
+          DrivetrainConfig.MAX_DRIVE_SPEED);
+    }
+
+    // swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG,
+    // DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
+    // DrivetrainConfig.MAX_DRIVE_SPEED);
+    // modules[0] = new SwerveModule(0, DrivetrainConfig.FRONT_LEFT_MODULE,
+    // DrivetrainConfig.SWERVE_FEEDFORWARD);
+    // modules[1] = new SwerveModule(1, DrivetrainConfig.FRONT_RIGHT_MODULE,
+    // DrivetrainConfig.SWERVE_FEEDFORWARD);
+    // modules[2] = new SwerveModule(2, DrivetrainConfig.BACK_LEFT_MODULE,
+    // DrivetrainConfig.SWERVE_FEEDFORWARD);
+    // modules[3] = new SwerveModule(3, DrivetrainConfig.BACK_RIGHT_MODULE,
+    // DrivetrainConfig.SWERVE_FEEDFORWARD);
 
     kinematics = new SwerveDriveKinematics(
         new Translation2d(DrivetrainConfig.ROBOT_X_METERS, DrivetrainConfig.ROBOT_Y_METERS),

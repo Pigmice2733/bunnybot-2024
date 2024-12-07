@@ -9,11 +9,7 @@ public class PickUpTote extends Command {
   private Grabber grabber;
   private PIDController motorController;
 
-  /**
-   * Pick up a tote.
-   * 
-   * @param grabber
-   */
+  /** Pick up a tote. */
   public PickUpTote(Grabber grabber) {
     this.grabber = grabber;
     motorController = grabber.getMotorController();

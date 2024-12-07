@@ -43,7 +43,7 @@ public final class Constants {
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
 
   public static class CANConfig {
-    public static final int PNEUMATICS_HUB_PORT = 20;
+    public static final int PNEUMATICS_HUB_PORT = 5;
 
     public static final int INDEXER_MOTOR_PORT = 4;
     public static final int INDEXER_FORWARD_PORT = 15;
@@ -65,11 +65,11 @@ public final class Constants {
     public static final int BACK_LEFT_DRIVE_PORT = 34;
     public static final int BACK_LEFT_ANGLE_PORT = 33;
     public static final int BACK_RIGHT_DRIVE_PORT = 41;
-    public static final int BACK_RIGHT_ANGLE_PORT = 4;
-    public static final int FRONT_LEFT_ENCODER_PORT = -1;
-    public static final int FRONT_RIGHT_ENCODER_PORT = -1;
-    public static final int BACK_LEFT_ENCODER_PORT = -1;
-    public static final int BACK_RIGHT_ENCODER_PORT = -1;
+    public static final int BACK_RIGHT_ANGLE_PORT = 40;
+    public static final int FRONT_LEFT_ENCODER_PORT = 20;
+    public static final int FRONT_RIGHT_ENCODER_PORT = 22;
+    public static final int BACK_LEFT_ENCODER_PORT = 24;
+    public static final int BACK_RIGHT_ENCODER_PORT = 26;
   }
 
   public static class IntakeConfig {

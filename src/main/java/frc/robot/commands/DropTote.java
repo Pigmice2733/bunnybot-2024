@@ -8,11 +8,7 @@ public class DropTote extends Command {
   private Grabber grabber;
   private PIDController motorController;
 
-  /**
-   * Drops a tote that the grabber is holding.
-   * 
-   * @param grabber
-   */
+  /** Drops a tote that the grabber is holding. */
   public DropTote(Grabber grabber) {
     this.grabber = grabber;
     motorController = grabber.getMotorController();
@@ -23,6 +19,7 @@ public class DropTote extends Command {
   @Override
   public void initialize() {
     motorController.setSetpoint(0);
+    grabber.openFinger();
   }
 
   @Override
@@ -33,7 +30,6 @@ public class DropTote extends Command {
   @Override
   public void end(boolean interrupted) {
     grabber.stopMotor();
-    grabber.openFinger();
   }
 
   @Override

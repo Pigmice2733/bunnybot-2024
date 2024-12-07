@@ -66,7 +66,7 @@ public class RobotContainer {
     intake = new Intake();
     indexer = new Indexer(getAlliance());
     // vision = new Vision();
-    // drivetrain = new Drivetrain();
+    drivetrain = new Drivetrain();
 
     autoChooser = new SendableChooser<Command>();
 
@@ -140,7 +140,7 @@ public class RobotContainer {
     operator.leftBumper().onTrue(grabber.lowerGrabber()).onFalse(grabber.stop());
     operator.rightTrigger().onTrue(grabber.closeFinger());
     operator.leftTrigger().onTrue(grabber.openFinger());
-    operator.povUp().onTrue(new PickUpTote(grabber)); // TODO doesn't work yet
+    operator.povUp().onTrue(new PickUpTote(grabber));
     operator.povDown().onTrue(new DropTote(grabber));
   }
 
