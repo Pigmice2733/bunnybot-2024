@@ -8,21 +8,9 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
-import swervelib.encoders.CANCoderSwerve;
-import swervelib.imu.NavXSwerve;
-import swervelib.motors.SparkMaxSwerve;
-import swervelib.parser.PIDFConfig;
-import swervelib.parser.SwerveControllerConfiguration;
-import swervelib.parser.SwerveDriveConfiguration;
-import swervelib.parser.SwerveModuleConfiguration;
-import swervelib.parser.SwerveModulePhysicalCharacteristics;
-import swervelib.parser.json.MotorConfigDouble;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -67,9 +55,9 @@ public final class Constants {
     public static final int BACK_RIGHT_DRIVE_PORT = 41;
     public static final int BACK_RIGHT_ANGLE_PORT = 40;
     public static final int FRONT_LEFT_ENCODER_PORT = 20;
-    public static final int FRONT_RIGHT_ENCODER_PORT = 22;
-    public static final int BACK_LEFT_ENCODER_PORT = 24;
-    public static final int BACK_RIGHT_ENCODER_PORT = 26;
+    public static final int FRONT_RIGHT_ENCODER_PORT = 26;
+    public static final int BACK_LEFT_ENCODER_PORT = 22;
+    public static final int BACK_RIGHT_ENCODER_PORT = 24;
   }
 
   public static class IntakeConfig {
@@ -115,65 +103,10 @@ public final class Constants {
   }
 
   public static class DrivetrainConfig {
-    public static final double ROBOT_X_METERS = Units.inchesToMeters(30);
-    public static final double ROBOT_Y_METERS = Units.inchesToMeters(30);
-    public static final PIDFConfig SWERVE_DRIVE_PID = new PIDFConfig(0.01, 0, 0);
-    public static final PIDFConfig SWERVE_ANGLE_PID = new PIDFConfig(0.01, 0, 0);
-    public static final MotorConfigDouble SWERVE_CONVERSION_FACTORS = new MotorConfigDouble(16.8, 0.0472867872);
-    // TODO: check wheel mu
-    public static final SwerveModulePhysicalCharacteristics SWERVE_CHARACTERISTICS = new SwerveModulePhysicalCharacteristics(
-        SWERVE_CONVERSION_FACTORS, 1.19, 12, 25, 20, 0.25, 0.25);
-    public static final SimpleMotorFeedforward SWERVE_FEEDFORWARD = new SimpleMotorFeedforward(0, 0.2, 0);
-    public static final NavXSwerve SWERVE_GYRO = new NavXSwerve(Port.kMXP);
-
-    // TODO: test settings once robot is built
-    public static final SwerveModuleConfiguration FRONT_LEFT_MODULE = new SwerveModuleConfiguration(
-        new SparkMaxSwerve(CANConfig.FRONT_LEFT_DRIVE_PORT, true),
-        new SparkMaxSwerve(CANConfig.FRONT_LEFT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
-        new CANCoderSwerve(CANConfig.FRONT_LEFT_ENCODER_PORT),
-        143.52, ROBOT_X_METERS / 2, ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
-        false, true, true,
-        "front left", false);
-
-    public static final SwerveModuleConfiguration FRONT_RIGHT_MODULE = new SwerveModuleConfiguration(
-        new SparkMaxSwerve(CANConfig.FRONT_RIGHT_DRIVE_PORT, true),
-        new SparkMaxSwerve(CANConfig.FRONT_RIGHT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
-        new CANCoderSwerve(CANConfig.FRONT_RIGHT_ENCODER_PORT),
-        107.7, -ROBOT_X_METERS / 2, ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
-        false, true, true,
-        "front right", false);
-
-    public static final SwerveModuleConfiguration BACK_LEFT_MODULE = new SwerveModuleConfiguration(
-        new SparkMaxSwerve(CANConfig.BACK_LEFT_DRIVE_PORT, true),
-        new SparkMaxSwerve(CANConfig.BACK_LEFT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
-        new CANCoderSwerve(CANConfig.BACK_LEFT_ENCODER_PORT),
-        42.4, ROBOT_X_METERS / 2, -ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
-        false, true, true,
-        "back left", false);
-
-    public static final SwerveModuleConfiguration BACK_RIGHT_MODULE = new SwerveModuleConfiguration(
-        new SparkMaxSwerve(CANConfig.BACK_RIGHT_DRIVE_PORT, true),
-        new SparkMaxSwerve(CANConfig.BACK_RIGHT_ANGLE_PORT, false), SWERVE_CONVERSION_FACTORS,
-        new CANCoderSwerve(CANConfig.BACK_LEFT_ENCODER_PORT),
-        165.93, -ROBOT_X_METERS / 2, -ROBOT_Y_METERS / 2, SWERVE_ANGLE_PID, SWERVE_DRIVE_PID, SWERVE_CHARACTERISTICS,
-        false, true, true,
-        "front left", false);
-
-    public static final SwerveModuleConfiguration[] MODULE_ARRAY = { FRONT_LEFT_MODULE, FRONT_RIGHT_MODULE,
-        BACK_LEFT_MODULE, BACK_RIGHT_MODULE };
-    public static final SwerveDriveConfiguration SWERVE_CONFIG = new SwerveDriveConfiguration(MODULE_ARRAY,
-        SWERVE_GYRO, false, SWERVE_FEEDFORWARD, SWERVE_CHARACTERISTICS);
-
-    public static final PIDFConfig SWERVE_HEADING_PID = new PIDFConfig(0.4, 0, 0.01);
-    public static final double MAX_DRIVE_SPEED = 4.0;
-    public static final double MAX_TURN_SPEED = 180;
-    public static final SwerveControllerConfiguration SWERVE_CONTROLLER_CONFIG = new SwerveControllerConfiguration(
-        SWERVE_CONFIG, SWERVE_HEADING_PID, 0.3, MAX_DRIVE_SPEED);
-
+    public static final double MAX_DRIVE_SPEED = 1.7;
+    public static final double MAX_TURN_SPEED = 1.7;
     public static final double SLOWMODE_MULTIPLIER = 0.3;
-
     public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
-
   }
 
   public static class AutoConfig {
@@ -183,8 +116,6 @@ public final class Constants {
 
     public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
     public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-        DrivetrainConfig.MAX_DRIVE_SPEED,
-        Math.sqrt(Math.pow(DrivetrainConfig.ROBOT_X_METERS, 2) + Math.pow(DrivetrainConfig.ROBOT_Y_METERS, 2)),
-        REPLANNING_CONFIG);
+        DrivetrainConfig.MAX_DRIVE_SPEED, Math.hypot(14.38, 11.88), REPLANNING_CONFIG);
   }
 }

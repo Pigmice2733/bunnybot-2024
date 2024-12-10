@@ -66,7 +66,7 @@ public class RobotContainer {
     intake = new Intake();
     indexer = new Indexer(getAlliance());
     // vision = new Vision();
-    drivetrain = new Drivetrain();
+    drivetrain = new Drivetrain(getAlliance());
 
     autoChooser = new SendableChooser<Command>();
 
@@ -106,8 +106,8 @@ public class RobotContainer {
     if (drivetrain != null) {
       drivetrain.setDefaultCommand(new DriveJoysticks(
           drivetrain,
-          () -> -1 * controls.getDriveSpeedY(),
           controls::getDriveSpeedX,
+          controls::getDriveSpeedY,
           controls::getTurnSpeed));
     }
   }

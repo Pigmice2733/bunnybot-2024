@@ -7,15 +7,16 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.Constants.DrivetrainConfig;
 
 public class Controls {
-  CommandXboxController driver, operator;
+  private CommandXboxController driver; // operator;
   private boolean slowmode;
+  private double slow_multiplier = DrivetrainConfig.SLOWMODE_MULTIPLIER;
 
   // If a value from a joystick is less than this, it will return 0.
   private double threshold = Constants.AXIS_THRESHOLD;
 
   public Controls(CommandXboxController driver, CommandXboxController operator) {
     this.driver = driver;
-    this.operator = operator;
+    // this.operator = operator;
     slowmode = false;
   }
 
@@ -25,7 +26,7 @@ public class Controls {
   public double getDriveSpeedY() {
     double joystickY = MathUtil.applyDeadband(driver.getLeftY(), threshold);
 
-    return joystickY * (slowmode ? DrivetrainConfig.SLOWMODE_MULTIPLIER : 1);
+    return joystickY * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
   }
 
   /**
@@ -34,7 +35,7 @@ public class Controls {
   public double getDriveSpeedX() {
     double joystickX = MathUtil.applyDeadband(driver.getLeftX(), threshold);
 
-    return joystickX * (slowmode ? DrivetrainConfig.SLOWMODE_MULTIPLIER : 1);
+    return joystickX * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
   }
 
   /**
@@ -43,7 +44,7 @@ public class Controls {
   public double getTurnSpeed() {
     double joystickTurn = MathUtil.applyDeadband(driver.getRightX(), threshold);
 
-    return joystickTurn * (slowmode ? DrivetrainConfig.SLOWMODE_MULTIPLIER : 1);
+    return joystickTurn * DrivetrainConfig.MAX_TURN_SPEED * (slowmode ? slow_multiplier : 1);
   }
 
   public boolean getSlowmode() {
