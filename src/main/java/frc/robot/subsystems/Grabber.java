@@ -28,7 +28,6 @@ public class Grabber extends SubsystemBase {
   private final DoubleSolenoid piston;
   private final DigitalInput limitSwitch;
   private boolean zeroed = false;
-  private boolean pistonExtended = false;
 
   private double angle;
   private PIDController motorController;
@@ -62,7 +61,7 @@ public class Grabber extends SubsystemBase {
         .withPosition(2, 0);
     motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     angleEntry = grabberEntries.add("Grabber Angle", 0).getEntry();
-    pistonEntry = grabberEntries.add("Piston Extended", "In").getEntry();
+    pistonEntry = grabberEntries.add("Piston Extended", false).getEntry();
     switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
     zeroedEntry = grabberEntries.add("Zeroed", false).getEntry();
   }
@@ -75,12 +74,9 @@ public class Grabber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (getSwitch() && motor.get() < 0) {
-      stopMotor();
-    } else {
-      angle = motor.getEncoder().getPosition() * 360;
-    }
-
+    angle = motor.getEncoder().getPosition() * 360;
+    double speed = applySoftwareStops(motor.get());
+    motor.set(speed);
     updateEntries();
   }
 
@@ -92,7 +88,6 @@ public class Grabber extends SubsystemBase {
     angle = 0;
     motor.getEncoder().setPosition(0);
     zeroed = true;
-    // zeroing = false;
   }
 
   private void updateEntries() {
@@ -100,40 +95,31 @@ public class Grabber extends SubsystemBase {
     switchEntry.setBoolean(getSwitch());
     angleEntry.setDouble(angle);
     zeroedEntry.setBoolean(zeroed);
-    pistonEntry.setBoolean(pistonExtended);
+    pistonEntry.setBoolean(isPistonExtended());
   }
 
-  // returns true of okay to set speed to the requested speed
-  public boolean applySoftwareStops(double speed) {
-    if (!zeroed && speed > 0) {
-      // if we aren't zeroed we only rotate downwards
-      return false;
-    }
+  public double applySoftwareStops(double speed) {
     if (speed > 0) {
       if (!zeroed) {
-        return false;
+        return 0;
       }
-      if (pistonExtended && angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT) {
-        return false;
+      if (angle >= GrabberConfig.MAX_ANGLE_PISTON_IN) {
+        return 0;
       }
-      if (!pistonExtended && angle >= GrabberConfig.MAX_ANGLE_PISTON_IN) {
-        return false;
+      if (angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT && isPistonExtended()) {
+        return 0;
       }
     } else if (speed < 0) {
       if (getSwitch()) {
-        // if the switch is pressed and we're trying to rotate down, don't
-        return false;
+        return 0;
       }
     }
-    return true;
+    return speed;
   }
 
   public void setMotorSpeed(double speed) {
-    if (!applySoftwareStops(speed)) {
-      stopMotor();
-    } else {
-      motor.set(speed);
-    }
+    speed = applySoftwareStops(speed);
+    motor.set(speed);
   }
 
   public void stopMotor() {
@@ -150,6 +136,10 @@ public class Grabber extends SubsystemBase {
 
   public PIDController getMotorController() {
     return motorController;
+  }
+
+  private boolean isPistonExtended() {
+    return piston.get() == Value.kForward;
   }
 
   public Command closeFinger() {

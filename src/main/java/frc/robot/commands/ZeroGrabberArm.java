@@ -26,7 +26,9 @@ public class ZeroGrabberArm extends Command {
   @Override
   public void end(boolean interrupted) {
     grabber.stopMotor();
-    grabber.zero();
+    if (grabber.getSwitch()) {
+      grabber.zero();
+    }
   }
 
   @Override

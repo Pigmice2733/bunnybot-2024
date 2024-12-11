@@ -81,7 +81,7 @@ public final class Constants {
     public static final double PID_TOLERANCE = 0.1; // degrees
     public static final double MAX_ANGLE_PISTON_IN = 77.0; // degrees
     public static final double MAX_ANGLE_PISTON_OUT = 36.0; // degrees
-    public static final double GRABBED_TOTE_ANGLE = 45.0; // degrees
+    public static final double GRABBED_TOTE_ANGLE = 5.0; // degrees
   }
 
   public static class VisionConfig {
