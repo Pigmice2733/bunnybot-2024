@@ -20,6 +20,7 @@ import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RunAuto;
+import frc.robot.commands.ZeroGrabberArm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -142,6 +143,7 @@ public class RobotContainer {
     operator.leftTrigger().onTrue(grabber.openFinger());
     operator.povUp().onTrue(new PickUpTote(grabber));
     operator.povDown().onTrue(new DropTote(grabber));
+    operator.povRight().onTrue(new ZeroGrabberArm(grabber));
   }
 
   private Alliance getAlliance() {

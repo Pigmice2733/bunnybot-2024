@@ -27,13 +27,13 @@ public class Grabber extends SubsystemBase {
   private final CANSparkMax motor;
   private final DoubleSolenoid piston;
   private final DigitalInput limitSwitch;
-  // private boolean zeroed = false, zeroing = false;
+  private boolean zeroed = false;
 
   private double angle;
   private PIDController motorController;
 
   private ShuffleboardLayout grabberEntries;
-  private GenericEntry motorEntry, pistonEntry, switchEntry, angleEntry;
+  private GenericEntry motorEntry, pistonEntry, switchEntry, angleEntry, zeroedEntry;
 
   /** Creates a new Grabber. */
   public Grabber() {
@@ -63,6 +63,7 @@ public class Grabber extends SubsystemBase {
     angleEntry = grabberEntries.add("Grabber Angle", 0).getEntry();
     pistonEntry = grabberEntries.add("Piston Value", "In").getEntry();
     switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
+    zeroedEntry = grabberEntries.add("Zeroed", false).getEntry();
   }
 
   /*
@@ -73,10 +74,8 @@ public class Grabber extends SubsystemBase {
 
   @Override
   public void periodic() {
-    if (getSwitch()) {
+    if (getSwitch() && motor.get() < 0) {
       stopMotor();
-      angle = 0;
-      motor.getEncoder().setPosition(0);
     } else {
       angle = motor.getEncoder().getPosition();
     }
@@ -84,9 +83,14 @@ public class Grabber extends SubsystemBase {
     updateEntries();
   }
 
+  public void unzero() {
+    zeroed = false;
+  }
+
   public void zero() {
     angle = 0;
-    // zeroed = true;
+    motor.getEncoder().setPosition(0);
+    zeroed = true;
     // zeroing = false;
   }
 
@@ -94,10 +98,29 @@ public class Grabber extends SubsystemBase {
     motorEntry.setDouble(motor.get());
     switchEntry.setBoolean(getSwitch());
     angleEntry.setDouble(angle);
+    zeroedEntry.setBoolean(zeroed);
+  }
+
+  // returns true of okay to set speed to the requested speed
+  public boolean applySoftwareStops(double speed) {
+    if (!zeroed && speed > 0) {
+      // if we aren't zeroed we only rotate downwards
+      return false;
+    }
+    if (getSwitch() && speed < 0) {
+      // if the switch is pressed and we're trying to rotate down, don't
+      return false;
+    }
+    if (angle >= GrabberConfig.MAX_ANGLE && speed > 0) {
+      // if the angle is our software angle at the top and we are trying to rotate up,
+      // don't
+      return false;
+    }
+    return true;
   }
 
   public void setMotorSpeed(double speed) {
-    if ((angle >= GrabberConfig.MAX_ANGLE && speed > 0) || (getSwitch() && speed < 0)) {
+    if (!applySoftwareStops(speed)) {
       stopMotor();
     } else {
       motor.set(speed);
