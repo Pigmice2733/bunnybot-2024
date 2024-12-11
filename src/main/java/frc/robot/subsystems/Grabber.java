@@ -28,6 +28,7 @@ public class Grabber extends SubsystemBase {
   private final DoubleSolenoid piston;
   private final DigitalInput limitSwitch;
   private boolean zeroed = false;
+  private boolean pistonExtended = false;
 
   private double angle;
   private PIDController motorController;
@@ -57,11 +58,11 @@ public class Grabber extends SubsystemBase {
 
     grabberEntries = Constants.SUBSYSTEM_TAB
         .getLayout("Grabber", BuiltInLayouts.kList)
-        .withSize(1, 2)
+        .withSize(1, 5)
         .withPosition(2, 0);
     motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
     angleEntry = grabberEntries.add("Grabber Angle", 0).getEntry();
-    pistonEntry = grabberEntries.add("Piston Value", "In").getEntry();
+    pistonEntry = grabberEntries.add("Piston Extended", "In").getEntry();
     switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
     zeroedEntry = grabberEntries.add("Zeroed", false).getEntry();
   }
@@ -77,7 +78,7 @@ public class Grabber extends SubsystemBase {
     if (getSwitch() && motor.get() < 0) {
       stopMotor();
     } else {
-      angle = motor.getEncoder().getPosition();
+      angle = motor.getEncoder().getPosition() * 360;
     }
 
     updateEntries();
@@ -99,6 +100,7 @@ public class Grabber extends SubsystemBase {
     switchEntry.setBoolean(getSwitch());
     angleEntry.setDouble(angle);
     zeroedEntry.setBoolean(zeroed);
+    pistonEntry.setBoolean(pistonExtended);
   }
 
   // returns true of okay to set speed to the requested speed
@@ -107,14 +109,21 @@ public class Grabber extends SubsystemBase {
       // if we aren't zeroed we only rotate downwards
       return false;
     }
-    if (getSwitch() && speed < 0) {
-      // if the switch is pressed and we're trying to rotate down, don't
-      return false;
-    }
-    if (angle >= GrabberConfig.MAX_ANGLE && speed > 0) {
-      // if the angle is our software angle at the top and we are trying to rotate up,
-      // don't
-      return false;
+    if (speed > 0) {
+      if (!zeroed) {
+        return false;
+      }
+      if (pistonExtended && angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT) {
+        return false;
+      }
+      if (!pistonExtended && angle >= GrabberConfig.MAX_ANGLE_PISTON_IN) {
+        return false;
+      }
+    } else if (speed < 0) {
+      if (getSwitch()) {
+        // if the switch is pressed and we're trying to rotate down, don't
+        return false;
+      }
     }
     return true;
   }
@@ -144,12 +153,10 @@ public class Grabber extends SubsystemBase {
   }
 
   public Command closeFinger() {
-    pistonEntry.setString("In");
     return new InstantCommand(() -> piston.set(Value.kForward), this);
   }
 
   public Command openFinger() {
-    pistonEntry.setString("Out");
     return new InstantCommand(() -> piston.set(Value.kReverse), this);
   }
 
