@@ -5,6 +5,8 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.hal.CANData;
+import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -12,6 +14,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -36,8 +39,8 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModule[] modules = new SwerveModule[4];
 
-  private ShuffleboardLayout drivetrainEntries;
-  private GenericEntry robotX, robotY, rotation;
+  private ShuffleboardLayout drivetrainEntries, swerveEntries;
+  private GenericEntry robotX, robotY, rotation, frontLeftEntry, frontRightEntry, backLeftEntry, backRightEntry;
 
   public Drivetrain(Alliance alliance) {
     try {
@@ -80,6 +83,13 @@ public class Drivetrain extends SubsystemBase {
     robotY = drivetrainEntries.add("Robot Y", 0).withPosition(1, 0).getEntry();
     rotation = drivetrainEntries.add("Robot Angle", 0).withPosition(2, 0).getEntry();
 
+    swerveEntries = Constants.DRIVETRAIN_TAB.getLayout("Swerve Modules", BuiltInLayouts.kList).withSize(1, 4)
+        .withPosition(1, 0);
+    frontLeftEntry = swerveEntries.add("Front Left Encoder Output", 0).withPosition(0, 0).getEntry();
+    frontRightEntry = swerveEntries.add("Front Right Encoder Output", 0).withPosition(1, 0).getEntry();
+    backLeftEntry = swerveEntries.add("Back Left Encoder Output", 0).withPosition(2, 0).getEntry();
+    backRightEntry = swerveEntries.add("Back Right Encoder Output", 0).withPosition(3, 0).getEntry();
+
     AutoBuilder.configureHolonomic(
         swerve::getPose,
         (pose) -> swerve.resetOdometry(pose),
@@ -115,6 +125,11 @@ public class Drivetrain extends SubsystemBase {
     robotX.setDouble(robotPose.getX());
     robotY.setDouble(robotPose.getY());
     rotation.setValue(robotPose.getRotation().getDegrees());
+
+    frontLeftEntry.setDouble(modules[0].getAbsolutePosition());
+    frontRightEntry.setDouble(modules[1].getAbsolutePosition());
+    backLeftEntry.setDouble(modules[2].getAbsolutePosition());
+    backRightEntry.setDouble(modules[3].getAbsolutePosition());
   }
 
   /** Returns the drivetrain as a SwerveDrive object. */
