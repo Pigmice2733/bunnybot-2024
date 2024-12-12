@@ -27,7 +27,7 @@ public class Grabber extends SubsystemBase {
   private final CANSparkMax motor;
   private final DoubleSolenoid piston;
   private final DigitalInput limitSwitch;
-  private boolean zeroed = false;
+  private boolean zeroed;
 
   private double angle;
   private PIDController motorController;
@@ -50,10 +50,11 @@ public class Grabber extends SubsystemBase {
 
     limitSwitch = new DigitalInput(CANConfig.LIMIT_SWITCH_PORT);
 
-    angle = 0;
-
     motorController = GrabberConfig.GRABBER_PID;
     motorController.setTolerance(GrabberConfig.PID_TOLERANCE);
+
+    zeroed = false;
+    angle = GrabberConfig.INITIAL_GRABBER_ANGLE;
 
     grabberEntries = Constants.SUBSYSTEM_TAB
         .getLayout("Grabber", BuiltInLayouts.kList)
@@ -67,29 +68,12 @@ public class Grabber extends SubsystemBase {
     zeroedEntry = grabberEntries.add("Zeroed", false).withPosition(0, 4).getEntry();
   }
 
-  /*
-   * public void setZeroing(boolean zeroing) {
-   * this.zeroing = zeroing;
-   * }
-   */
-
   @Override
   public void periodic() {
     angle = motor.getEncoder().getPosition() * 360;
-    double speed = applySoftwareStops(motor.get());
-    motor.set(speed);
+    motor.set(applySoftwareStops(motor.get()));
 
     updateEntries();
-  }
-
-  public void unzero() {
-    zeroed = false;
-  }
-
-  public void zero() {
-    angle = 0;
-    motor.getEncoder().setPosition(0);
-    zeroed = true;
   }
 
   private void updateEntries() {
@@ -100,23 +84,10 @@ public class Grabber extends SubsystemBase {
     pistonEntry.setBoolean(isPistonExtended());
   }
 
-  public double applySoftwareStops(double speed) {
-    if (speed > 0) {
-      if (!zeroed) {
-        return 0;
-      }
-      if (angle >= GrabberConfig.MAX_ANGLE_PISTON_IN) {
-        return 0;
-      }
-      if (angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT && isPistonExtended()) {
-        return 0;
-      }
-    } else if (speed < 0) {
-      if (getSwitch()) {
-        return 0;
-      }
-    }
-    return speed;
+  private double applySoftwareStops(double speed) {
+    boolean cannotMove = (speed > 0 && (!zeroed || angle >= GrabberConfig.MAX_ANGLE_PISTON_IN
+        || (angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT && isPistonExtended()))) || (speed < 0 && getSwitch());
+    return cannotMove ? 0 : speed;
   }
 
   public void setMotorSpeed(double speed) {
@@ -124,8 +95,12 @@ public class Grabber extends SubsystemBase {
     motor.set(speed);
   }
 
-  public void stopMotor() {
-    motor.set(0);
+  public void close() {
+    piston.set(Value.kForward);
+  }
+
+  public void open() {
+    piston.set(Value.kReverse);
   }
 
   public boolean getSwitch() {
@@ -144,12 +119,22 @@ public class Grabber extends SubsystemBase {
     return piston.get() == Value.kForward;
   }
 
+  public void zero() {
+    angle = 0;
+    motor.getEncoder().setPosition(0);
+    zeroed = true;
+  }
+
+  public void unzero() {
+    zeroed = false;
+  }
+
   public Command closeFinger() {
-    return new InstantCommand(() -> piston.set(Value.kForward), this);
+    return new InstantCommand(this::close);
   }
 
   public Command openFinger() {
-    return new InstantCommand(() -> piston.set(Value.kReverse), this);
+    return new InstantCommand(this::open);
   }
 
   public Command raiseGrabber() {

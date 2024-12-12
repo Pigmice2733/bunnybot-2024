@@ -61,8 +61,8 @@ public final class Constants {
   }
 
   public static class IntakeConfig {
-    public static final double INTAKE_MOTOR_SPEED = 0.4;
-    public static final double INDEXER_MOTOR_SPEED = 0.4;
+    public static final double INTAKE_MOTOR_SPEED = 0.2;
+    public static final double INDEXER_MOTOR_SPEED = 0.3;
   }
 
   public static class IndexerConfig {
@@ -78,10 +78,11 @@ public final class Constants {
     public static final double GRABBER_MOTOR_SPEED = 0.5;
     public static final double GEAR_RATIO = 1.0 / 500;
     public static final PIDController GRABBER_PID = new PIDController(0.1, 0, 0);
-    public static final double PID_TOLERANCE = 0.1; // degrees
+    public static final double PID_TOLERANCE = 1.0; // degrees
     public static final double MAX_ANGLE_PISTON_IN = 77.0; // degrees
     public static final double MAX_ANGLE_PISTON_OUT = 36.0; // degrees
     public static final double GRABBED_TOTE_ANGLE = 27.0; // degrees
+    public static final double INITIAL_GRABBER_ANGLE = 100.0; // degrees
   }
 
   public static class VisionConfig {

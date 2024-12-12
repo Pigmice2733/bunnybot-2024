@@ -29,8 +29,11 @@ public class PickUpTote extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    grabber.stopMotor();
-    grabber.closeFinger();
+    System.out.println("PickUpTote command ending");
+    grabber.setMotorSpeed(0);
+    System.out.println("Motor stopped");
+    grabber.close();
+    System.out.println("Piston closed");
   }
 
   @Override

@@ -65,9 +65,9 @@ public class RobotContainer {
 
     grabber = new Grabber();
     intake = new Intake();
-    indexer = new Indexer();
+    indexer = new Indexer(this::getAlliance);
     // vision = new Vision();
-    drivetrain = new Drivetrain(getAlliance());
+    drivetrain = new Drivetrain(this::getAlliance);
 
     autoChooser = new SendableChooser<Command>();
 

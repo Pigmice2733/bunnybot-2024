@@ -15,6 +15,8 @@ import frc.robot.subsystems.Vision;
 
 public class RunAuto extends SequentialCommandGroup {
   public RunAuto(Drivetrain drivetrain, Grabber grabber, Intake intake, Vision vision, AutoRoutine auto) {
+    addCommands(new ZeroGrabberArm(grabber));
+
     switch (auto) {
       case LEFT_CLOSE:
         addCommands(

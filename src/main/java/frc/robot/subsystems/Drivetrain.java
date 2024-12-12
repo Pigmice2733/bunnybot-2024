@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -39,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
   private ShuffleboardLayout drivetrainEntries, swerveEntries;
   private GenericEntry robotX, robotY, rotation, frontLeftEntry, frontRightEntry, backLeftEntry, backRightEntry;
 
-  public Drivetrain(Alliance alliance) {
+  public Drivetrain(Supplier<Alliance> alliance) {
     try {
       swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
           .createSwerveDrive(DrivetrainConfig.MAX_DRIVE_SPEED);
@@ -74,7 +75,7 @@ public class Drivetrain extends SubsystemBase {
         swerve::getRobotVelocity,
         (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond),
         AutoConfig.PATH_FOLLOWER_CONFIG,
-        () -> alliance == Alliance.Red,
+        () -> alliance.get() == Alliance.Red,
         this);
   }
 

@@ -1,10 +1,11 @@
 package frc.robot.subsystems;
 
+import java.util.function.Supplier;
+
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -30,13 +31,15 @@ public class Indexer extends SubsystemBase {
   private GenericEntry redEntry, greenEntry, blueEntry, irEntry;
   private GenericEntry pistonEntry, balloonPresent, balloonIsRed, allianceEntry;
   private ShuffleboardLayout indexerEntries, sensorEntries;
-  private Alliance alliance;
-  private boolean extended = false;
+  private Supplier<Alliance> alliance;
+  private boolean extended;
 
-  public Indexer() {
-    piston.set(Value.kOff);
-
+  public Indexer(Supplier<Alliance> alliance) {
     sensor = new ColorSensorV3(Port.kOnboard);
+    this.alliance = alliance;
+
+    piston.set(Value.kOff);
+    extended = false;
 
     indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList).withSize(1, 3).withPosition(1,
         0);
@@ -54,13 +57,15 @@ public class Indexer extends SubsystemBase {
 
   @Override
   public void periodic() {
-    updateEntries();
+    Alliance currentAlliance = alliance.get();
 
-    alliance = DriverStation.getAlliance().get();
-    if (alliance == null)
+    updateEntries(currentAlliance);
+
+    if (currentAlliance == null)
       return;
     if (!extended && isBalloonPresent()
-        && ((alliance == Alliance.Red && !isBalloonRed()) || (alliance == Alliance.Blue && isBalloonRed()))) {
+        && ((currentAlliance == Alliance.Red && !isBalloonRed())
+            || (currentAlliance == Alliance.Blue && isBalloonRed()))) {
       rejectBalloonCommand().schedule();
     }
   }
@@ -76,7 +81,7 @@ public class Indexer extends SubsystemBase {
         && (red - blue) > Constants.IndexerConfig.MinRedBlueDifferential);
   }
 
-  private void updateEntries() {
+  private void updateEntries(Alliance alliance) {
     irEntry.setDouble(sensor.getIR());
     redEntry.setDouble(sensor.getRed());
     greenEntry.setDouble(sensor.getGreen());
@@ -96,7 +101,7 @@ public class Indexer extends SubsystemBase {
   }
 
   public Alliance getAlliance() {
-    return alliance;
+    return alliance.get();
   }
 
   public void extend() {

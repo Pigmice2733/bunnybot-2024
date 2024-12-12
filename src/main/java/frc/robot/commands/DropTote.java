@@ -19,7 +19,7 @@ public class DropTote extends Command {
   @Override
   public void initialize() {
     motorController.setSetpoint(0);
-    grabber.openFinger();
+    grabber.open();
   }
 
   @Override
@@ -29,7 +29,7 @@ public class DropTote extends Command {
 
   @Override
   public void end(boolean interrupted) {
-    grabber.stopMotor();
+    grabber.setMotorSpeed(0);
   }
 
   @Override
