@@ -59,11 +59,12 @@ public class Grabber extends SubsystemBase {
         .getLayout("Grabber", BuiltInLayouts.kList)
         .withSize(1, 5)
         .withPosition(2, 0);
-    motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).getEntry();
-    angleEntry = grabberEntries.add("Grabber Angle", 0).getEntry();
-    pistonEntry = grabberEntries.add("Piston Extended", false).getEntry();
-    switchEntry = grabberEntries.add("Limit Switch", false).getEntry();
-    zeroedEntry = grabberEntries.add("Zeroed", false).getEntry();
+    motorEntry = grabberEntries.add("Motor Speed", 0).withWidget(BuiltInWidgets.kNumberSlider).withPosition(0, 0)
+        .getEntry();
+    angleEntry = grabberEntries.add("Grabber Angle", 0).withPosition(0, 1).getEntry();
+    pistonEntry = grabberEntries.add("Piston Extended", false).withPosition(0, 2).getEntry();
+    switchEntry = grabberEntries.add("Limit Switch", false).withPosition(0, 3).getEntry();
+    zeroedEntry = grabberEntries.add("Zeroed", false).withPosition(0, 4).getEntry();
   }
 
   /*
@@ -77,6 +78,7 @@ public class Grabber extends SubsystemBase {
     angle = motor.getEncoder().getPosition() * 360;
     double speed = applySoftwareStops(motor.get());
     motor.set(speed);
+
     updateEntries();
   }
 

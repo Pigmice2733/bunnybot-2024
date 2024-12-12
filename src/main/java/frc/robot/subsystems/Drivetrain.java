@@ -5,8 +5,6 @@ import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.hal.CANData;
-import edu.wpi.first.hal.simulation.RoboRioDataJNI;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -14,7 +12,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
-import edu.wpi.first.wpilibj.CAN;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -44,30 +41,11 @@ public class Drivetrain extends SubsystemBase {
 
   public Drivetrain(Alliance alliance) {
     try {
-      System.out.println("Constructing swerve from files...");
       swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
           .createSwerveDrive(DrivetrainConfig.MAX_DRIVE_SPEED);
-      System.out.println("Swerve constructed from files.");
     } catch (IOException e) {
-      System.out.println("Construction of swerve from files failed. Constructing swerve from Constants...");
       e.printStackTrace();
-      // swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG,
-      // DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
-      // DrivetrainConfig.MAX_DRIVE_SPEED);
-      System.out.println("Swerve constructed from Constants.");
     }
-
-    // swerve = new SwerveDrive(DrivetrainConfig.SWERVE_CONFIG,
-    // DrivetrainConfig.SWERVE_CONTROLLER_CONFIG,
-    // DrivetrainConfig.MAX_DRIVE_SPEED);
-    // modules[0] = new SwerveModule(0, DrivetrainConfig.FRONT_LEFT_MODULE,
-    // DrivetrainConfig.SWERVE_FEEDFORWARD);
-    // modules[1] = new SwerveModule(1, DrivetrainConfig.FRONT_RIGHT_MODULE,
-    // DrivetrainConfig.SWERVE_FEEDFORWARD);
-    // modules[2] = new SwerveModule(2, DrivetrainConfig.BACK_LEFT_MODULE,
-    // DrivetrainConfig.SWERVE_FEEDFORWARD);
-    // modules[3] = new SwerveModule(3, DrivetrainConfig.BACK_RIGHT_MODULE,
-    // DrivetrainConfig.SWERVE_FEEDFORWARD);
 
     modules = swerve.getModules();
     modulePositions = swerve.getModulePositions();

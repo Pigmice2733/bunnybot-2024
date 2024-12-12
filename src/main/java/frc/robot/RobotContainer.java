@@ -65,7 +65,7 @@ public class RobotContainer {
 
     grabber = new Grabber();
     intake = new Intake();
-    indexer = new Indexer(getAlliance());
+    indexer = new Indexer();
     // vision = new Vision();
     drivetrain = new Drivetrain(getAlliance());
 
@@ -104,13 +104,12 @@ public class RobotContainer {
    * Declares default commands for any subsystems that have them.
    */
   private void setDefaultCommands() {
-    if (drivetrain != null) {
-      drivetrain.setDefaultCommand(new DriveJoysticks(
-          drivetrain,
-          controls::getDriveSpeedX,
-          controls::getDriveSpeedY,
-          controls::getTurnSpeed));
-    }
+    drivetrain.setDefaultCommand(new DriveJoysticks(
+        drivetrain,
+        controls::getDriveSpeedX,
+        controls::getDriveSpeedY,
+        controls::getTurnSpeed));
+
   }
 
   /**
@@ -128,9 +127,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    if (drivetrain != null) {
-      driver.a().onTrue(drivetrain.reset());
-    }
+    driver.a().onTrue(drivetrain.reset());
     driver.y().onTrue(controls.toggleSlowmode());
 
     operator.a().onTrue(intake.toggleForwards());

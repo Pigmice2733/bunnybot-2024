@@ -4,6 +4,7 @@ import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -26,37 +27,40 @@ public class Indexer extends SubsystemBase {
       CANConfig.INDEXER_REVERSE_PORT);;
   private ColorSensorV3 sensor;
 
-  private GenericEntry redEntry, greenEntry, blueEntry, irEntry, pistonEntry, balloonPresent, balloonIsRed;
+  private GenericEntry redEntry, greenEntry, blueEntry, irEntry;
+  private GenericEntry pistonEntry, balloonPresent, balloonIsRed, allianceEntry;
   private ShuffleboardLayout indexerEntries, sensorEntries;
   private Alliance alliance;
   private boolean extended = false;
 
-  public Indexer(Alliance alliance) {
+  public Indexer() {
     piston.set(Value.kOff);
 
     sensor = new ColorSensorV3(Port.kOnboard);
-    this.alliance = alliance;
 
-    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList).withSize(1, 1).withPosition(1,
+    indexerEntries = Constants.SUBSYSTEM_TAB.getLayout("Indexer", BuiltInLayouts.kList).withSize(1, 3).withPosition(1,
         0);
-    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList).withSize(1, 2)
+    sensorEntries = Constants.SUBSYSTEM_TAB.getLayout("Color Sensor", BuiltInLayouts.kList).withSize(1, 3)
         .withPosition(3, 0);
-    balloonPresent = indexerEntries.add("Balloon Present", false).getEntry();
-    balloonIsRed = indexerEntries.add("Balloon Red", false).getEntry();
+    balloonPresent = indexerEntries.add("Balloon Present", false).withPosition(0, 1).getEntry();
+    balloonIsRed = indexerEntries.add("Balloon Red", false).withPosition(0, 2).getEntry();
     redEntry = sensorEntries.add("Red", 0).withPosition(0, 0).getEntry();
     greenEntry = sensorEntries.add("Green", 0).withPosition(0, 1).getEntry();
     blueEntry = sensorEntries.add("Blue", 0).withPosition(0, 2).getEntry();
     irEntry = sensorEntries.add("IR", 0).withPosition(0, 3).getEntry();
-    pistonEntry = indexerEntries.add("Piston Value", "In").getEntry();
-
+    pistonEntry = indexerEntries.add("Piston Value", "In").withPosition(0, 0).getEntry();
+    allianceEntry = indexerEntries.add("Alliance", "Red").withPosition(0, 3).getEntry();
   }
 
   @Override
   public void periodic() {
     updateEntries();
+
+    alliance = DriverStation.getAlliance().get();
     if (alliance == null)
       return;
-    if (!extended && isBalloonPresent() && alliance == Alliance.Red) {
+    if (!extended && isBalloonPresent()
+        && ((alliance == Alliance.Red && !isBalloonRed()) || (alliance == Alliance.Blue && isBalloonRed()))) {
       rejectBalloonCommand().schedule();
     }
   }
@@ -79,6 +83,12 @@ public class Indexer extends SubsystemBase {
     blueEntry.setDouble(sensor.getBlue());
     balloonPresent.setBoolean(isBalloonPresent());
     balloonIsRed.setBoolean(isBalloonRed());
+
+    if (alliance != null) {
+      allianceEntry.setString(alliance == Alliance.Blue ? "Blue" : "Red");
+    } else {
+      allianceEntry.setString("None");
+    }
   }
 
   public boolean isExtended() {
