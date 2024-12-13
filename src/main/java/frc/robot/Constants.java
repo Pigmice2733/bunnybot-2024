@@ -62,7 +62,7 @@ public final class Constants {
 
   public static class IntakeConfig {
     public static final double INTAKE_MOTOR_SPEED = 0.2;
-    public static final double INDEXER_MOTOR_SPEED = 0.3;
+    public static final double INDEXER_MOTOR_SPEED = 0.25;
   }
 
   public static class IndexerConfig {
@@ -106,7 +106,7 @@ public final class Constants {
 
   public static class DrivetrainConfig {
     public static final double MAX_DRIVE_SPEED = 1.7;
-    public static final double MAX_TURN_SPEED = 1.7;
+    public static final double MAX_TURN_SPEED = 1.0;
     public static final double SLOWMODE_MULTIPLIER = 0.3;
     public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
   }
