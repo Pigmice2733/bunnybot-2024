@@ -28,7 +28,7 @@ import swervelib.imu.SwerveIMU;
 import swervelib.parser.SwerveParser;
 
 public class Drivetrain extends SubsystemBase {
-  private /* final */ SwerveDrive swerve;
+  private SwerveDrive swerve;
   private final SwerveIMU gyro;
   private final SwerveDriveKinematics kinematics;
   private final SwerveDriveOdometry odometry;

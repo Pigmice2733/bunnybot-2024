@@ -84,9 +84,20 @@ public class Grabber extends SubsystemBase {
     pistonEntry.setBoolean(isPistonExtended());
   }
 
+  /**
+   * Prevents the grabber arm from moving if: it tries to move upward and it isn't
+   * zeroed yet; it tries to move upward and it has hit the upper bound of its
+   * range of motion; or it tried to move downward and the limit-switch is
+   * activated.
+   * 
+   * @param speed Preferred speed if the grabber is allowed to move.
+   * @return Input speed if allowed, or zero if not allowed.
+   */
   private double applySoftwareStops(double speed) {
-    boolean cannotMove = (speed > 0 && (!zeroed || angle >= GrabberConfig.MAX_ANGLE_PISTON_IN
-        || (angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT && isPistonExtended()))) || (speed < 0 && getSwitch());
+    boolean cannotMove = (speed > 0 && (!zeroed
+        || angle >= GrabberConfig.MAX_ANGLE_PISTON_IN
+        || (angle >= GrabberConfig.MAX_ANGLE_PISTON_OUT && isPistonExtended())))
+        || (speed < 0 && getSwitch());
     return cannotMove ? 0 : speed;
   }
 
