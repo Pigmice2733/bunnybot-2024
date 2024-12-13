@@ -1,11 +1,10 @@
 package frc.robot.subsystems;
 
-import java.util.function.Supplier;
-
 import com.revrobotics.ColorSensorV3;
 
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -31,12 +30,11 @@ public class Indexer extends SubsystemBase {
   private GenericEntry redEntry, greenEntry, blueEntry, irEntry;
   private GenericEntry pistonEntry, balloonPresent, balloonIsRed, allianceEntry;
   private ShuffleboardLayout indexerEntries, sensorEntries;
-  private Supplier<Alliance> alliance;
+  private Alliance alliance;
   private boolean extended;
 
-  public Indexer(Supplier<Alliance> alliance) {
+  public Indexer() {
     sensor = new ColorSensorV3(Port.kOnboard);
-    this.alliance = alliance;
 
     piston.set(Value.kOff);
     extended = false;
@@ -52,22 +50,21 @@ public class Indexer extends SubsystemBase {
     blueEntry = sensorEntries.add("Blue", 0).withPosition(0, 2).getEntry();
     irEntry = sensorEntries.add("IR", 0).withPosition(0, 3).getEntry();
     pistonEntry = indexerEntries.add("Piston Value", "In").withPosition(0, 0).getEntry();
-    allianceEntry = indexerEntries.add("Alliance", "Red").withPosition(0, 3).getEntry();
+    allianceEntry = indexerEntries.add("Alliance", "None").withPosition(0, 3).getEntry();
   }
 
   @Override
   public void periodic() {
-    Alliance currentAlliance = alliance.get();
-
-    updateEntries(currentAlliance);
-
-    if (currentAlliance == null)
+    alliance = DriverStation.getAlliance().get();
+    if (alliance == null)
       return;
     if (!extended && isBalloonPresent()
-        && ((currentAlliance == Alliance.Red && !isBalloonRed())
-            || (currentAlliance == Alliance.Blue && isBalloonRed()))) {
+        && ((alliance == Alliance.Red && !isBalloonRed())
+            || (alliance == Alliance.Blue && isBalloonRed()))) {
       rejectBalloonCommand().schedule();
     }
+
+    updateEntries();
   }
 
   private boolean isBalloonPresent() {
@@ -81,7 +78,7 @@ public class Indexer extends SubsystemBase {
         && (red - blue) > Constants.IndexerConfig.MinRedBlueDifferential);
   }
 
-  private void updateEntries(Alliance alliance) {
+  private void updateEntries() {
     irEntry.setDouble(sensor.getIR());
     redEntry.setDouble(sensor.getRed());
     greenEntry.setDouble(sensor.getGreen());
@@ -98,10 +95,6 @@ public class Indexer extends SubsystemBase {
 
   public boolean isExtended() {
     return extended;
-  }
-
-  public Alliance getAlliance() {
-    return alliance.get();
   }
 
   public void extend() {

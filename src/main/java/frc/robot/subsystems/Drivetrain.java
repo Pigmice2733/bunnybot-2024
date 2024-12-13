@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.function.Supplier;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
@@ -13,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
@@ -40,7 +40,7 @@ public class Drivetrain extends SubsystemBase {
   private ShuffleboardLayout drivetrainEntries, swerveEntries;
   private GenericEntry robotX, robotY, rotation, frontLeftEntry, frontRightEntry, backLeftEntry, backRightEntry;
 
-  public Drivetrain(Supplier<Alliance> alliance) {
+  public Drivetrain() {
     try {
       swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
           .createSwerveDrive(DrivetrainConfig.MAX_DRIVE_SPEED);
@@ -68,15 +68,6 @@ public class Drivetrain extends SubsystemBase {
     frontRightEntry = swerveEntries.add("Front Right Encoder Output", 0).withPosition(1, 0).getEntry();
     backLeftEntry = swerveEntries.add("Back Left Encoder Output", 0).withPosition(2, 0).getEntry();
     backRightEntry = swerveEntries.add("Back Right Encoder Output", 0).withPosition(3, 0).getEntry();
-
-    AutoBuilder.configureHolonomic(
-        swerve::getPose,
-        (pose) -> swerve.resetOdometry(pose),
-        swerve::getRobotVelocity,
-        (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond),
-        AutoConfig.PATH_FOLLOWER_CONFIG,
-        () -> alliance.get() == Alliance.Red,
-        this);
   }
 
   @Override
@@ -87,6 +78,20 @@ public class Drivetrain extends SubsystemBase {
 
     updateModulePositions();
     odometry.update(gyro.getRotation3d().toRotation2d(), modulePositions);
+  }
+
+  /**
+   * Sets the configuration of the drivetrain for the AutoBuilder.
+   */
+  public void setUpAuto() {
+    AutoBuilder.configureHolonomic(
+        swerve::getPose,
+        (pose) -> swerve.resetOdometry(pose),
+        swerve::getRobotVelocity,
+        (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond),
+        AutoConfig.PATH_FOLLOWER_CONFIG,
+        () -> (DriverStation.getAlliance().get() == Alliance.Red),
+        this);
   }
 
   /**
