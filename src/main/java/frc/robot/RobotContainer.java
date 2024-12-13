@@ -16,11 +16,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CANConfig;
+import frc.robot.Constants.AutoConfig.AutoRoutine;
 import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RunAuto;
 import frc.robot.commands.ZeroGrabberArm;
+import frc.robot.commands.targeting.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Grabber;
 import frc.robot.subsystems.Indexer;
@@ -66,7 +68,7 @@ public class RobotContainer {
     grabber = new Grabber();
     intake = new Intake();
     indexer = new Indexer(this::getAlliance);
-    // vision = new Vision();
+    vision = new Vision();
     drivetrain = new Drivetrain(this::getAlliance);
 
     autoChooser = new SendableChooser<Command>();
@@ -82,22 +84,25 @@ public class RobotContainer {
 
   private void buildAutoChooser() {
     autoChooser.setDefaultOption("NONE", Commands.none());
-    // autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.RIGHT_CLOSE));
-    // autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.RIGHT_MID));
-    // autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.RIGHT_FAR));
-    // autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.LEFT_CLOSE));
-    // autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.LEFT_MID));
-    // autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake,
-    // vision, AutoRoutine.LEFT_FAR));
-    // autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber,
-    // intake, vision, AutoRoutine.LEFT_LOW));
-    // autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber,
-    // intake, vision, AutoRoutine.RIGHT_LOW));
+    autoChooser.addOption("Right Close", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.RIGHT_CLOSE));
+    autoChooser.addOption("Right Mid", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.RIGHT_MID));
+    autoChooser.addOption("Right Far", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.RIGHT_FAR));
+    autoChooser.addOption("Left Close", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.LEFT_CLOSE));
+    autoChooser.addOption("Left Mid", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.LEFT_MID));
+    autoChooser.addOption("Left Far", new RunAuto(drivetrain, grabber, intake,
+        vision, AutoRoutine.LEFT_FAR));
+    autoChooser.addOption("Left Low Zone", new RunAuto(drivetrain, grabber,
+        intake, vision, AutoRoutine.LEFT_LOW));
+    autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber,
+        intake, vision, AutoRoutine.RIGHT_LOW));
+    autoChooser.addOption("straight X", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.FORWARD));
+
+    Constants.DRIVETRAIN_TAB.add("Auto Command", autoChooser).withPosition(2, 0);
   }
 
   /**
@@ -129,6 +134,7 @@ public class RobotContainer {
   private void configureBindings() {
     driver.a().onTrue(drivetrain.reset());
     driver.y().onTrue(controls.toggleSlowmode());
+    driver.x().onTrue(new DriveToTarget(drivetrain, vision));
 
     operator.a().onTrue(intake.toggleForwards());
     operator.x().onTrue(intake.toggleBackwards());

@@ -12,11 +12,12 @@ public class DriveToPose extends Command {
   private Pose2d endPose, currentPose;
   private Transform2d path;
 
-  private PIDController xPID, yPID, rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+  private PIDController xPID, yPID, rPID;
 
   public DriveToPose(Drivetrain dtr, Transform2d path) {
     drivetrain = dtr;
     this.path = path;
+    xPID = yPID = rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
     addRequirements(drivetrain);
   }
 

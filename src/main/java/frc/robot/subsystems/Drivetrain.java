@@ -118,7 +118,7 @@ public class Drivetrain extends SubsystemBase {
 
   /** Returns the current pose of the robot. */
   public Pose2d getPose() {
-    return new Pose2d(-swerve.getPose().getX(), swerve.getPose().getY(), swerve.getPose().getRotation());
+    return new Pose2d(swerve.getPose().getX(), swerve.getPose().getY(), swerve.getPose().getRotation());
   }
 
   /** Sets the robot odometry to the given pose. */
@@ -132,6 +132,7 @@ public class Drivetrain extends SubsystemBase {
    * from the alliance wall.
    */
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
+    System.out.println("Driving. x speed " + driveSpeedX + ", y speed " + driveSpeedY + ", turn speed " + turnSpeed);
     swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedY, driveSpeedX, turnSpeed));
   }
 

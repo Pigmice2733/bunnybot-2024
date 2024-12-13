@@ -15,8 +15,6 @@ import frc.robot.subsystems.Vision;
 
 public class RunAuto extends SequentialCommandGroup {
   public RunAuto(Drivetrain drivetrain, Grabber grabber, Intake intake, Vision vision, AutoRoutine auto) {
-    addCommands(new ZeroGrabberArm(grabber));
-
     switch (auto) {
       case LEFT_CLOSE:
         addCommands(
@@ -66,22 +64,29 @@ public class RunAuto extends SequentialCommandGroup {
                 .resetOdometry(PathPlannerPath.fromPathFile("rightLow").getPreviewStartingHolonomicPose())),
             AutoBuilder.followPath(PathPlannerPath.fromPathFile("rightLow")));
         break;
+      case FORWARD:
+        addCommands(new InstantCommand(() -> drivetrain.drive(-1, 0, 0)), new WaitCommand(1),
+            new InstantCommand(() -> drivetrain.drive(0, 0, 0)));
       default:
         break;
     }
 
     addCommands(new DriveToTarget(drivetrain, vision), new ZeroGrabberArm(grabber));
 
-    if (auto != AutoRoutine.LEFT_LOW && auto != AutoRoutine.RIGHT_LOW) {
-      addCommands(
-          // TODO create tag-to-tote path
-          new InstantCommand(() -> drivetrain.getSwerve()
-              .resetOdometry(PathPlannerPath.fromPathFile("tagToTote").getPreviewStartingHolonomicPose())),
-          AutoBuilder.followPath(PathPlannerPath.fromPathFile("tagToTote")),
-          new PickUpTote(grabber));
-    }
-
-    addCommands(intake.toggleForwards(), new WaitCommand(1.5), intake.stopIntake());
+    /*
+     * if (auto != AutoRoutine.LEFT_LOW && auto != AutoRoutine.RIGHT_LOW) {
+     * addCommands(
+     * // TODO create tag-to-tote path
+     * new InstantCommand(() -> drivetrain.getSwerve()
+     * .resetOdometry(PathPlannerPath.fromPathFile("tagToTote").
+     * getPreviewStartingHolonomicPose())),
+     * AutoBuilder.followPath(PathPlannerPath.fromPathFile("tagToTote")),
+     * new PickUpTote(grabber));
+     * }
+     * 
+     * addCommands(intake.toggleForwards(), new WaitCommand(1.5),
+     * intake.stopIntake());
+     */
 
     addRequirements(drivetrain, grabber, intake, vision);
   }

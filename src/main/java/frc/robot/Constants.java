@@ -113,7 +113,7 @@ public final class Constants {
 
   public static class AutoConfig {
     public static enum AutoRoutine {
-      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR, LEFT_LOW, RIGHT_LOW
+      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR, LEFT_LOW, RIGHT_LOW, FORWARD
     }
 
     public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
