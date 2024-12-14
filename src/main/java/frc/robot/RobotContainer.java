@@ -60,7 +60,7 @@ public class RobotContainer {
     grabber = new Grabber();
     intake = new Intake();
     indexer = new Indexer();
-    // vision = new Vision();
+    vision = new Vision();
     drivetrain = new Drivetrain();
 
     autoChooser = new SendableChooser<Command>();
@@ -103,8 +103,8 @@ public class RobotContainer {
   private void setDefaultCommands() {
     drivetrain.setDefaultCommand(new DriveJoysticks(
         drivetrain,
-        controls::getDriveSpeedX,
         controls::getDriveSpeedY,
+        controls::getDriveSpeedX,
         controls::getTurnSpeed));
 
   }
