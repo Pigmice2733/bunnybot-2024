@@ -8,6 +8,9 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.util.Color;
@@ -112,12 +115,27 @@ public final class Constants {
   }
 
   public static class AutoConfig {
-    public static enum AutoRoutine {
-      LEFT_CLOSE, LEFT_MID, LEFT_FAR, RIGHT_CLOSE, RIGHT_MID, RIGHT_FAR, LEFT_LOW, RIGHT_LOW, FORWARD
-    }
-
     public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
     public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
         DrivetrainConfig.MAX_DRIVE_SPEED, Math.hypot(14.38, 11.88), REPLANNING_CONFIG);
+
+    public static enum AutoRoutine {
+      LEFT_CLOSE(new Transform2d(-0.74, 1.81, new Rotation2d(Units.degreesToRadians(135)))),
+      LEFT_MID(new Transform2d(-3.52, 1.81, new Rotation2d(Units.degreesToRadians(135)))),
+      LEFT_FAR(new Transform2d(-6.41, 1.81, new Rotation2d(Units.degreesToRadians(135)))),
+      LEFT_LOW(new Transform2d(-7.12, -0.83, new Rotation2d(Units.degreesToRadians(225)))),
+      RIGHT_CLOSE(new Transform2d(-0.74, -1.81, new Rotation2d(Units.degreesToRadians(225)))),
+      RIGHT_MID(new Transform2d(-3.52, -1.81, new Rotation2d(Units.degreesToRadians(225)))),
+      RIGHT_FAR(new Transform2d(-6.41, -1.81, new Rotation2d(Units.degreesToRadians(225)))),
+      RIGHT_LOW(new Transform2d(-7.12, 0.83, new Rotation2d(Units.degreesToRadians(135))));
+
+      public Transform2d transform;
+      private AutoRoutine(Transform2d route) {
+        transform = route;
+      }
+    }
+
+    public static final Transform2d TAG_TOTE_TRANSFORM_1 = new Transform2d(0, -Units.inchesToMeters(44.5), new Rotation2d());
+    public static final Transform2d TAG_TOTE_TRANSFORM_2 = new Transform2d(-Units.inchesToMeters(1.5), Units.inchesToMeters(6.0), new Rotation2d(Units.degreesToRadians(-90)));
   }
 }

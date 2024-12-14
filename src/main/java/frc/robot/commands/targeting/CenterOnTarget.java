@@ -8,15 +8,14 @@ import frc.robot.subsystems.Vision;
 public class CenterOnTarget extends Command {
   private Drivetrain drivetrain;
   private Vision vision;
-  private double startAngle;
   private Target target;
 
   /**
-   * Move laterally until vision's TX is 0, that is, the robot is directly in
+   * Move laterally until vision's TX is 0, that is, the camera is directly in
    * front of the target.
    * 
-   * @param drt Drivetrain subsystem
-   * @param vsn Vision subystem
+   * @param drt drivetrain subsystem
+   * @param vsn vision subystem
    */
   public CenterOnTarget(Drivetrain drt, Vision vsn) {
     drivetrain = drt;
@@ -25,24 +24,9 @@ public class CenterOnTarget extends Command {
   }
 
   @Override
-  public void initialize() {
-    startAngle = drivetrain.getPose().getRotation().getDegrees();
-  }
-
-  @Override
   public void execute() {
     target = vision.getTarget();
-    if (startAngle < 10 && startAngle > -10) {
-      drivetrain.drive(0, target.tx / -60, 0);
-    } else if (startAngle < 100 && startAngle > 80) {
-      drivetrain.drive(target.tx / -60, 0, 0);
-    } else if (startAngle < -80 && startAngle > -100) {
-      drivetrain.drive(target.tx / 60, 0, 0);
-    } else if (startAngle < -170 || startAngle > 170) {
-      drivetrain.drive(0, target.tx / 60, 0);
-    } else {
-      end(true);
-    }
+    drivetrain.drive(0, target.tx / -60, 0);
   }
 
   @Override

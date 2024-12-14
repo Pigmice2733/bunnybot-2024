@@ -5,13 +5,12 @@ import frc.robot.subsystems.Drivetrain;
 
 public class TurnToTarget extends Command {
   private Drivetrain drivetrain;
-  private double targetAngle, curAngle;
+  private double curAngle;
 
   /**
    * Turn until the Limelight camera is pointing perpendicularly to the target.
    * 
-   * @param drt Drivetrain subsystem
-   * @param vsn Vision subsystem
+   * @param drt drivetrain subsystem
    */
   public TurnToTarget(Drivetrain drt) {
     drivetrain = drt;
@@ -19,14 +18,9 @@ public class TurnToTarget extends Command {
   }
 
   @Override
-  public void initialize() {
-    targetAngle = Math.round(drivetrain.getPose().getRotation().getDegrees() / 90) * 90;
-  }
-
-  @Override
   public void execute() {
     curAngle = drivetrain.getPose().getRotation().getDegrees();
-    drivetrain.drive(0, 0, (targetAngle - curAngle) / 100); // PID for this?
+    drivetrain.drive(0, 0, (-curAngle) / 100); // PID for this?
   }
 
   @Override
@@ -36,6 +30,6 @@ public class TurnToTarget extends Command {
 
   @Override
   public boolean isFinished() {
-    return Math.abs(targetAngle - curAngle) < 2; // test deadband
+    return Math.abs(curAngle) < 2; // TODO test tolerance
   }
 }

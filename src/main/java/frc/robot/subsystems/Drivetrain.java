@@ -133,8 +133,8 @@ public class Drivetrain extends SubsystemBase {
 
   /**
    * Drives the robot in field-oriented mode by creating a ChassisSpeeds object.
-   * Positive X is to the right from the driver's perspective; positive Y is away
-   * from the alliance wall.
+   * Positive X is away from the alliance wall; positive Y is left from the
+   * driver's perspective.
    */
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
     System.out.println("Driving. x speed " + driveSpeedX + ", y speed " + driveSpeedY + ", turn speed " + turnSpeed);
@@ -143,5 +143,14 @@ public class Drivetrain extends SubsystemBase {
 
   public Command reset() {
     return new InstantCommand(() -> resetPose(new Pose2d()));
+  }
+
+  /**
+   * Drives the robot in field-oriented mode by creating a ChassisSpeeds object.
+   * Positive X is away from the alliance wall; positive Y is left from the
+   * driver's perspective.
+   */
+  public Command driveCommand(double driveSpeedX, double driveSpeedY, double turnSpeed) {
+    return new InstantCommand(() -> drive(driveSpeedX, driveSpeedY, turnSpeed));
   }
 }

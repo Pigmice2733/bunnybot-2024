@@ -92,7 +92,6 @@ public class RobotContainer {
         intake, vision, AutoRoutine.LEFT_LOW));
     autoChooser.addOption("Right Low Zone", new RunAuto(drivetrain, grabber,
         intake, vision, AutoRoutine.RIGHT_LOW));
-    autoChooser.addOption("straight X", new RunAuto(drivetrain, grabber, intake, vision, AutoRoutine.FORWARD));
 
     Constants.DRIVETRAIN_TAB.add("Auto Command", autoChooser).withPosition(2, 0);
   }
@@ -106,7 +105,6 @@ public class RobotContainer {
         controls::getDriveSpeedY,
         controls::getDriveSpeedX,
         controls::getTurnSpeed));
-
   }
 
   /**
@@ -132,6 +130,7 @@ public class RobotContainer {
     operator.x().onTrue(intake.toggleBackwards());
     operator.b().onTrue(intake.retractIntake());
     operator.y().onTrue(intake.extendIntake());
+
     operator.rightBumper().onTrue(grabber.raiseGrabber()).onFalse(grabber.stop());
     operator.leftBumper().onTrue(grabber.lowerGrabber()).onFalse(grabber.stop());
     operator.rightTrigger().onTrue(grabber.closeFinger());
@@ -162,5 +161,6 @@ public class RobotContainer {
    */
   public void teleopInit() {
     intake.extendIntake();
+    drivetrain.reset().schedule();
   }
 }
