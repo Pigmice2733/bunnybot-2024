@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -35,9 +36,10 @@ import frc.robot.subsystems.Vision;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  @SuppressWarnings("unused")
+  private Indexer indexer;
   private Grabber grabber;
   public Intake intake;
-  private Indexer indexer;
   private Vision vision;
   private Drivetrain drivetrain;
 
@@ -66,6 +68,8 @@ public class RobotContainer {
     autoChooser = new SendableChooser<Command>();
 
     compressor.enableAnalog(90, 120);
+
+    CameraServer.startAutomaticCapture();
 
     // Configure the trigger bindings
     configureBindings();

@@ -72,9 +72,9 @@ public final class Constants {
     public static final Color BALLOON_RED_COLOR = new Color(400, 500, 300);
     public static final Color BALLOON_BLUE_COLOR = new Color(700, 1700, 1400);
     public static final Color NULL_COLOR = new Color(300, 500, 300);
-    public static final int IRBalloonPresentThreshold = 5;
-    public static final int MinRedThreshold = 300;
-    public static final int MinRedBlueDifferential = 50;
+    public static final int IRBalloonPresentThreshold = 3;
+    public static final int MinRedThreshold = 165;
+    public static final int MinRedBlueDifferential = 30;
   }
 
   public static class GrabberConfig {
@@ -130,12 +130,15 @@ public final class Constants {
       RIGHT_LOW(new Transform2d(-7.12, 0.83, new Rotation2d(Units.degreesToRadians(135))));
 
       public Transform2d transform;
+
       private AutoRoutine(Transform2d route) {
         transform = route;
       }
     }
 
-    public static final Transform2d TAG_TOTE_TRANSFORM_1 = new Transform2d(0, -Units.inchesToMeters(44.5), new Rotation2d());
-    public static final Transform2d TAG_TOTE_TRANSFORM_2 = new Transform2d(-Units.inchesToMeters(1.5), Units.inchesToMeters(6.0), new Rotation2d(Units.degreesToRadians(-90)));
+    public static final Transform2d TAG_TOTE_TRANSFORM_1 = new Transform2d(0, -Units.inchesToMeters(44.5),
+        new Rotation2d());
+    public static final Transform2d TAG_TOTE_TRANSFORM_2 = new Transform2d(-Units.inchesToMeters(1.5),
+        Units.inchesToMeters(6.0), new Rotation2d(Units.degreesToRadians(-90)));
   }
 }
