@@ -89,22 +89,6 @@ public final class Constants {
   }
 
   public static class VisionConfig {
-    public static final String CAM_NAME = "";
-
-    public static class Target {
-      // degrees away from face-on horizontally, turning counterclockwise increases
-      // number
-      public double tx;
-
-      // degrees away from face-on vertically, target relatively higher increases
-      // number
-      public double ty;
-
-      public Target(double x, double y) {
-        tx = x;
-        ty = y;
-      }
-    }
   }
 
   public static class DrivetrainConfig {

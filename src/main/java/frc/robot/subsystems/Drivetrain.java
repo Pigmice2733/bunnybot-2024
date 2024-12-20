@@ -137,7 +137,8 @@ public class Drivetrain extends SubsystemBase {
    * driver's perspective.
    */
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
-    System.out.println("Driving. x speed " + driveSpeedX + ", y speed " + driveSpeedY + ", turn speed " + turnSpeed);
+    // System.out.println("Driving. x speed " + driveSpeedX + ", y speed " +
+    // driveSpeedY + ", turn speed " + turnSpeed);
     swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
   }
 
