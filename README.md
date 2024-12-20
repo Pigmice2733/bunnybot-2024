@@ -25,6 +25,7 @@ Driver:
 - right joystick X for turning
 - A to reset odometry
 - Y to toggle slowmode
+- X to go to closest target
 
 Operator:
 
