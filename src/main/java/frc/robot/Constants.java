@@ -5,6 +5,7 @@
 package frc.robot;
 
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -117,7 +118,8 @@ public final class Constants {
   public static class AutoConfig {
     public static final ReplanningConfig REPLANNING_CONFIG = new ReplanningConfig(true, false);
     public static final HolonomicPathFollowerConfig PATH_FOLLOWER_CONFIG = new HolonomicPathFollowerConfig(
-        DrivetrainConfig.MAX_DRIVE_SPEED, Math.hypot(14.38, 11.88), REPLANNING_CONFIG);
+        new PIDConstants(0.8, 0, 0), new PIDConstants(2.0, 0, 0), DrivetrainConfig.MAX_DRIVE_SPEED,
+        Units.inchesToMeters(Math.hypot(11.25, 11.25)), REPLANNING_CONFIG);
 
     public static enum AutoRoutine {
       LEFT_CLOSE(new Transform2d(-0.74, 1.81, new Rotation2d(Units.degreesToRadians(135)))),

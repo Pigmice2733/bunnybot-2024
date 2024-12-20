@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.IOException;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -16,12 +18,12 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.AutoConfig;
-import frc.robot.Constants.DrivetrainConfig;
 import swervelib.SwerveDrive;
 import swervelib.SwerveModule;
 import swervelib.imu.SwerveIMU;
@@ -33,6 +35,7 @@ public class Drivetrain extends SubsystemBase {
   private final SwerveDriveKinematics kinematics;
   private final SwerveDriveOdometry odometry;
   private Pose2d robotPose;
+  private final Field2d fieldWidget;
 
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModule[] modules = new SwerveModule[4];
@@ -43,7 +46,7 @@ public class Drivetrain extends SubsystemBase {
   public Drivetrain() {
     try {
       swerve = new SwerveParser(new File(Filesystem.getDeployDirectory(), "swerve"))
-          .createSwerveDrive(DrivetrainConfig.MAX_DRIVE_SPEED);
+          .createSwerveDrive(5);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -68,6 +71,13 @@ public class Drivetrain extends SubsystemBase {
     frontRightEntry = swerveEntries.add("Front Right Encoder Output", 0).withPosition(1, 0).getEntry();
     backLeftEntry = swerveEntries.add("Back Left Encoder Output", 0).withPosition(2, 0).getEntry();
     backRightEntry = swerveEntries.add("Back Right Encoder Output", 0).withPosition(3, 0).getEntry();
+
+    setUpAuto();
+
+    fieldWidget = new Field2d();
+    Constants.DRIVETRAIN_TAB.add(fieldWidget);
+
+    PathPlannerLogging.setLogActivePathCallback((pose) -> fieldWidget.getObject("target pose").setPoses(pose));
   }
 
   @Override
@@ -85,10 +95,13 @@ public class Drivetrain extends SubsystemBase {
    */
   public void setUpAuto() {
     AutoBuilder.configureHolonomic(
-        swerve::getPose,
+        () -> {
+          Pose2d pose = getPose();
+          return new Pose2d(pose.getX(), pose.getY(), new Rotation2d(-pose.getRotation().getRadians()));
+        },
         (pose) -> swerve.resetOdometry(pose),
         swerve::getRobotVelocity,
-        (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, speed.omegaRadiansPerSecond),
+        (speed) -> drive(speed.vxMetersPerSecond, speed.vyMetersPerSecond, -speed.omegaRadiansPerSecond),
         AutoConfig.PATH_FOLLOWER_CONFIG,
         () -> (DriverStation.getAlliance().get() == Alliance.Red),
         this);
@@ -114,6 +127,8 @@ public class Drivetrain extends SubsystemBase {
     frontRightEntry.setDouble(modules[1].getAbsolutePosition());
     backLeftEntry.setDouble(modules[2].getAbsolutePosition());
     backRightEntry.setDouble(modules[3].getAbsolutePosition());
+
+    fieldWidget.setRobotPose(robotPose);
   }
 
   /** Returns the drivetrain as a SwerveDrive object. */
@@ -137,7 +152,8 @@ public class Drivetrain extends SubsystemBase {
    * driver's perspective.
    */
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
-    System.out.println("Driving. x speed " + driveSpeedX + ", y speed " + driveSpeedY + ", turn speed " + turnSpeed);
+    // System.out.println("Driving. x speed " + driveSpeedX + ", y speed " +
+    // driveSpeedY + ", turn speed " + turnSpeed);
     swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
   }
 
