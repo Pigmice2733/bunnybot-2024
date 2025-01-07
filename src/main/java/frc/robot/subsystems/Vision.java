@@ -27,9 +27,9 @@ public class Vision extends SubsystemBase {
     visionEntries = Constants.DRIVETRAIN_TAB.getLayout("Vision", BuiltInLayouts.kList).withSize(2, 4)
         .withPosition(3,
             0);
-    targetX = visionEntries.add("Target X Offset", 0).getEntry();
-    targetY = visionEntries.add("Target Y Offset", 0).getEntry();
-    targetAngle = visionEntries.add("Target Angle Offset", 0).getEntry();
+    targetX = visionEntries.add("Target X Offset", 0).withPosition(0, 0).getEntry();
+    targetY = visionEntries.add("Target Y Offset", 0).withPosition(0, 1).getEntry();
+    targetAngle = visionEntries.add("Target Angle Offset", 0).withPosition(0, 2).getEntry();
   }
 
   @Override
@@ -37,9 +37,9 @@ public class Vision extends SubsystemBase {
     target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_cameraspace")
         .getDoubleArray(target);
 
-    // accounts for problems in determining position of target
-    targetPose = new Pose2d(25.0 * Math.round(target[0] * 100) / 100.0, 2.0 * Math.round(target[1] * 100) / 100.0,
-        new Rotation2d(Units.degreesToRadians(20) - target[5]));
+    targetPose = new Pose2d(Math.round(target[2] * 100.0) / 100.0,
+        Math.round(target[0] * -100.0) / 100.0,
+        new Rotation2d(Units.degreesToRadians(target[4] * -1.0)));
 
     updateEntries();
   }
@@ -47,7 +47,7 @@ public class Vision extends SubsystemBase {
   private void updateEntries() {
     targetX.setDouble(targetPose.getX());
     targetY.setDouble(targetPose.getY());
-    targetAngle.setDouble(targetPose.getRotation().getDegrees());
+    targetAngle.setDouble(Math.round(targetPose.getRotation().getDegrees() * 100.0) / 100.0);
   }
 
   /** Returns true when there is a visible target. */
