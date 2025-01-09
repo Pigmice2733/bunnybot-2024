@@ -108,12 +108,12 @@ public class Drivetrain extends SubsystemBase {
   private void updateEntries() {
     robotX.setDouble(robotPose.getX());
     robotY.setDouble(robotPose.getY());
-    rotation.setValue(robotPose.getRotation().getDegrees());
+    rotation.setValue(Constants.round(robotPose.getRotation().getDegrees(), 2));
 
-    frontLeftEntry.setDouble(modules[0].getAbsolutePosition());
-    frontRightEntry.setDouble(modules[1].getAbsolutePosition());
-    backLeftEntry.setDouble(modules[2].getAbsolutePosition());
-    backRightEntry.setDouble(modules[3].getAbsolutePosition());
+    frontLeftEntry.setDouble(Constants.round(modules[0].getAbsolutePosition(), 2));
+    frontRightEntry.setDouble(Constants.round(modules[1].getAbsolutePosition(), 2));
+    backLeftEntry.setDouble(Constants.round(modules[2].getAbsolutePosition(), 2));
+    backRightEntry.setDouble(Constants.round(modules[3].getAbsolutePosition(), 2));
   }
 
   /** Returns the drivetrain as a SwerveDrive object. */

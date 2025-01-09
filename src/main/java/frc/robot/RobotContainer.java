@@ -18,6 +18,7 @@ import frc.robot.commands.DriveJoysticks;
 import frc.robot.commands.DropTote;
 import frc.robot.commands.PickUpTote;
 import frc.robot.commands.RunAuto;
+import frc.robot.commands.VisionTesting;
 import frc.robot.commands.ZeroGrabberArm;
 import frc.robot.commands.targeting.DriveToTarget;
 import frc.robot.subsystems.Drivetrain;
@@ -43,7 +44,8 @@ public class RobotContainer {
   private Vision vision;
   private Drivetrain drivetrain;
 
-  private Compressor compressor = new Compressor(CANConfig.PNEUMATICS_HUB_PORT, PneumaticsModuleType.REVPH);
+  // private Compressor compressor = new Compressor(CANConfig.PNEUMATICS_HUB_PORT,
+  // PneumaticsModuleType.REVPH);
 
   private final CommandXboxController driver;
   private final CommandXboxController operator;
@@ -67,7 +69,7 @@ public class RobotContainer {
 
     autoChooser = new SendableChooser<Command>();
 
-    compressor.enableAnalog(90, 120);
+    // compressor.enableAnalog(90, 120);
 
     CameraServer.startAutomaticCapture();
 
@@ -129,6 +131,7 @@ public class RobotContainer {
     driver.a().onTrue(drivetrain.reset());
     driver.y().onTrue(controls.toggleSlowmode());
     driver.x().onTrue(new DriveToTarget(drivetrain, vision));
+    driver.b().onTrue(new VisionTesting(drivetrain, vision));
 
     // operator.a().onTrue(intake.toggleForwards());
     // operator.x().onTrue(intake.toggleBackwards());

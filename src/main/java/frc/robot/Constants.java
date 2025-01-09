@@ -33,6 +33,11 @@ public final class Constants {
   public static final ShuffleboardTab DRIVETRAIN_TAB = Shuffleboard.getTab("Drivetrain & Vision");
   public static final ShuffleboardTab SUBSYSTEM_TAB = Shuffleboard.getTab("Subsystems");
 
+  public static double round(double num, double places) {
+    double inter = Math.pow(10.0, places);
+    return Math.round(num * inter) / inter;
+  }
+
   public static class CANConfig {
     public static final int PNEUMATICS_HUB_PORT = 5;
 
@@ -89,13 +94,16 @@ public final class Constants {
   }
 
   public static class VisionConfig {
+    // transform from camera to center of robot
+    public static final Transform2d CAMERA_OFFSET = new Transform2d(Units.inchesToMeters(-13.5),
+        Units.inchesToMeters(0.5), new Rotation2d(0));
   }
 
   public static class DrivetrainConfig {
     public static final double MAX_DRIVE_SPEED = 1.7;
     public static final double MAX_TURN_SPEED = 1.0;
     public static final double SLOWMODE_MULTIPLIER = 0.45;
-    public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.3, 0, 0);
+    public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.1, 0, 0);
   }
 
   public static class AutoConfig {

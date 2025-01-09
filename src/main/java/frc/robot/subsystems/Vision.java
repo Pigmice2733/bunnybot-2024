@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.LimelightHelpers;
+import frc.robot.Constants.VisionConfig;
 
 public class Vision extends SubsystemBase {
   private boolean hasTarget;
@@ -24,6 +26,8 @@ public class Vision extends SubsystemBase {
     target = new double[6];
     targetPose = new Pose2d();
 
+    hasTarget = false;
+
     visionEntries = Constants.DRIVETRAIN_TAB.getLayout("Vision", BuiltInLayouts.kList).withSize(2, 4)
         .withPosition(3,
             0);
@@ -37,17 +41,20 @@ public class Vision extends SubsystemBase {
     target = NetworkTableInstance.getDefault().getTable("limelight").getEntry("targetpose_cameraspace")
         .getDoubleArray(target);
 
-    targetPose = new Pose2d(Math.round(target[2] * 100.0) / 100.0,
-        Math.round(target[0] * -100.0) / 100.0,
-        new Rotation2d(Units.degreesToRadians(target[4] * -1.0)));
+    // Position of the target with relation to the center of the robot.
+    targetPose = new Pose2d(target[2] * -1.0,
+        target[0],
+        new Rotation2d(Units.degreesToRadians(target[4]))).transformBy(VisionConfig.CAMERA_OFFSET);
+
+    hasTarget = LimelightHelpers.getTV("");
 
     updateEntries();
   }
 
   private void updateEntries() {
-    targetX.setDouble(targetPose.getX());
-    targetY.setDouble(targetPose.getY());
-    targetAngle.setDouble(Math.round(targetPose.getRotation().getDegrees() * 100.0) / 100.0);
+    targetX.setDouble(Constants.round(targetPose.getX(), 2));
+    targetY.setDouble(Constants.round(targetPose.getY(), 2));
+    targetAngle.setDouble(Constants.round(targetPose.getRotation().getDegrees(), 1));
   }
 
   /** Returns true when there is a visible target. */
