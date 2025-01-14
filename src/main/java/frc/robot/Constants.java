@@ -103,7 +103,7 @@ public final class Constants {
     public static final double MAX_DRIVE_SPEED = 1.7;
     public static final double MAX_TURN_SPEED = 1.0;
     public static final double SLOWMODE_MULTIPLIER = 0.45;
-    public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.1, 0, 0);
+    public static final PIDController DRIVETRAIN_PID_CONTROLLER = new PIDController(0.1, 0, 0.1);
   }
 
   public static class AutoConfig {

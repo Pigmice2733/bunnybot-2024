@@ -43,7 +43,7 @@ public class Vision extends SubsystemBase {
 
     // Position of the target with relation to the center of the robot.
     targetPose = new Pose2d(target[2] * -1.0,
-        target[0],
+        target[0] + target[4] * -0.05,
         new Rotation2d(Units.degreesToRadians(target[4]))).transformBy(VisionConfig.CAMERA_OFFSET);
 
     hasTarget = LimelightHelpers.getTV("");
@@ -52,9 +52,9 @@ public class Vision extends SubsystemBase {
   }
 
   private void updateEntries() {
-    targetX.setDouble(Constants.round(targetPose.getX(), 2));
-    targetY.setDouble(Constants.round(targetPose.getY(), 2));
-    targetAngle.setDouble(Constants.round(targetPose.getRotation().getDegrees(), 1));
+    targetX.setDouble(hasTarget ? Constants.round(targetPose.getX(), 1) : 0);
+    targetY.setDouble(hasTarget ? Constants.round(targetPose.getY(), 1) : 0);
+    targetAngle.setDouble(hasTarget ? Constants.round(targetPose.getRotation().getDegrees(), 1) : 0);
   }
 
   /** Returns true when there is a visible target. */

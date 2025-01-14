@@ -3,6 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.Constants.DrivetrainConfig;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Vision;
@@ -12,14 +13,19 @@ public class VisionTesting extends Command {
   private Vision vis;
   private PIDController xPID, yPID, rPID;
   private Pose2d target, robotPose;
+  private double calc;
 
   public VisionTesting(Drivetrain drivetrain, Vision vision) {
     dvt = drivetrain;
     vis = vision;
 
-    xPID = yPID = rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+    xPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
     xPID.setTolerance(0.1);
+
+    yPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
     yPID.setTolerance(0.1);
+
+    rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
     rPID.setTolerance(0.5);
 
     addRequirements(dvt, vis);
@@ -30,18 +36,23 @@ public class VisionTesting extends Command {
     dvt.resetPose(new Pose2d());
     target = vis.getTarget();
 
-    xPID.setSetpoint(target.getX() + 2.0);
+    /* The PID controllers use the robot's pose, not the target pose. */
+    xPID.setSetpoint(target.getX() + 4.0);
     yPID.setSetpoint(target.getY());
     rPID.setSetpoint(target.getRotation().getDegrees() * -1.0);
+    System.out.println(yPID.getSetpoint());
   }
 
   @Override
   public void execute() {
     robotPose = dvt.getPose();
+    calc = yPID.calculate(robotPose.getY());
+    System.out.println(
+        "Position: " + Constants.round(robotPose.getY(), 1) + ", calculated value: " + Constants.round(calc, 1));
     dvt.drive(
-        xPID.calculate(robotPose.getX()),
-        yPID.calculate(robotPose.getY()),
-        rPID.calculate(robotPose.getRotation().getDegrees()));
+        // -1 * xPID.calculate(robotPose.getX()),
+        0, -1 * calc, 0);
+    // rPID.calculate(robotPose.getRotation().getDegrees()));
   }
 
   @Override
@@ -51,6 +62,6 @@ public class VisionTesting extends Command {
 
   @Override
   public boolean isFinished() {
-    return xPID.atSetpoint() && yPID.atSetpoint() && rPID.atSetpoint();
+    return /* xPID.atSetpoint() && */ yPID.atSetpoint() /* && rPID.atSetpoint() */;
   }
 }
