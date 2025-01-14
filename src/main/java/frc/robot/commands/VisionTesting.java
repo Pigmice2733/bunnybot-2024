@@ -19,13 +19,13 @@ public class VisionTesting extends Command {
     dvt = drivetrain;
     vis = vision;
 
-    xPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+    xPID = new PIDController(DrivetrainConfig.DRIVE_PID);
     xPID.setTolerance(0.1);
 
-    yPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+    yPID = new PIDController(DrivetrainConfig.DRIVE_PID);
     yPID.setTolerance(0.1);
 
-    rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+    rPID = new PIDController(DrivetrainConfig.TURN_PID);
     rPID.setTolerance(0.5);
 
     addRequirements(dvt, vis);
