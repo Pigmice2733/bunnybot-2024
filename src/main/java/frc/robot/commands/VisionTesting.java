@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -11,7 +13,10 @@ import frc.robot.subsystems.Vision;
 public class VisionTesting extends Command {
   private Drivetrain dvt;
   private Vision vis;
+
   private PIDController xPID, yPID, rPID;
+  private PIDConstants drivePID, turnPID;
+
   private Pose2d target, robotPose;
   private double calc;
 
@@ -19,13 +24,16 @@ public class VisionTesting extends Command {
     dvt = drivetrain;
     vis = vision;
 
-    xPID = new PIDController(DrivetrainConfig.DRIVE_PID);
+    drivePID = DrivetrainConfig.DRIVE_PID;
+    turnPID = DrivetrainConfig.TURN_PID;
+
+    xPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
     xPID.setTolerance(0.1);
 
-    yPID = new PIDController(DrivetrainConfig.DRIVE_PID);
+    yPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
     yPID.setTolerance(0.1);
 
-    rPID = new PIDController(DrivetrainConfig.TURN_PID);
+    rPID = new PIDController(turnPID.kP, turnPID.kI, turnPID.kD);
     rPID.setTolerance(0.5);
 
     addRequirements(dvt, vis);

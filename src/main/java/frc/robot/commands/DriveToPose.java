@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import com.pathplanner.lib.util.PIDConstants;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -13,11 +15,24 @@ public class DriveToPose extends Command {
   private Transform2d path;
 
   private PIDController xPID, yPID, rPID;
+  private PIDConstants drivePID, turnPID;
 
   public DriveToPose(Drivetrain dtr, Transform2d path) {
     drivetrain = dtr;
     this.path = path;
-    xPID = yPID = rPID = DrivetrainConfig.DRIVETRAIN_PID_CONTROLLER;
+
+    drivePID = DrivetrainConfig.DRIVE_PID;
+    turnPID = DrivetrainConfig.TURN_PID;
+
+    xPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
+    xPID.setTolerance(0.1);
+
+    yPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
+    yPID.setTolerance(0.1);
+
+    rPID = new PIDController(turnPID.kP, turnPID.kI, turnPID.kD);
+    rPID.setTolerance(0.5);
+
     addRequirements(drivetrain);
   }
 
