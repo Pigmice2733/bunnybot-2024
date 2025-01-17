@@ -9,6 +9,7 @@ import com.pathplanner.lib.util.PIDConstants;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.util.Units;
@@ -97,15 +98,15 @@ public final class Constants {
   public static class VisionConfig {
     // transform from camera to center of robot
     public static final Transform2d CAMERA_OFFSET = new Transform2d(Units.inchesToMeters(-13.5),
-        Units.inchesToMeters(0.5), new Rotation2d(0));
+        Units.inchesToMeters(10.0), new Rotation2d(0));
   }
 
   public static class DrivetrainConfig {
     public static final double MAX_DRIVE_SPEED = 1.7;
     public static final double MAX_TURN_SPEED = 1.0;
     public static final double SLOWMODE_MULTIPLIER = 0.45;
-    public static final PIDConstants DRIVE_PID = new PIDConstants(0.1, 0, 0.1);
-    public static final PIDConstants TURN_PID = new PIDConstants(0.1, 0, 0);
+    public static final PIDConstants DRIVE_PID = new PIDConstants(0.9, 0, 0);
+    public static final PIDConstants TURN_PID = new PIDConstants(0.043, 0.017, 0.0038);
   }
 
   public static class AutoConfig {

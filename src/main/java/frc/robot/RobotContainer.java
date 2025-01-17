@@ -9,7 +9,9 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.CANConfig;
@@ -131,7 +133,8 @@ public class RobotContainer {
     driver.a().onTrue(drivetrain.reset());
     driver.y().onTrue(controls.toggleSlowmode());
     driver.x().onTrue(new DriveToTarget(drivetrain, vision));
-    driver.b().onTrue(new VisionTesting(drivetrain, vision));
+    driver.b().onTrue(new VisionTesting(drivetrain, vision))
+        .onFalse(new InstantCommand(() -> CommandScheduler.getInstance().cancelAll()));
 
     // operator.a().onTrue(intake.toggleForwards());
     // operator.x().onTrue(intake.toggleBackwards());

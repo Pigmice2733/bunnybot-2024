@@ -42,9 +42,9 @@ public class Vision extends SubsystemBase {
         .getDoubleArray(target);
 
     // Position of the target with relation to the center of the robot.
-    targetPose = new Pose2d(target[2] * -1.0,
-        target[0] + target[4] * -0.05,
-        new Rotation2d(Units.degreesToRadians(target[4]))).transformBy(VisionConfig.CAMERA_OFFSET);
+    targetPose = new Pose2d(target[2] * -1.0 + target[4] * 0.025,
+        target[0] + target[4] * 0.04,
+        new Rotation2d(Units.degreesToRadians(target[4]) * -1)).plus(VisionConfig.CAMERA_OFFSET);
 
     hasTarget = LimelightHelpers.getTV("");
 

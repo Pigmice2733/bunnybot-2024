@@ -2,8 +2,10 @@ package frc.robot.subsystems;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.util.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -15,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInLayouts;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -37,8 +40,11 @@ public class Drivetrain extends SubsystemBase {
   private SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
   private SwerveModule[] modules = new SwerveModule[4];
 
-  private ShuffleboardLayout drivetrainEntries, swerveEntries;
-  private GenericEntry robotX, robotY, rotation, frontLeftEntry, frontRightEntry, backLeftEntry, backRightEntry;
+  private ShuffleboardLayout drivetrainEntries, swerveEntries, pidEntries;
+  private GenericEntry robotX, robotY, rotation, frontLeftEntry, frontRightEntry, backLeftEntry, backRightEntry, pEntry,
+      iEntry, dEntry;
+
+  public PIDConstants turnPID;
 
   public Drivetrain() {
     try {
@@ -68,6 +74,16 @@ public class Drivetrain extends SubsystemBase {
     frontRightEntry = swerveEntries.add("Front Right Encoder Output", 0).withPosition(1, 0).getEntry();
     backLeftEntry = swerveEntries.add("Back Left Encoder Output", 0).withPosition(2, 0).getEntry();
     backRightEntry = swerveEntries.add("Back Right Encoder Output", 0).withPosition(3, 0).getEntry();
+
+    pidEntries = Constants.DRIVETRAIN_TAB.getLayout("Drivetrain PID Constants", BuiltInLayouts.kList).withSize(2, 4)
+        .withPosition(5, 0);
+    pEntry = pidEntries.add("P", DrivetrainConfig.TURN_PID.kP).withPosition(0, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
+    iEntry = pidEntries.add("I", DrivetrainConfig.TURN_PID.kI).withPosition(0, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
+    dEntry = pidEntries.add("D", DrivetrainConfig.TURN_PID.kD).withPosition(0, 0)
+        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
+    turnPID = DrivetrainConfig.TURN_PID;
   }
 
   @Override
@@ -114,6 +130,9 @@ public class Drivetrain extends SubsystemBase {
     frontRightEntry.setDouble(Constants.round(modules[1].getAbsolutePosition(), 2));
     backLeftEntry.setDouble(Constants.round(modules[2].getAbsolutePosition(), 2));
     backRightEntry.setDouble(Constants.round(modules[3].getAbsolutePosition(), 2));
+
+    turnPID = new PIDConstants(pEntry.getDouble(turnPID.kP), iEntry.getDouble(turnPID.kI),
+        dEntry.getDouble(turnPID.kD));
   }
 
   /** Returns the drivetrain as a SwerveDrive object. */
@@ -139,7 +158,7 @@ public class Drivetrain extends SubsystemBase {
   public void drive(double driveSpeedX, double driveSpeedY, double turnSpeed) {
     // System.out.println("Driving. x speed " + driveSpeedX + ", y speed " +
     // driveSpeedY + ", turn speed " + turnSpeed);
-    swerve.driveFieldOriented(new ChassisSpeeds(driveSpeedX, driveSpeedY, turnSpeed));
+    swerve.driveFieldOriented(new ChassisSpeeds(-1 * driveSpeedX, -1 * driveSpeedY, turnSpeed));
   }
 
   public Command reset() {

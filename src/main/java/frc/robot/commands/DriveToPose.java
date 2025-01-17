@@ -21,7 +21,7 @@ public class DriveToPose extends Command {
     drivetrain = dtr;
     this.path = path;
 
-    drivePID = DrivetrainConfig.DRIVE_PID;
+    drivePID = DrivetrainConfig.TURN_PID;
     turnPID = DrivetrainConfig.TURN_PID;
 
     xPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);

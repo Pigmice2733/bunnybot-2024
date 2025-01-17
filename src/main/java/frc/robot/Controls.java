@@ -26,7 +26,7 @@ public class Controls {
   public double getDriveSpeedY() {
     double joystickY = MathUtil.applyDeadband(driver.getLeftY(), threshold);
 
-    return joystickY * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
+    return -1 * joystickY * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
   }
 
   /**
@@ -35,7 +35,7 @@ public class Controls {
   public double getDriveSpeedX() {
     double joystickX = MathUtil.applyDeadband(driver.getLeftX(), threshold);
 
-    return joystickX * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
+    return -1 * joystickX * DrivetrainConfig.MAX_DRIVE_SPEED * (slowmode ? slow_multiplier : 1);
   }
 
   /**
