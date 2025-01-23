@@ -12,15 +12,21 @@ import frc.robot.subsystems.Vision;
 public class VisionTesting extends Command {
   private Drivetrain dvt;
   private Vision vis;
+  private double xOffset, yOffset, rOffset;
 
   private PIDController xPID, yPID, rPID;
   private PIDConstants drivePID, turnPID;
 
   private Pose2d target, robotPose;
 
-  public VisionTesting(Drivetrain drivetrain, Vision vision) {
+  public VisionTesting(Drivetrain drivetrain, Vision vision, double xOffset, double yOffset) {
     dvt = drivetrain;
     vis = vision;
+
+    this.xOffset = xOffset;
+    this.yOffset = yOffset;
+    rOffset = 0;
+
     addRequirements(dvt, vis);
   }
 
@@ -28,6 +34,7 @@ public class VisionTesting extends Command {
   public void initialize() {
     drivePID = DrivetrainConfig.DRIVE_PID;
     turnPID = dvt.turnPID;
+
     xPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
     xPID.setTolerance(0.05);
     yPID = new PIDController(drivePID.kP, drivePID.kI, drivePID.kD);
@@ -35,16 +42,7 @@ public class VisionTesting extends Command {
     rPID = new PIDController(turnPID.kP, turnPID.kI, turnPID.kD);
     rPID.setTolerance(1);
 
-    dvt.resetPose(new Pose2d());
-    target = vis.getTarget();
-
-    /* The PID controllers use the robot's pose, not the target pose. */
-    xPID.setSetpoint(target.getX() + 4.0);
-    yPID.setSetpoint(target.getY());
-    rPID.setSetpoint(target.getRotation().getDegrees());
-    System.out.println(yPID.getSetpoint());
-    // System.out.println("p: " + rPID.getP() + " i: " + rPID.getI() + " d: " +
-    // rPID.getD());
+    getTargetSetpoint();
   }
 
   @Override
@@ -53,6 +51,9 @@ public class VisionTesting extends Command {
     // System.out.println(
     // "Position: " + Constants.round(robotPose.getY(), 2) + ", calculated value: "
     // + Constants.round(calc, 2));
+
+    if (vis.hasTarget()) getTargetSetpoint();
+
     dvt.drive(
         xPID.calculate(robotPose.getX()),
         yPID.calculate(robotPose.getY()),
@@ -68,5 +69,19 @@ public class VisionTesting extends Command {
   @Override
   public boolean isFinished() {
     return xPID.atSetpoint() && yPID.atSetpoint() && rPID.atSetpoint();
+  }
+
+  private void getTargetSetpoint() {
+    // DOESN'T WORK BUT I DON'T KNOW WHY
+   
+    dvt.resetPose(new Pose2d());
+    target = vis.getTarget();
+    
+    /* The PID controllers use the robot's pose, not the target pose. */
+    xPID.setSetpoint(target.getX() + xOffset);
+    yPID.setSetpoint(target.getY() + yOffset);
+    rPID.setSetpoint(target.getRotation().getDegrees() + rOffset);
+
+    System.out.println("X: " + xPID.getSetpoint() + ", Y: " + yPID.getSetpoint() + ", turn: " + rPID.getSetpoint());
   }
 }

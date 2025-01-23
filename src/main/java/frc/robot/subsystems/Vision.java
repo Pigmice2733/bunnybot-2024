@@ -16,7 +16,7 @@ public class Vision extends SubsystemBase {
   private boolean hasTarget;
 
   private ShuffleboardLayout visionEntries;
-  private GenericEntry targetX, targetY, targetAngle, targetCount;
+  private GenericEntry targetX, targetY, targetAngle;
 
   private double[] target;
   private Pose2d targetPose;
@@ -33,7 +33,6 @@ public class Vision extends SubsystemBase {
     targetX = visionEntries.add("Target X Offset", 0).withPosition(0, 0).getEntry();
     targetY = visionEntries.add("Target Y Offset", 0).withPosition(0, 1).getEntry();
     targetAngle = visionEntries.add("Target Angle Offset", 0).withPosition(0, 2).getEntry();
-    targetCount = visionEntries.add("Targets Visible", 0).withPosition(0, 3).getEntry();
   }
 
   @Override
@@ -49,14 +48,13 @@ public class Vision extends SubsystemBase {
     hasTarget = LimelightHelpers.getTV("");
 
     updateEntries();
-    updatePrints();
+    // updatePrints();
   }
 
   private void updateEntries() {
     targetX.setDouble(hasTarget ? Constants.round(targetPose.getX(), 1) : 0);
     targetY.setDouble(hasTarget ? Constants.round(targetPose.getY(), 1) : 0);
     targetAngle.setDouble(hasTarget ? Constants.round(targetPose.getRotation().getDegrees(), 1) : 0);
-    // targetCount.setDouble(LimelightHelpers.getTargetCount(""));
   }
 
   private void updatePrints() {
