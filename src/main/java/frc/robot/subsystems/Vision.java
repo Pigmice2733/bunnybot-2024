@@ -57,20 +57,20 @@ public class Vision extends SubsystemBase {
     targetAngle.setDouble(hasTarget ? Constants.round(targetPose.getRotation().getDegrees(), 1) : 0);
   }
 
-  private void updatePrints() {
-    String output = "";
+  // private void updatePrints() {
+  //   String output = "";
 
-    // output += (LimelightHelpers.getLimelightNTTable("").equals(NetworkTableInstance.getDefault().getTable("limelight")) && !LimelightHelpers.getLimelightNTTable("output").equals(null)) ? "Table passed. " : "Table failed. ";
-    // output += (LimelightHelpers.getLimelightNTTableEntry("", "t2d").equals(NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d")) && !LimelightHelpers.getLimelightNTTableEntry("", "t2d").equals(null)) ? "Entry passed. " : "Entry failed. ";
-    // output += LimelightHelpers.getT2DArray("").equals(NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d").getDoubleArray(new double[6])) ? "Array equal. " : "Array not equal. ";
-    // output += LimelightHelpers.getT2DArray("").equals(null) ? "Array null." : "Array not null.";
-    // output += (LimelightHelpers.getTargetCount("") == (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d").getDoubleArray(new double[6])[1]) ? "Count passed." : "Count failed.";
+  //   output += (LimelightHelpers.getLimelightNTTable("").equals(NetworkTableInstance.getDefault().getTable("limelight")) && !LimelightHelpers.getLimelightNTTable("output").equals(null)) ? "Table passed. " : "Table failed. ";
+  //   output += (LimelightHelpers.getLimelightNTTableEntry("", "t2d").equals(NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d")) && !LimelightHelpers.getLimelightNTTableEntry("", "t2d").equals(null)) ? "Entry passed. " : "Entry failed. ";
+  //   output += LimelightHelpers.getT2DArray("").equals(NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d").getDoubleArray(new double[6])) ? "Array equal. " : "Array not equal. ";
+  //   output += LimelightHelpers.getT2DArray("").equals(null) ? "Array null." : "Array not null.";
+  //   output += (LimelightHelpers.getTargetCount("") == (int) NetworkTableInstance.getDefault().getTable("limelight").getEntry("t2d").getDoubleArray(new double[6])[1]) ? "Count passed." : "Count failed.";
     
-    for (double i : LimelightHelpers.getT2DArray("")) {output += String.valueOf(i);}
-    for (double i : LimelightHelpers.getLimelightNTTableEntry("", "t2d").getDoubleArray(new double[6])) {output += String.valueOf(i);}
+  //   for (double i : LimelightHelpers.getT2DArray("")) {output += String.valueOf(i);}
+  //   for (double i : LimelightHelpers.getLimelightNTTableEntry("", "t2d").getDoubleArray(new double[6])) {output += String.valueOf(i);}
 
-    System.out.println(output);
-  }
+  //   System.out.println(output);
+  // }
 
   /** Returns true when there is a visible target. */
   public boolean hasTarget() {
@@ -80,6 +80,6 @@ public class Vision extends SubsystemBase {
   public Pose2d getTarget() {
     if (hasTarget)
       return targetPose;
-    return null;
+    return new Pose2d();
   }
 }

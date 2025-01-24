@@ -105,7 +105,7 @@ public final class Constants {
     public static final double MAX_TURN_SPEED = 1.0;
     public static final double SLOWMODE_MULTIPLIER = 0.45;
     public static final PIDConstants DRIVE_PID = new PIDConstants(0.9, 0, 0);
-    public static final PIDConstants TURN_PID = new PIDConstants(0.043, 0.017, 0.0038);
+    public static final PIDConstants TURN_PID = new PIDConstants(0.025, 0.0, 0.01);
   }
 
   public static class AutoConfig {

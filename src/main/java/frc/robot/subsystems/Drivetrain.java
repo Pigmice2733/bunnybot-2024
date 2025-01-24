@@ -77,12 +77,12 @@ public class Drivetrain extends SubsystemBase {
 
     pidEntries = Constants.DRIVETRAIN_TAB.getLayout("Drivetrain PID Constants", BuiltInLayouts.kList).withSize(2, 4)
         .withPosition(5, 0);
-    pEntry = pidEntries.add("P", DrivetrainConfig.TURN_PID.kP).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
-    iEntry = pidEntries.add("I", DrivetrainConfig.TURN_PID.kI).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
-    dEntry = pidEntries.add("D", DrivetrainConfig.TURN_PID.kD).withPosition(0, 0)
-        .withWidget(BuiltInWidgets.kNumberSlider).withProperties(Map.of("max", 0.2, "min", 0.0)).getEntry();
+    pEntry = pidEntries.add("P", DrivetrainConfig.TURN_PID.kP).withPosition(0, 0).withWidget(BuiltInWidgets.kNumberSlider)
+       .withProperties(Map.of("max", 0.1, "min", 0.0, "divisions", 10)).getEntry();
+    iEntry = pidEntries.add("I", DrivetrainConfig.TURN_PID.kI).withPosition(0, 0).withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("max", 0.1, "min", 0.0, "divisions", 10)).getEntry();
+    dEntry = pidEntries.add("D", DrivetrainConfig.TURN_PID.kD).withPosition(0, 0).withWidget(BuiltInWidgets.kNumberSlider)
+        .withProperties(Map.of("max", 0.1, "min", 0.0, "divisions", 10)).getEntry();
     turnPID = DrivetrainConfig.TURN_PID;
   }
 
